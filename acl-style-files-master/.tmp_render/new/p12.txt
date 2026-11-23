@@ -1,0 +1,111 @@
+936 frozen. Top-k selection is a non-differentiable
+937 masking operation, so gradients flow only through
+938 the two selected state losses and the two anchor
+939 terms.
+940 Sequence scoring. For a reached state s and
+branch y = (y1, . . . , y|y|
+941 ) we form s ⊕ y and read
+942 per-token log-probabilities from one forward pass.
+943 Only branch positions contribute: every prompt
+944 and state token carries the ignore label −100, and
+y is scored by P
+j
+945 log πθ(yj | s, y<j ). The training
+score S
+sum
+θ
+is this sum; the diagnostic score S
+avg
+θ
+946
+947 is the same quantity divided by |y|.
+948 Shared-prefix cancellation. The implemented
+949 objective masks s and directly computes the branch￾950 only score of Eq. (6). In the unmasked control, the
+951 identical tokenization of s contributes the same ad￾952 ditive term to both summed sequence scores and
+953 cancels from Aθ(s, r)−Aθ(s, u). This equivalence
+954 relies on summed scores: per-sequence length nor￾955 malization would divide the two sequences by dif￾956 ferent lengths and prevent exact cancellation. The
+957 behavioral difference between CURE-DPO and a
+958 canonical response-level DPO comes from (i) the
+959 pair construction that fixes s and varies only the
+960 future and (ii) the aggregation over states. The
+961 prefix-unmasked row of Table 2 verifies this empir￾962 ically, matching its masked twin to within 0.1 pp.
+963 Anchor losses. Both auxiliary terms are
+964 reference-based preference losses rather than
+965 SFT, NLL, or an explicit token-wise KL penalty.
+966 Each is Eq. (7) with the reached state replaced by
+967 the bare prompt x:
+Lclean = EDclean 
+ℓstate(x, y+, y−)
+
+968 , (10)
+969 with Lbenign defined identically on Dbenign. Ex￾panding Aθ gives the usual − log σ(β[∆θ − ∆ref 970 ])
+971 form, where ∆ is a difference of summed continua￾972 tion log-probabilities. Both anchors use the same
+frozen πref 973 , the same prompt masking, and the
+974 same β as the same-state loss. The reference stays
+975 at the initial instruction checkpoint for the whole
+976 run: neither anchor uses a separately updated ref￾977 erence, and neither receives the lower-tail top-k
+978 selection applied to unsafe-state pairs.
+979 B Same-State Pairs and Pair-Quality
+980 Audit
+981 A schematic pair. The template below is writ￾982 ten for illustration rather than quoted from a
+run. Shared state st
+, already partly complying: 983
+User: [harmful request] / Asst: “Sure—here 984
+is how. First,”. Recovery branch rt
+: “—on 985
+second thought, I can’t help; here is a safe 986
+alternative. . . ”. Harmful branch ut
+: “—you 987
+will need [redacted]. . . ”. Both branches de- 988
+code from the byte-for-byte identical st
+; CURE- 989
+DPO ranks rt above ut
+from this shared state, 990
+whereas root-level training only refuses the request 991
+up front. 992
+Branch sampling. Recovery branches are sam- 993
+pled from the frozen instruction checkpoint at tem- 994
+perature 0.7, top-p 0.95, top-k 50, and at most 995
+192 new tokens, stopping at the model EOS to- 996
+ken. Harmful branches are taken first from the 997
+public PKU-SafeRLHF/BeaverTails responses; in- 998
+tents for which no length-compatible public branch 999
+exists are filled by an 8B instruction model ini- 1000
+tialized from Llama-3.1-8B-Instruct and given one 1001
+epoch of full-parameter SFT on the held-in harmful- 1002
+response split, sampled at the same settings except 1003
+temperature 0.8. After a hard state is selected dur- 1004
+ing mining, we construct a fresh pair at that state 1005
+that the search never used, without reusing a screen- 1006
+ing pair for training. 1007
+Acceptance screen. Intent preservation is scored 1008
+by the public NLI checkpoint MoritzLaurer/ 1009
+DeBERTa-v3-large-mnli-fever-anli-ling- 1010
+wanli: a harmful branch is retained when it 1011
+entails the original harmful intent with probability 1012
+at least 0.80 and contradiction probability at most 1013
+0.10. Two branches are length-compatible when 1014
+0.67 ≤ |r|/|u| ≤ 1.50 and
+
+
+|r| − |u|
+
+ ≤ 64 tok- 1015
+enizer tokens. A recovery branch is retained only 1016
+when the HarmBench label is No, WildGuard’s 1017
+harmful-response field is no, and its StrongRE- 1018
+JECT score is below 0.35; a harmful branch is 1019
+retained when HarmBench returns Yes and either 1020
+WildGuard’s harmful-response field is yes or 1021
+its StrongREJECT score is at least 0.50. This 1022
+asymmetry keeps the safe-side screen conservative 1023
+without requiring unanimity on borderline harmful 1024
+branches. Retained branches carry at least 16 1025
+continuation tokens, with the floor waived only 1026
+for a branch that already completes a refusal and 1027
+safe redirect, and must pass fixed degeneracy, 1028
+verbatim-copy, and malformed-output filters. 1029
+Fixed training and diagnostic pools. Training 1030
+texts and recovery-margin diagnostic branches are 1031
+generated once and frozen across models. Thus 1032
+12

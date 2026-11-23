@@ -1,0 +1,79 @@
+Refusal Is Not Recovery: Same-State Preference Optimization from Unsafe
+Generation States
+Anonymous ACL submission
+001 Abstract
+002 Safety alignment is almost always evaluated at
+003 the conversation root: given a harmful request,
+004 does the model refuse? Autoregressive gener￾005 ation, however, repeatedly re-enters partially
+006 unsafe states—after a prefill, a contaminated
+007 tool result, multi-turn drift, or the model’s own
+008 first compliant tokens—and from each such
+009 state the model must decide whether to recover.
+010 We show that root-level refusal does not deter￾011 mine recovery. Holding a reached unsafe state
+012 byte-for-byte fixed and comparing only its alter￾013 native continuations, 47.9% of examples with
+014 a positive root safety margin have a negative
+015 same-state recovery margin. We make recovery
+016 measurable with a same-state recovery margin
+017 and its lower-tail aggregate (LTRM), which pre￾018 dicts held-out attack success better than root￾019 level margins under a fully separated proto￾020 col with disjoint branch sources, attacks, and
+021 judges (AUROC 0.779 vs. 0.648). CURE-DPO
+022 trains on exactly this signal: it ranks a recovery
+023 branch against a harmful branch, with both con￾024 ditioned on the same complete reached state,
+025 concentrates updates on each prompt’s hardest
+026 states, and anchors clean-safety and benign be￾027 havior. It lowers mid-generation attack success
+028 from 58.6% to 20.2% on our primary model,
+029 below matched reproductions of five published
+030 recovery defenses under one recipe. Controlled
+031 factorials isolate the effects of same-state con￾032 ditioning, pairwise ranking, and lower-tail state
+033 selection; the advantage persists on a second
+034 model family, at unseen insertion depths, on
+035 naturally occurring unsafe states, and under
+036 an adaptive attack. Root refusal is necessary
+037 but insufficient; state-conditional recovery is a
+038 complementary alignment target.
+039 1 Introduction
+040 Safety alignment for large language models is
+041 predominantly measured at the conversation root:
+042 given a harmful request, does the model refuse?
+043 Refusal benchmarks, red-teaming suites, and
+preference-optimized safety training all condition 044
+on the original prompt and score the model’s first 045
+response (Wang et al., 2024b; Mazeika et al., 2024; 046
+Chao et al., 2024). Deployed models, however, do 047
+not answer once and stop. Generation is autoregres- 048
+sive, and each decoded token places the model in 049
+a new state that conditions everything that follows. 050
+Jailbreak prefills, tool outputs, retrieved passages, 051
+multi-turn drift, and the model’s own partial com- 052
+pletions all push generation into states that were 053
+never present at the root. A model that reliably 054
+refuses a prompt may still, once it has emitted a 055
+few unsafe tokens, continue down a harmful trajec- 056
+tory. Root-level safety says little about whether the 057
+model can recover from such a state. 058
+We make this precise by holding a reached un- 059
+safe state fixed and comparing only its alternative 060
+future branches. Under this identical-state con- 061
+trol we observe a preference reversal: an exam- 062
+ple can have a positive root safety margin, so the 063
+model prefers refusing the original prompt, and 064
+yet a negative same-state recovery margin, so from 065
+the reached state the model prefers the harmful 066
+continuation. The reversal is common—it affects 067
+47.9% of positive-root-margin examples—and full- 068
+parameter clean-prompt DPO, which trains only on 069
+root responses, reduces it only to 41.3% (Figure 1). 070
+Recent work establishes that safety can be shal- 071
+low at the first tokens (Qi et al., 2025) and that 072
+harmful-prefix training, dual refusal objectives, 073
+rank-based training targets, arbitrary insertion po- 074
+sitions, and augmented trajectories all improve ro- 075
+bustness beyond the root (Zhao et al., 2025; Vega 076
+and Singh, 2025; Zhang et al., 2025a; Lyu et al., 077
+2026; Park and Kim, 2026). Depth and recovery 078
+clearly matter. What remains open is narrower: 079
+these methods differ in what they compare. Recov- 080
+ery SFT raises the likelihood of a designated safe 081
+continuation without ranking it against the compet- 082
+ing harmful future; trajectory preference methods 083
+rank complete augmented sequences whose pre- 084
+1

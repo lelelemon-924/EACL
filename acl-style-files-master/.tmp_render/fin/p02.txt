@@ -1,0 +1,92 @@
+ROOT LEVEL
+what refusal benchmarks score
+harmful request x
+refuse r0
+comply u0
+mroot(x) > 0
+refuses
+prefill, jailbreak, or drift
+REACHED STATE
+what CURE-DPO scores
+x + unsafe prefix = st
+recovery rt
+harmful ut
+mθ(st) < 0
+continues
+same state, only the future differs
+preference
+reversal
+0 10 20 30 40 50
+Preference reversal (%)
+Base
+Clean DPO
+Recovery SFT
+Uniform same-state
+W-DOOR
+CURE-DPO
+47.9
+41.3
+32.4
+23.2
+20.4
+16.1
+Figure 1: (a) The same checkpoint prefers to refuse at the root and prefers to continue once an unsafe prefix has
+accumulated; stroke weight marks the preferred branch in each band. CURE-DPO holds the complete reached
+state st fixed and optimizes only the ordering of its alternative futures. (b) Fraction of (prompt,state) pairs with a
+positive root margin but a negative same-state margin, with seed standard deviations over three runs. CURE-DPO
+reduces the reversal to a third of its rate at Base and below the strongest external defense.
+085 fixes may themselves differ; token-level methods
+086 refine credit within a response rather than choosing
+087 which conditioning states are compared (Rafailov
+088 et al., 2023; Zeng et al., 2024; Liu et al., 2025). To
+089 our knowledge, prior work has not explicitly eval￾090 uated pairwise recovery preferences with a byte￾091 for-byte identical reached state as the conditioning
+092 context for both alternatives; Table 10 sorts prior
+093 defenses on this axis.
+094 Our first contribution turns recovery into a mea￾095 surable quantity: a same-state recovery margin—
+096 the model’s own length-normalized preference be￾097 tween a recovery and a harmful branch from an
+098 identical state—and its lower-tail aggregate LTRM,
+099 the mean margin over a prompt’s weakest states.
+100 LTRM predicts held-out attack success better than
+101 root-level margins, first-token refusal probability,
+102 or state depth, under four progressively stricter sep￾103 arations, up to disjoint branch sources, attack fami￾104 lies, and judges (Section 6.1).
+105 Our second contribution is CURE-DPO (Com￾106 parison Under Reached-state Equivalence), which
+107 optimizes the quantity the diagnosis identifies. It
+108 ranks matched recovery and harmful branches from
+109 the same reached state, aggregates each prompt’s
+110 highest-loss states, and anchors clean-safety and be￾111 nign behavior. The objective is canonical DPO ap￾112 plied to continuation pairs conditioned on the same
+113 state; an explicitly scored shared prefix cancels
+114 under the summed sequence score (Appendix A).
+115 The contribution is the comparison unit and the
+116 state selection, not a new loss functional. Our
+117 third contribution tests exactly that claim with a
+factorial over pair construction (same-state vs. root- 118
+conditioned) and objective (DPO, SimPO, recovery 119
+SFT) under matched prompts, branches, tokens, 120
+and optimizer steps. Conditioning on the reached 121
+state is worth 19.9–26.5 pp. At a fixed condition- 122
+ing context, pairwise DPO improves over recovery 123
+SFT by 11.3 pp, compared with 4.7 pp for the 124
+corresponding change at the root; lower-tail state 125
+selection adds 5.9 pp (Section 6.3). Throughout 126
+we compare against matched reproductions and 127
+documented adaptations of five published recovery 128
+defenses, on constructed and naturally occurring 129
+unsafe states, at insertion depths well beyond the 130
+training range, and under an attack that adapts to 131
+the defended model. 132
+2 Related Work 133
+Safety alignment and evaluation. Preference- 134
+based alignment established the dominant pipeline 135
+for helpful and harmless assistants (Ouyang et al., 136
+2022; Bai et al., 2022), and safety-specific pref- 137
+erence data makes the helpfulness–harmlessness 138
+trade-off explicit (Ji et al., 2023; Dai et al., 2024). 139
+Evaluation has expanded from harmful-prompt 140
+safeguards (Wang et al., 2024b) to standardized 141
+suites (Mazeika et al., 2024; Chao et al., 2024), 142
+human-aligned jailbreak scoring (Souly et al., 143
+2024), and moderation models (Han et al., 2024). 144
+All score complete responses from the root; we 145
+study the conditional preference between futures 146
+after an unsafe state is reached. 147
+2

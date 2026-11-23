@@ -1,0 +1,116 @@
+148 Safety beyond the root. Safety alignment con￾149 centrates near the first output tokens, so prefill￾150 ing or mid-generation interventions undo an other￾151 wise strong root refusal (Qi et al., 2025). Sub￾152 sequent work deepens alignment with harmful￾153 prefix recovery and dual-objective refusal training
+154 (Zhao et al., 2025), rank-based and any-depth de￾155 fenses (Vega and Singh, 2025; Zhang et al., 2025a),
+156 Markov analyses of safety depth (Kao et al., 2025),
+157 representation-level refusal rebuilding (Xie et al.,
+158 2025b), and insertion of safety supervision at ar￾159 bitrary or worst positions along a trajectory (Lyu
+160 et al., 2026; Park and Kim, 2026). The closest de￾161 fenses either supervise one safe continuation from
+162 an unsafe partial (Qi et al., 2025; Zhang et al.,
+163 2025b) or interrupt harmful internal representations
+164 (Zou et al., 2024). Mechanistic work finds that re￾165 fusal is mediated by a low-dimensional activation
+166 direction whose removal disables it (Arditi et al.,
+167 2024). All of these establish that depth matters;
+168 they differ from us in the comparison unit, as sum￾169 marized in Table 10. We reproduce the five most
+170 directly comparable training-time defenses under
+171 our recipe (Section 5.3). Inference-time any-depth
+172 defenses (Zhang et al., 2025a) compose with a train￾173 ing objective instead of competing with it, so they
+174 are complementary to CURE-DPO rather than al￾175 ternatives to it.
+176 Jailbreak mechanisms. Adversarial suffixes,
+177 gradient red teaming, and related search proce￾178 dures explain failures through optimized inputs
+179 (Zou et al., 2023; Wichers et al., 2024; Chao et al.,
+180 2023), standardized benchmarks expose substantial
+181 variation across attacks, defenses, and evaluators
+182 (Mazeika et al., 2024; Chao et al., 2024; Souly
+183 et al., 2024), and recent analyses frame jailbreaks
+184 as inference-time alignment (Beetham et al., 2026;
+185 Zhao et al., 2026). We therefore evaluate under
+186 adaptive and off-distribution attacks rather than
+187 clean harmful prompts alone (Section 5.2).
+188 Preference optimization and granularity. Di￾189 rect preference optimization and its variants change
+190 sequence-level rewards, reference dependence, or
+191 token-level credit assignment (Rafailov et al., 2023;
+192 Meng et al., 2024; Zeng et al., 2024; Liu et al.,
+193 2025), and recent formulations continue to tar￾194 get the learning objective rather than the compar￾195 ison unit (Najafi and Fyshe, 2026). CURE-DPO
+196 changes the unit instead: both branches share the
+197 complete reached state, and a per-prompt top-k
+198 aggregation—an empirical lower-tail statistic in the
+spirit of CVaR (Rockafellar and Uryasev, 2000), 199
+not a population CVaR estimator—concentrates 200
+updates on the weakest states. 201
+3 Same-State Recovery 202
+3.1 Unsafe Generation States 203
+We represent an unsafe generation state as 204
+st = x ⊕ h≤t
+, (1) 205
+where x is the conversation context and h≤t
+the 206
+assistant-side history at position t. Only the future 207
+tokens y are scored or receive loss (Appendix A). 208
+The identical-state control is central: comparing 209
+two continuations holds st byte-for-byte fixed and 210
+varies only the branch, so any preference difference 211
+reflects recovery from that state rather than a dif- 212
+ference in context (Appendix B gives a sanitized 213
+pair). 214
+3.2 The Same-State Recovery Margin 215
+For diagnosis we use the current model’s length- 216
+normalized conditional log-likelihood of a continu- 217
+ation y, 218
+S
+avg
+θ
+(s, y) = 1
+|y|
+X
+|y|
+j=1
+log πθ(yj | s, y<j ), (2) 219
+and define the root and same-state margins 220
+mroot
+θ
+(x) = β
+
+S
+avg
+θ
+(x, r0) − S
+avg
+θ
+(x, u0)
+
+, (3) 221
+mθ(st) = β
+
+S
+avg
+θ
+(st
+, rt) − S
+avg
+θ
+(st
+, ut)
+
+. (4) 222
+A preference reversal occurs when mroot
+θ
+(x) > 0 223
+and mθ(st) < 0. Scores are length-normalized and 224
+branches matched in intent and length to reduce 225
+surface-form variation; β only sets the scale, chang- 226
+ing neither the sign of a reversal nor any AUROC. 227
+Unlike the training objective of Section 4.2, these 228
+diagnostic margins subtract no reference score: 229
+they measure one checkpoint’s own conditional 230
+ordering over one fixed pair pool. 231
+3.3 Lower-Tail Recovery Diagnostics 232
+For candidate states S(x), let Bq(x) hold the 233
+max(1, ⌈q|S(x)|⌉) states with the lowest margins, 234
+and define 235
+LTRMq(x) = 1
+|Bq(x)|
+X
+s∈Bq(x)
+mθ(s). (5) 236
+This targets the states where recovery is weak- 237
+est rather than the average state. We designate 238
+3

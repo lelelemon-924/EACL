@@ -1,0 +1,141 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 6,
+    "fail": 0,
+    "warn": 6,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['406', '109', '14', '14', '14', '14', '14'], mean=84, cv=1.62). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          406.0,
+          109.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 83.6,
+        "cv": 1.62,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "sh_note",
+      "message": "Row at y≈272: horizontal gaps vary (gaps=['635', '16', '108', '4', '35'], mean=160, cv=1.51). Use uniform spacing.",
+      "detail": {
+        "row_y": 272,
+        "gaps": [
+          635.0,
+          16.0,
+          108.0,
+          4.0,
+          35.0
+        ],
+        "mean": 159.6,
+        "cv": 1.51,
+        "element_ids": [
+          "sh_note",
+          "icon_formula",
+          "loss_note",
+          "icon_safety",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "frozen_arm_tag",
+      "message": "Row at y≈350: horizontal gaps vary (gaps=['107', '743'], mean=425, cv=0.75). Use uniform spacing.",
+      "detail": {
+        "row_y": 350,
+        "gaps": [
+          107.0,
+          743.0
+        ],
+        "mean": 425.0,
+        "cv": 0.75,
+        "element_ids": [
+          "frozen_arm_tag",
+          "pair_sources",
+          "ref_tag"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "p1_title",
+      "message": "Column at x≈36: vertical gaps vary (gaps=['40', '116', '16'], mean=57, cv=0.74). Use uniform spacing.",
+      "detail": {
+        "col_x": 36,
+        "gaps": [
+          40.0,
+          116.0,
+          16.0
+        ],
+        "mean": 57.3,
+        "cv": 0.74,
+        "element_ids": [
+          "p1_title",
+          "icon_mining",
+          "sh_note",
+          "frozen_arm_tag"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "p4_title",
+      "message": "Column at x≈1548: vertical gaps vary (gaps=['22', '29', '67'], mean=39, cv=0.50). Use uniform spacing.",
+      "detail": {
+        "col_x": 1548,
+        "gaps": [
+          22.0,
+          29.0,
+          67.0
+        ],
+        "mean": 39.3,
+        "cv": 0.5,
+        "element_ids": [
+          "p4_title",
+          "icon_filter",
+          "loss_0",
+          "icon_safety"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 44,
+  "edge_count": 17,
+  "canvas": "1987x562"
+}

@@ -1,0 +1,84 @@
+Attack success ↓ Recovery and cost
+Method Clean
+S1
+constr.
+S2
+depth
+S3
+natural
+S4
+adaptive Recov. ↑ ORR ↓ IFEval ↑
+Base 4.7 ±0.4 58.6 ±1.5 63.1 ±1.3 49.3 ±0.9 69.0 ±0.9 20.8 ±1.1 6.5 ±0.3 89.3 ±0.3
+Clean DPO 2.2 ±0.3 52.4 ±1.6 57.0 ±1.7 44.8 ±1.1 64.4 ±1.7 25.1 ±1.2 8.2 ±0.2 88.8 ±0.3
+Recovery SFT 4.6 ±0.4 37.4 ±1.0 43.8 ±1.3 32.3 ±1.1 51.5 ±1.4 57.9 ±1.0 7.3 ±0.4 88.4 ±0.4
+Worst-Insertion SFT 4.2 ±0.5 32.2 ±0.7 39.1 ±1.3 29.5 ±1.5 46.7 ±0.9 63.8 ±1.7 8.1 ±0.3 87.8 ±0.4
+Uniform Same-State DPO 3.7 ±0.3 26.1 ±1.2 32.0 ±1.2 24.4 ±1.0 40.2 ±1.3 71.2 ±1.4 7.7 ±0.2 88.5 ±0.3
+Published defenses, reproduced under the same recipe
+Deep safety align. 3.5 ±0.4 34.1 ±1.5 41.3 ±1.2 30.6 ±1.2 48.4 ±1.2 61.0 ±1.0 8.4 ±0.2 87.8 ±0.3
+Backtracking 4.0 ±0.4 30.4 ±1.2 37.9 ±1.3 27.7 ±1.1 44.9 ±1.5 66.0 ±1.7 8.9 ±0.3 87.1 ±0.5
+Circuit breakers 3.7 ±0.4 29.3 ±0.9 36.6 ±1.4 26.5 ±1.0 43.7 ±1.6 67.3 ±1.3 8.6 ±0.2 87.6 ±0.3
+DOOR 3.4 ±0.2 25.8 ±1.4 33.4 ±1.0 24.5 ±1.3 40.7 ±1.5 70.5 ±0.9 8.8 ±0.5 86.8 ±0.4
+W-DOOR 3.3 ±0.3 23.1 ±1.0 30.4 ±1.5 21.9 ±0.9 37.6 ±1.2 73.5 ±0.8 8.6 ±0.4 87.5 ±0.4
+PRESTO 3.6 ±0.3 24.5 ±0.8 31.8 ±0.9 23.2 ±1.5 38.4 ±1.8 72.1 ±1.5 8.3 ±0.4 88.0 ±0.3
+CURE-DPO 3.9 ±0.4 20.2 ±1.0 26.0 ±0.9 19.6 ±1.4 33.1 ±1.8 78.4 ±1.3 7.6 ±0.2 88.3 ±0.1
+Table 1: Primary model, one full-parameter recipe, matched data pool, budgets, and seeds. S1–S4 are the unsafe￾state suites of Section 5.2; S2–S4 are never used for training or mining. Denominators differ by metric (Section 5.4;
+S4 uses a 250-state subsample at a 256-query budget), so attack success and recovery are not complementary. Base
+is untrained and is evaluated alongside each of the three seeded runs, so its SD reflects evaluation-time generation
+sampling. External rows reproduce, in order, Qi et al. (2025), Zhang et al. (2025b), Zou et al. (2024), Zhao et al.
+(2025) (both forms), and Vega and Singh (2025). Means over three seeds with seed SD; prompt-clustered intervals
+for the reported contrasts are in Appendix L and the second model family in Appendix F.
+Conditioning Objective Middle ASR ↓ LTRM ↑
+Root prompt DPO 52.6 ±1.0 −0.30
+Root prompt SimPO 54.1 ±1.1 −0.35
+Root prompt SFT 57.3 ±1.4 −0.41
+Reached state DPO 26.1 ±1.2 0.30
+Reached state SimPO 31.6 ±1.2 0.18
+Reached state SFT 37.4 ±1.0 0.04
+Reached state, unmasked 26.0 ±1.2 0.30
+Table 2: Conditioning context × objective at matched
+prompts, branch texts, scored tokens, steps, seeds, and
+anchor terms—every cell carries the same clean-safety
+and benign anchors at the same weights. Middle ASR
+is suite S1. Root-conditioned cells reuse the identical
+branch texts with the reached state removed; the reached￾state DPO and SFT cells are the Uniform Same-State
+DPO and Recovery SFT rows of Table 1. The last row
+scores the shared prefix instead of masking it.
+571 Base’s 64.6% (Appendix F).
+572 6.5 Ablations and Over-Refusal
+573 Appendix K sweeps the aggregation rule and
+574 the mining budget. Concentrating on the tail
+575 beats averaging—top-2 reaches 20.2% middle ASR
+576 against 26.1% for the mean of all six states—while
+577 performance is less sensitive to the exact K and
+578 mining budget. Each anchor prevents one failure
+579 being traded for another: on development, where
+580 the weights were selected, dropping the clean￾581 safety anchor raises clean ASR from 4.4% to 6.3%,
+582 and dropping the benign anchor pushes ORR from
+7.8% to 11.3%. 583
+Relative to Base, CURE-DPO changes ORR 584
+from 6.5% to 7.6%, IFEval from 89.3 to 88.3, 585
+and MMLU-Pro from 77.6 to 77.0; its ORR re- 586
+mains below every reproduced external defense 587
+(8.3–8.9%). It has the lowest mean ASR under 588
+all four judges (Appendix L.2) and lower mean 589
+ASR than W-DOOR on every unsafe-state suite, 590
+including −2.9 pp on S1. On the recovery-quality 591
+suite, CURE-DPO scores 0.55 on the 0–3 leakage- 592
+severity scale against W-DOOR’s 0.63 and Base’s 593
+1.38, and has a mean seed-wise conditional median 594
+time-to-recovery of 10.3 tokens against 11.7 and 595
+19.7 (Appendix H). 596
+Table 16 shows both sides of this trade-off on 597
+two redacted generations, one recovery and one 598
+over-refusal. 599
+7 Conclusion 600
+Root-level refusal does not determine whether a 601
+model recovers once generation has entered an un- 602
+safe state. Holding that state fixed exposes a com- 603
+mon preference reversal that clean-prompt training 604
+only weakly addresses, and the lower-tail recovery 605
+margin predicts held-out attack success far better 606
+than root-level diagnostics. CURE-DPO turns that 607
+diagnosis into a training signal by changing what 608
+the model compares, not how it is scored. 609
+8

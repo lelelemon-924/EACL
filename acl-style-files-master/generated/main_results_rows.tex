@@ -1,0 +1,20 @@
+% Filled from final_result.md (E0 + E1). Three-seed means with seed SD.
+% Column order: Clean, S1, S2, S3, S4, Recovery, ORR, IFEval.
+% Bold marks the best value per column among the defended methods; the
+% untrained Base row is excluded from that comparison.
+Base                        & 4.7\,{\scriptsize$\pm$0.4} & 58.6\,{\scriptsize$\pm$1.5} & 63.1\,{\scriptsize$\pm$1.3} & 49.3\,{\scriptsize$\pm$0.9} & 69.0\,{\scriptsize$\pm$0.9} & 20.8\,{\scriptsize$\pm$1.1} & 6.5\,{\scriptsize$\pm$0.3} & 89.3\,{\scriptsize$\pm$0.3} \\
+Clean DPO                   & \textbf{2.2}\,{\scriptsize$\pm$0.3} & 52.4\,{\scriptsize$\pm$1.6} & 57.0\,{\scriptsize$\pm$1.7} & 44.8\,{\scriptsize$\pm$1.1} & 64.4\,{\scriptsize$\pm$1.7} & 25.1\,{\scriptsize$\pm$1.2} & 8.2\,{\scriptsize$\pm$0.2} & \textbf{88.8}\,{\scriptsize$\pm$0.3} \\
+Recovery SFT                & 4.6\,{\scriptsize$\pm$0.4} & 37.4\,{\scriptsize$\pm$1.0} & 43.8\,{\scriptsize$\pm$1.3} & 32.3\,{\scriptsize$\pm$1.1} & 51.5\,{\scriptsize$\pm$1.4} & 57.9\,{\scriptsize$\pm$1.0} & \textbf{7.3}\,{\scriptsize$\pm$0.4} & 88.4\,{\scriptsize$\pm$0.4} \\
+Worst-Insertion SFT         & 4.2\,{\scriptsize$\pm$0.5} & 32.2\,{\scriptsize$\pm$0.7} & 39.1\,{\scriptsize$\pm$1.3} & 29.5\,{\scriptsize$\pm$1.5} & 46.7\,{\scriptsize$\pm$0.9} & 63.8\,{\scriptsize$\pm$1.7} & 8.1\,{\scriptsize$\pm$0.3} & 87.8\,{\scriptsize$\pm$0.4} \\
+Uniform Same-State DPO      & 3.7\,{\scriptsize$\pm$0.3} & 26.1\,{\scriptsize$\pm$1.2} & 32.0\,{\scriptsize$\pm$1.2} & 24.4\,{\scriptsize$\pm$1.0} & 40.2\,{\scriptsize$\pm$1.3} & 71.2\,{\scriptsize$\pm$1.4} & 7.7\,{\scriptsize$\pm$0.2} & 88.5\,{\scriptsize$\pm$0.3} \\
+\midrule
+\multicolumn{9}{l}{\emph{Published defenses, reproduced under the same recipe}} \\
+Deep safety align.          & 3.5\,{\scriptsize$\pm$0.4} & 34.1\,{\scriptsize$\pm$1.5} & 41.3\,{\scriptsize$\pm$1.2} & 30.6\,{\scriptsize$\pm$1.2} & 48.4\,{\scriptsize$\pm$1.2} & 61.0\,{\scriptsize$\pm$1.0} & 8.4\,{\scriptsize$\pm$0.2} & 87.8\,{\scriptsize$\pm$0.3} \\
+Backtracking                & 4.0\,{\scriptsize$\pm$0.4} & 30.4\,{\scriptsize$\pm$1.2} & 37.9\,{\scriptsize$\pm$1.3} & 27.7\,{\scriptsize$\pm$1.1} & 44.9\,{\scriptsize$\pm$1.5} & 66.0\,{\scriptsize$\pm$1.7} & 8.9\,{\scriptsize$\pm$0.3} & 87.1\,{\scriptsize$\pm$0.5} \\
+Circuit breakers            & 3.7\,{\scriptsize$\pm$0.4} & 29.3\,{\scriptsize$\pm$0.9} & 36.6\,{\scriptsize$\pm$1.4} & 26.5\,{\scriptsize$\pm$1.0} & 43.7\,{\scriptsize$\pm$1.6} & 67.3\,{\scriptsize$\pm$1.3} & 8.6\,{\scriptsize$\pm$0.2} & 87.6\,{\scriptsize$\pm$0.3} \\
+DOOR                        & 3.4\,{\scriptsize$\pm$0.2} & 25.8\,{\scriptsize$\pm$1.4} & 33.4\,{\scriptsize$\pm$1.0} & 24.5\,{\scriptsize$\pm$1.3} & 40.7\,{\scriptsize$\pm$1.5} & 70.5\,{\scriptsize$\pm$0.9} & 8.8\,{\scriptsize$\pm$0.5} & 86.8\,{\scriptsize$\pm$0.4} \\
+W-DOOR                      & 3.3\,{\scriptsize$\pm$0.3} & 23.1\,{\scriptsize$\pm$1.0} & 30.4\,{\scriptsize$\pm$1.5} & 21.9\,{\scriptsize$\pm$0.9} & 37.6\,{\scriptsize$\pm$1.2} & 73.5\,{\scriptsize$\pm$0.8} & 8.6\,{\scriptsize$\pm$0.4} & 87.5\,{\scriptsize$\pm$0.4} \\
+PRESTO                      & 3.6\,{\scriptsize$\pm$0.3} & 24.5\,{\scriptsize$\pm$0.8} & 31.8\,{\scriptsize$\pm$0.9} & 23.2\,{\scriptsize$\pm$1.5} & 38.4\,{\scriptsize$\pm$1.8} & 72.1\,{\scriptsize$\pm$1.5} & 8.3\,{\scriptsize$\pm$0.4} & 88.0\,{\scriptsize$\pm$0.3} \\
+\midrule
+\textbf{\method{}}          & 3.9\,{\scriptsize$\pm$0.4} & \textbf{20.2}\,{\scriptsize$\pm$1.0} & \textbf{26.0}\,{\scriptsize$\pm$0.9} & \textbf{19.6}\,{\scriptsize$\pm$1.4} & \textbf{33.1}\,{\scriptsize$\pm$1.8} & \textbf{78.4}\,{\scriptsize$\pm$1.3} & 7.6\,{\scriptsize$\pm$0.2} & 88.3\,{\scriptsize$\pm$0.1} \\
+\bottomrule

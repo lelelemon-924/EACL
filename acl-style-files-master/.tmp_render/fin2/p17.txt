@@ -1,0 +1,94 @@
+Qwen3.5-9B, untrained IFEval MMLU-Pro
+Model card, thinking enabled 91.5 82.5
+Ours, thinking disabled 89.3 ±0.3 77.6 ±0.2
+Table 7: Published and measured utility for the base
+checkpoint. The model card evaluates with reasoning
+enabled (Qwen Team, 2026); our safety protocol re￾quires it disabled, so every utility number elsewhere in
+this paper is on the second row’s scale. Ours is a mean
+over three evaluation seeds with seed SD.
+Method S1 ↓ S3 ↓ Recov. ↑ ORR ↓
+Base 64.6 ±1.4 54.1 ±1.0 17.2 ±1.7 7.1 ±0.5
+Recovery SFT 43.1 ±1.5 37.0 ±1.4 51.3 ±1.7 7.9 ±0.3
+Uniform Same-State DPO 31.4 ±1.2 26.9 ±1.0 65.1 ±1.5 8.0 ±0.3
+W-DOOR 29.6 ±1.1 25.7 ±1.4 67.6 ±0.8 8.4 ±0.2
+CURE-DPO 24.7 ±1.4 21.1 ±1.1 74.2 ±1.2 8.1 ±0.4
+Table 8: Llama-3.1-8B-Instruct under the primary recipe
+with no re-tuning. Means over three seeds with seed
+SD.
+1360 and all scores, losses, and outputs use its policy
+1361 and frozen reference. S3 states are regenerated per
+1362 checkpoint, and S4 is re-optimized against each
+1363 checkpoint.
+1364 G Depth Extrapolation
+1365 Figure 4 resolves the S1 and S2 columns of Table 1
+1366 by depth; each column is the count-weighted mean
+1367 of its depths. Training caps the reached state at 80
+1368 tokens, so depths 128–512 are pure extrapolation.
+1369 Deeper states are rarer, so the number of available
+1370 test states per seed falls from 1,000 at depth 5 to
+1371 963 at 80, 908 at 128, 711 at 256, and 462 at 512.
+1372 CURE-DPO holds the lowest attack success at ev￾1373 ery one of the eight depths. Its absolute margin
+1374 over Base neither grows nor collapses outside the
+1375 trained range—38.8 pp at depth 5, 38.0 pp at 128,
+1376 and 35.9 pp at 512—but the relative reduction does
+1377 narrow, from 67% at depth 5 to 48% at 512, be￾1378 cause Base itself degrades fastest at the deepest
+1379 states.
+1380 H Recovery Quality
+1381 Table 9 reports recovery quality on the same per￾1382 state records as Appendix G: all eight depths, 7,021
+1383 states per seed, and the identical state × depth set
+1384 for every method. Severity-weighted leakage is the
+1385 0–3 LLM-judge score whose rubric Appendix L.4
+1386 gives. Additional harmful tokens count new harm￾1387 ful continuation tokens before recovery onset; time￾5 10 20 40 80 128 256 512
+Reached-state depth (tokens)
+0
+10
+20
+30
+40
+50
+60
+70
+80
+Attack success rate (%)
+trained depths (≤80 tok) unseen depths
+Base
+Recovery SFT
+Uniform same-state
+W-DOOR
+CURE-DPO
+Figure 4: Attack success against reached-state depth.
+Training uses states of at most 80 tokens (shaded);
+depths 128–512 test extrapolation, where CURE-DPO
+keeps the lowest rate at every depth.
+to-recovery is the onset index. 1388
+CURE-DPO adds 2.5 harmful tokens on average, 1389
+against W-DOOR’s 3.0 and Base’s 6.3, and scores 1390
+0.55 severity against 0.63 and 1.38. Its mean seed- 1391
+wise conditional median time-to-recovery is 10.3 1392
+tokens, against 11.7 and 19.7. Time-to-recovery is 1393
+conditional on recovery onset within the 256-token 1394
+generation window and does not apply the main 1395
+recovery-rate metric’s 64-token cutoff. 1396
+I Reproduced External Defenses 1397
+Table 10 places the defenses discussed in Section 2 1398
+in the design space of Section 1. 1399
+Before re-evaluating any defense under our pro- 1400
+tocol we reproduce a headline number from its own 1401
+paper in its own setting. Table 11 reports those san- 1402
+ity checks; every one falls within a single seed stan- 1403
+dard deviation of the published value, providing a 1404
+check on implementation fidelity. 1405
+In its own prefilling setting the circuit-breaker re- 1406
+production drives attack success to 3.9% and deep 1407
+safety alignment to 3.0%; the same checkpoints 1408
+score 29.3% and 34.1% on our S1. For these repro- 1409
+duced checkpoints, robustness therefore transfers 1410
+only partially from the original evaluation settings 1411
+to S1–S4. 1412
+Scope of each reproduction. For Qi et al. (2025) 1413
+we reproduce the data-augmentation component 1414
+and not the token-wise constrained objective, 1415
+which targets fine-tuning attacks rather than mid- 1416
+generation recovery. In a paired experiment, adding 1417
+that objective lowers middle ASR by 1.2 pp on S1 1418
+17

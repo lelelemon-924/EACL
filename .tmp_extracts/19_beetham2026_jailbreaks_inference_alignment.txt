@@ -1,0 +1,1042 @@
+
+===== PAGE 1 =====
+Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics
+V olume 1: Long Papers, pages 7689–7713
+March 24-29, 2026 ©2026 Association for Computational Linguistics
+Jailbreaks as Inference-Time Alignment:
+A Framework for Understanding Safety Failures in LLMs
+James Beetham1, Souradip Chakraborty2, Mengdi Wang3, Furong Huang2,4,
+Amrit Singh Bedi1, and Mubarak Shah1
+1University of Central Florida
+2University of Maryland, College Park
+3Princeton University
+4Capital One
+Abstract
+Large language models (LLMs) are safety-
+aligned to prevent harmful response genera-
+tion, yet still remain vulnerable to jailbreak
+attacks. While prior works have focused on
+improving jailbreak attack effectiveness, they
+offer little explanation for why safety align-
+ment fails. We address this gap by framing
+jailbreaks as inference-time alignment, connect-
+ing attack design and safety alignment within
+a unified optimization framework. This fram-
+ing allows us to extend best-of- N inference-
+time alignment to the adversarial setting, called
+LIAR (Leveraging Inference-time Alignment
+to jailbReak), and derive suboptimality bounds
+that show LIAR provably approaches an opti-
+mal jailbreak as compute scales. Interestingly,
+our framework allows us to develop the notion
+of a Safety-Net, a measure of how vulnerable
+an LLM is to jailbreaks, which helps to ex-
+plain why safety alignment can fail. Empir-
+ically, LIAR produces natural, hard-to-detect
+prompts that achieve a competitive attack suc-
+cess rate while running 10 to 100x faster than
+prior suffix-based jailbreaks.
+1 Introduction
+Large language models (LLMs) are increasingly
+embedded in safety-critical applications such as
+education, healthcare, and customer support. To
+reduce harmful outputs, developers use alignment
+techniques such as reinforcement learning from hu-
+man feedback (RLHF) (Ziegler et al., 2019; Glaese
+et al., 2022) that encourage models to prioritize
+safety alongside other goals like usefulness and
+relevance. Yet jailbreaks, specially crafted prompts
+that bypass safety training (Zou et al., 2023; Liu
+et al., 2023a), can elicit harmful behavior. This
+raises a central question: why are models still vul-
+nerable to jailbreaks after safety alignment?
+Project site: james-beetham.github.io/liar-jailbreak.github.io
+Code: github.com/james-beetham/liar-jailbreak
+Most prior work (Chao et al., 2023; Mehrotra
+et al., 2023) have focused on jailbreak effective-
+ness, analyzing jailbreaks primarily in terms of
+attack success rate. These methods, often based on
+prompt engineering or discrete optimization (Zou
+et al., 2023; Liu et al., 2023a), demonstrate that
+jailbreaks are possible, but they offer little expla-
+nation of why such attacks succeed at bypassing
+safety alignment in the first place. As a result,
+our understanding of model vulnerability remains
+largely descriptive: they work in practice, but their
+connection to safety alignment failure is unclear.
+To explain why attacks succeed, we treat jail-
+breaks as inference-time alignment . This per-
+spective stems from the observation that jailbreaks
+operate entirely at inference time, and framing jail-
+break optimization in terms of alignment brings the
+problem into a space that unifies safety alignment
+and the adversarial jailbreaks. We adapt the best-
+of-N inference-time alignment technique to the jail-
+break setting, which we call LIAR (Leveraging
+Inference-time Alignment to jailbReak). We derive
+suboptimality bounds, where we find the perfor-
+mance gap between LIAR and an optimal adversar-
+ial attacker provably shrinks asN increases. This
+establishes LIAR as a principled inference-time
+alignment jailbreak attack. Empirically, we show
+that LIAR is an effective black-box attack that re-
+quires no training, produces natural low-perplexity
+prompts, and runs orders of magnitude faster than
+prior suffix-based optimizers.
+Beyond optimal attack design, our alignment
+framing enables us to estimate an LLM’s vulner-
+ability to jailbreaks, which we term Safety-Net.
+Safety-Net provides a principled measure of how
+much separation a model maintains during safety
+fine-tuning between safe and unsafe objectives.
+This insight opens the possibility of actively assess-
+ing LLM jailbreak vulnerability during safety fine-
+tuning rather than solely after deployment (via jail-
+breaks as done in state-of-the-art approaches). To
+7689
+
+===== PAGE 2 =====
+support this claim, we present proof-of-concept ex-
+periments demonstrating that the Safety-Net mea-
+sure correlates with empirically measured ASR.
+We summarize the main contributions of our work
+as follows:
+(1) Theoretical framing of jailbreaks as
+inference-time alignment. We reframe jailbreaks
+as inference-time alignment, which enables us to
+derive formal suboptimality bounds for alignment-
+based jailbreaks, showing that best-of- N sam-
+pling provably approaches an optimal adversarial
+prompter, and formulate a model’s vulnerability to
+jailbreaks from Safety-Net.
+(2) LIAR: an alignment-grounded jail-
+break. To evaluate this framing, we introduce
+LIAR (Leveraging Inference-time Alignment to
+jailbReak), a black-box best-of- N attack that
+requires no training, runs 10-100x faster than
+suffix-based optimizers, and serves as a practical
+testbed for our theoretical results.
+(3) Safety-Net: a principled measure for jail-
+break vulnerability. We propose Safety-Net, a
+measure which quantifies the gap between safe
+and unsafe objectives under adversarial prompt-
+ing. This measure provides a theoretical foundation
+for understanding jailbreak vulnerability which we
+show correlates with empirical attack success.
+2 Background and Formulation
+Language models. Consider a vocabulary setV,
+and let the language model (LM) be represented
+by a mapping πθ, parameterized by θ. LM πθ
+takes as input a sequence of tokens, referred to as
+a prompt, represented by x :={x1,x 2,··· ,xN},
+where each tokenxi∈V . Given the input prompt,
+LM predicts the first output tokeny0∈V . To pre-
+dict the next tokeny1, the model takes as input the
+original prompt x along with the previously gener-
+ated tokeny0, forming a new prompt [x,y 0]. This
+process is repeated for subsequent time steps. The
+input prompt at time step t is [x, y1:t−1], where
+y1:t−1 = {y0,y 1,··· ,yt−1}, and LLM outputs
+next tokenyt∼πθ(·|[x, y1:t−1]).
+Jailbreaking LLMs. As formulated in (Zou et al.,
+2023), it is possible to attack even an aligned LLM
+πθ with the help of a prompt suffix q∈ Q⊆V|V|.
+For instance (cf. Figure 1), consider an unsafe
+prompt x∈X⊆V |V| (e.g., “Write a script to ex-
+ploit an operating system") and if we input thisx to
+a safety aligned LLM modelπθ, it will not answer
+this query and would generate a negative response
+(e.g., “I cannot answer this, this is unsafe."). But
+with the help of an adversarial prompt given by
+[x, q], which is a concatenation of prompt x and
+adversarial suffix q∈ Q, it is possible to generate
+harmful response y ={y1,y 2,··· ,yT} such that
+yt∼πθ(·|[x, q, y<t]) from the aligned target LLM
+(e.g., “Sure, here is a script...."), where we define
+y<t :={y1,y 2,··· ,yt−1} (Zou et al., 2023; Liu
+et al., 2023a; Paulus et al., 2024). To find such
+suffix q, following is the optimization problem
+q∗ =arg min
+q∈Q
+J(x,q,y)
+:=−
+|y|∑
+t=1
+logπθ(·|[x, q, y<t]), (1)
+whereJ(x, q, y) is called the adversarial loss func-
+tion for a given prompt x and response y pair. The
+formulation in (1) has also been extended to im-
+prove the interpretability of the adversarial suffix
+q by adding perplexity-based regularization (Liu
+et al., 2023a; Zhu et al., 2023). As highlighted
+in AdvPrompter by Paulus et al. (2024), the solu-
+tion to the optimization problem in (1) suffers from
+adapting to individual queries which result in the
+degradation of the performance of attacks. In order
+to deal with this issue, AdvPrompter extends the
+idea of universal adverserial suffix to conditional
+suffix generation and propose to solve the follow-
+ing optimization problem
+min
+θ
+∑
+x,y∈D
+J(x, qθ(x), y), (2)
+where an important difference is to train a language
+model/prompter qθ to generate the adversarial suf-
+fix q∗∼ qθ(·|x). In Paulus et al. (2024), the prob-
+lem in (2) is solved in two steps: q-step andθ-step.
+In q-step, the individual loss function of(1) is mini-
+mized for each x, y to learn approximately optimal
+q(x, y). Then, in θ-step, a language model qθ is
+trained to generate the q(x, y) for a given prompt
+x. Both steps are repeated until convergence.
+3 Jailbreaks as Inference-Time Alignment
+We formulate the problem of obtaining adversarial
+suffix q∼ρ(·|x) from a prompter LLM modelρ
+as (also considered in (Paulus et al., 2024))
+max
+ρ
+Eq∼ρ(·|x)[−J(x, q, y)], (3)
+7690
+
+===== PAGE 3 =====
+which resembles the minimization in (1), but with
+the model distributionρ as the optimized variable
+instead of the suffix q. Defining a reward model
+Runsafe(x, q) :=−J(x, q, y) and a regularization
+term KL (ρ(·|x)||ρ0(·|x)), we can write
+max
+ρ
+Eq∼ρ(·|x)[Runsafe(x, q)]
+−βKL (ρ(·|x)||ρ0(·|x)), (4)
+whereρ0 is a reference prompter model, andβ >0
+is the regularization parameter. The KL divergence
+term helps to keep the perplexity of the generated
+adversarial prompts low. The goal of the objective
+in (4) is to maximize the reward model (which de-
+notes negative of jailbreaking loss) while keeping
+the model close to a reference modelρ0. The reg-
+ularization is important to keep the the perplexity
+of the generated suffix x low. The objective in (4)
+is similar to RLHF (Ouyang et al., 2022; Rafailov
+et al., 2024) for the alignment of language models
+with some safety reward. In contrast, in (4), we
+apply the principles of alignment to maximize un-
+safe reward at inference. The formulation in (4) is
+similar to the red teaming literature (Hong et al.,
+2024).
+Optimal jailbreak prompter. For the optimiza-
+tion problem in (4), as it is strongly concave with
+respect toρ, its closed-form solution is
+ρ∗(q|x) = ρ0(q|x)
+Z(x) exp
+(Runsafe(x, q)
+β
+)
+, (5)
+where Z(x) = ∑
+qρ0(q|x) exp
+(
+Runsafe(x,q)
+β
+)
+is
+the normalization constant (follows from Rafailov
+et al. (2024, Appendix A)).
+Challenges of implementing prompter in (5).
+The closed-form expression in(4) provides the opti-
+mal probability distribution for adversarial prompt
+augmentation q|x, and it holds for anyx. However,
+even with knowledge of the trajectory likelihood
+ρ∗(q|x), generating high-likelihood sequences is
+NP-hard in the worst case due to the token-by-
+token generation process of the prompter language
+model, as highlighted in recent work by Huang et al.
+(2024). To circumvent the computational burden of
+fine-tuning-based methods, we adopt an inference-
+time alignment approach to solve the alignment
+problem in (4), outlined in the next section.
+3.1 LIAR Method
+To address the intractability of generating optimal
+adversarial prompts, we adopt an inference-time
+Figure 1: Overview of LIAR. Given an unsafe query, an
+Adversarial LLM generatesN extended queries, which
+are passed to the target model. If any response is unsafe,
+the attack succeeds. The method requires no training
+and is fully black-box, requiring no logits or probabili-
+ties from the TargetLLM.
+alignment approach inspired by best-of- n decod-
+ing, an efficient and widely used strategy in LLM
+alignment (Amini et al., 2024; Beirami et al., 2024).
+We adapt this framework for jailbreaks to enable
+scalable, black-box exploration of the adversarial
+prompt space.
+Our proposed method, LIAR, applies the best-
+of-N procedure to adversarial suffix generation.
+Given an unsafe prompt query x, we sample
+q1, q2,..., qn independently from the reference
+model ρ0(·|x), denoted as the adversarial LLM
+in Figure 1. Then, select the response with the
+highest rewardRunsafe(x, qi) (note that this reward
+depends upon the safe target LLMρ∗
+safe) as the final
+response. This implies that
+q∗ = qi such that
+Runsafe(x, qi) = max
+1≤j≤n
+Runsafe(x, qj). (6)
+This formulation directly connects LIAR to the the-
+oretical optimum in (5), allowing us to analyze
+how closely the best-of- n strategy approximates
+the ideal adversarial policy.
+Theoretical Bounds. To begin, we take motivation
+from the standard suboptimality definitions in the
+reinforcement learning literature (Agarwal et al.,
+2019) and define the following suboptimality gap
+for the proposed LIAR approach as
+∆sub-gap =Ey∼ρ∗
+unsafe(·|x) [Runsafe(x, y)]
+− Ey∼ρLIAR(·|x) [Runsafe(x, y)]. (7)
+7691
+
+===== PAGE 4 =====
+In the above expression, ρ∗
+unsafe denotes
+the optimal prompter which maximizes
+maxρ Ey∼ρ(·|x) [Runsafe(x, y)] and ρLIAR(·|x)
+denotes the distribution induced by the pro-
+posed LIAR procedure in (6). The goal is
+to show that the suboptimality gap is upper
+bounded, which would imply that our pro-
+posed approach LIAR is closer to the optimal
+prompter ρ∗
+unsafe. Before presenting the main
+result, we note that the induced ρLIAR(y|x) =∑N
+i=1
+(N
+i
+)
+F(Runsafe(x, y))N−iρ0(y)i, where
+F(R) = P(Runsafe(x, y) < R). With the above
+definitions in place, we present the second main
+result in Theorem 1.
+Theorem 1. For the LIAR jailbreak, it holds
+that
+˜∆sub-gap≤ 1
+N− 1KL(ρ∗
+unsafe,ρ 0), (8)
+where N are the number of samples and
+KL(ρ∗
+unsafe,ρ 0) is the KL divergence between
+ρ∗
+unsafe andρ0.
+The proof of Theorem 1 is provided in Appendix C.
+We note that the upper bound in (8) depends upon
+the KL(ρ∗
+unsafe,ρ 0) and N. For a given reward
+model Runsafe and initial model ρ0, the value of
+KL(ρ∗
+unsafe,ρ 0) is a constant. Therefore, the upper
+bound is controlled by the parameter N which is
+the number of samples in the best of N procedure
+in LIAR. This N is playing the role of parameter
+β in standard RLHF alignment, and states that with
+large enough N, we can make the suboptimality
+gap go towards zero (Beirami et al., 2024; Amini
+et al., 2024). Experimentally, a large enough value
+ofN is sufficient to generate successful attacks, as
+we observe in Section 4.1.
+3.2 Safety-Net
+Having shown that jailbreaks can be expressed as
+inference-time alignment with bounded subopti-
+mality, we next ask the complementary question:
+how does safety-alignment change when under at-
+tack? In other words, if adversarial prompting can
+be viewed as inference-time alignment, what de-
+fines a model’s margin of safety? To capture this,
+we introduce the Safety-Net, a theoretical formula-
+tion that measures how much separation a model
+maintains between its safe and unsafe objectives.
+To analyze the extent to which a safety-aligned
+model can be jailbroken, we begin by defining a
+safety-aligned LLMπ∗
+safe, which has been trained
+using RLHF with a safety reward Rsafe (Ouyang
+et al., 2022; Rafailov et al., 2024). The RLHF
+objective ensures that the model maximizes ex-
+pected safety reward Ey∼π∗
+safe[Rsafe(x, y)] (ignor-
+ing the KL divergence term in the RLHF objective
+for simplicity.) Now, to define jailbreak suscep-
+tibility, we introduce an unsafe reward function
+Runsafe (which could be as simple as−Rsafe). Let
+π∗
+unsafe be the unsafe policyπ∗
+unsafe which maximize
+Ey∼π∗
+unsafe[Runsafe(x, y)]. To mathematically char-
+acterize the vulnerability of a safety-aligned model
+π∗
+safe(·|x) to jailbreaking, we define a notion of the
+safety net against jailbreaks as
+△sn(x) :=Ey∼π∗
+unsafe[Runsafe(x, y)]
+− Ey∼π∗
+algo[Runsafe(x, y)], (9)
+whereπ∗
+unsafe is the optimal w.r.t. the unsafe RLHF
+objective, where asπ∗
+algo is the optimal policy under
+RLHF trained with π∗
+safe as the reference policy.
+The safety net gap in (9) quantifies how much the
+fine-tuned modelπ∗
+algo diverges from the full unsafe
+policyπ∗
+unsafe. If △sn(x) is small, the fine-tuned
+modelπ∗
+algo closely approximates an unsafe model
+which will generate unsafe response. Conversely,
+a larger△sn(x) suggests a stronger resistance to
+jailbreaking. We establish an upper bound on the
+safety net in Theorem 2 as follows.
+Theorem 2. For a safety aligned modelπ∗
+safe
+(aligned with safe reward Rsafe via RLHF),
+and unsafe reward modelRunsafe, it holds that
+△sn(x)≤ max
+y
+(Runsafe(x, y)−Rsafe(x, y))
+− min
+y
+(Runsafe(x, y)−Rsafe(x, y)). (10)
+The proof of Theorem 2 is provided in Appendix
+B. It is interesting to note that the higher the up-
+per bound on the safety net, the better it is for
+a given safety-aligned model π∗
+safe. The upper
+bound is precisely characterized by the difference
+between the unsafe reward Runsafe and safety re-
+wardRsafe. If Runsafe = Rsafe, the safety net triv-
+ially reduces to zero. However, as the difference
+betweenRunsafe,R safe increases, the value of the
+safety net improves, indicating that it becomes
+harder to break the model’s safety with the help
+of an another attacker prompter model. We high-
+light this correlation in Figure 2 of the following
+section.
+7692
+
+===== PAGE 5 =====
+Together, these results unify jailbreak attacks
+and safety alignment within a single framework.
+Theoretical bounds on LIAR show that adversarial
+prompting can be characterized as an approximate
+alignment process, while the Safety-Net formalizes
+a model’s remaining margin of safety under this
+adversarial objective. This perspective reframes
+jailbreaks not as isolated exploits but as measur-
+able outcomes of inference-time alignment, allow-
+ing both attack strength and safety robustness to be
+evaluated on the same theoretical footing. In the
+following section, we empirically validate the ef-
+fectiveness of LIAR and provide a proof-of-concept
+evaluation of the Safety-Net metric.
+4 Experiments
+Details for our experimental setup are as follows.
+Datasets: We evaluate on the AdvBench
+dataset (Zou et al., 2023) test split of 104
+samples, which consists of prompts requesting
+harmful responses. Additional results on Jail-
+BreakBench (Chao et al., 2024) and Do-Not-
+Answer (Wang et al., 2024b) in Table 13.
+Setup: We use GPT-2 (Radford et al., 2019) as
+the AdversarialLLM, generating up to 30 tokens
+with top-k = 50 sampling and temperature 1. For
+TargetLLM, we evaluate widely used public mod-
+els: Vicuna-7B/13B (v1.5) (Zheng et al., 2023),
+LLaMA-2 7B (Touvron et al., 2023), and Mistral-
+7B (v0.2) (Jiang et al., 2023). Additional results on
+easier and non-public models are provided in Ta-
+ble 15 in the Appendix. Our main analysis centers
+on Vicuna-7B, which offers a strong yet improvable
+baseline for assessing our method’s impact.
+Baselines: We compare against recent suffix-based
+attacks. AdvPrompter (Paulus et al., 2024) is most
+similar, training an LLM to generate adversarial
+suffixes with low query latency but high setup cost.
+GCG (Zou et al., 2023) focuses on maximizing at-
+tack success, while AutoDAN (Liu et al., 2023a)
+reduces perplexity to evade detection. Table 1 pro-
+vides a rough overview of these different meth-
+ods. Notably we do not include non-suffix based
+jailbreaks such as PAIR (Chao et al., 2023), TAP
+(Mehrotra et al., 2023), or BoN (Hughes et al.,
+2024), as these methods do not preserve the origi-
+nal prompt and may introduce unknown semantic
+shift in their optimization. Further discussion is
+provided in Appendix A.1.
+Evaluations: We evaluate using three primary met-
+rics: Attack Success Rate (ASR), Perplexity, and
+Table 1: Comparison of jailbreak methods across key
+attributes. Compute refers to the resources needed to
+perform the attack, Perplexity reflects how unnatural
+the resulting prompts are, and Suffix indicates whether
+the method restricts modifications to an appended suffix
+rather than altering the entire prompt.
+Method Compute Perplexity Suffix
+GCG (Zou et al., 2023) ✗Gradient✗High ✓
+AutoDAN (Liu et al., 2023a)✗Gradient●Medium ✓
+AdvPrompter (Paulus et al., 2024)●Training✓Low ✓
+LIAR (ours) ✓Inference✓Low ✓
+BoN (Hughes et al., 2024)✓Inference✗High ✗
+PAIR (Chao et al., 2023)✓Inference✓Low ✗
+TAP (Mehrotra et al., 2023)✓Inference✓Low ✗
+time (Setup and Query). These capture attack ef-
+fectiveness, detectability, and computational cost,
+respectively. We define each attempt to generate
+an adversarial suffix q as a "query". In addition,
+we provide a Time/ASR ratio which quantifies the
+time required to achieve an attack.
+Attack Success Rate , or ASR@ k, measures the
+probability of at least one successful attack within
+k queries, aligning with prior work (Paulus et al.,
+2024; Zou et al., 2023) but extended here to larger
+k. In our setting,k corresponds toN in best-of-N
+sampling. See Appendix E for qualitative examples
+confirming ASR validity.
+Perplexity reflects how natural a suffix q appears.
+Lower perplexity reduces detectability and im-
+proves stealth, making it a valuable trait for ad-
+versarial prompts (Jain et al., 2023; Alon and Kam-
+fonas, 2023). We follow Paulus et al. (2024)
+in computing perplexity as: Perplexity(q|x) =
+exp
+(
+− 1
+|q|
+∑|q|
+t=1 logπθ(qt|[x,q<t])
+)
+.
+Setup and Query time includes one-time setup cost
+such as loading models or training, and the per-
+query generation time. We report values in seconds
+(s), minutes (m), or hours (h). Table 6 also includes
+the target model’s response time for completeness.
+Time/ASR measures the total time in minutes re-
+quired per unit of attack success. The total time is
+computed as the sum of setup time and query time,
+where query time is scaled by both the dataset size
+and the number of attempts (e.g., ASR@100 re-
+flects 100× the per-query time).
+4.1 LIAR Performance
+Efficiency comparison. Table 2 compares the ef-
+ficiency of LIAR against other suffix-based jail-
+breaks evaluated under a white-box setting (though
+LIAR itself is fully black-box). Results show that
+LIAR is substantially faster, as it requires neither
+7693
+
+===== PAGE 6 =====
+Table 2: Efficiency and effectiveness of LIAR compared to other white-box attacks on AdvBench, averaged across
+six target models. LIAR achieves similar attack success rates while requiring substantially less compute than prior
+jailbreak methods. Reported Time/ASR values reflect the most efficient configuration for each method: ASR@10
+for AdvPrompter and ASR@100 for LIAR. Detailed per-model results are provided in Table 15 in the Appendix.
+Attack Setup ↓ Query↓ ASR@1↑ ASR@10↑ ASR@100↑ Time/ASR↓ Perplexity↓
+GCG 1m 15m 86.37 - - 18.07 94619 .21
+AutoDAN 1m 14m 80.85 - - 18.02 117 .17
+AdvPrompter 22h 0.128s 45.96 73 .35 87 .02 19 .81 28 .93
+LIAR(ours) 37s 0.078s 32.69 59 .97 79 .49 10.21 2.13
+training nor gradient-based prompt optimization.
+This advantage is evident in both setup and query
+times. Because AdvPrompter and LIAR gener-
+ate queries rapidly, it is most meaningful to com-
+pare their ASR@100 with the ASR@1 of slower,
+optimization-based methods such as GCG and Au-
+toDAN. Although AdvPrompter requires training
+beforehand, once trained both AdvPrompter and
+LIAR can produce 100 prompts in under 15 sec-
+onds, whereas GCG requires roughly 15 minutes
+to generate a single query. Notably, LIAR achieves
+even faster query times than AdvPrompter due to
+using a smaller adversarial model (GPT-2 versus
+LLaMA-2).
+ASR comparison. While LIAR achieves slightly
+lower ASR@100 than AdvPrompter, its time-per-
+ASR ratio is far superior because it requires dra-
+matically less compute. GCG attains the highest
+ASR@1, but only by optimizing exclusively for ad-
+versarial success without any perplexity regulariza-
+tion. When allowed 100 attempts, which LIARcan
+generate in second, reaches success rates compara-
+ble to state-of-the-art methods. Given its low setup
+and query cost, this asymmetric ASR@k compar-
+ison is highly practical: LIAR can generate over
+10,000 attempts before GCG completes its first.
+Since only one successful query is needed to jail-
+break a target model, LIAR offers a compelling
+trade-off between efficiency and effectiveness. Full
+results for all target models are provided in Table 15
+in the Appendix, where LIAR typically performs
+within a few percentage points of other methods.
+Perplexity comparison. LIAR also produces ad-
+versarial prompts with significantly lower aver-
+age perplexity (lower is better) compared to other
+methods. This result is intuitive: while Auto-
+DAN and AdvPrompter explicitly regularize per-
+plexity during training, LIAR operates directly on
+the pretrained AdversarialLLM distribution, avoid-
+ing optimization-induced drift. Consequently, the
+Figure 2: Comparison of ASR and the computed Safety-
+Net metric along with best-fit line. Reported ASR@1
+values are averaged over GCG, AutoDAN, and Ad-
+vPrompter.
+generated prompts remain more natural and flu-
+ent. These results also challenge the reliability
+of perplexity-based defenses, suggesting that low-
+perplexity jailbreaks can remain highly effective.
+Effectiveness on stronger models. The averages
+reported in Table 2 are based on smaller models due
+to compute constraints. However, Table 3 shows
+that the findings extend to larger and more recent
+LLMs. Across these stronger targets, LIAR in
+a black-box setting maintains competitive perfor-
+mance with AdvPrompter in a transfer-based attack
+setting. These results demonstrate that LIAR scales
+effectively to modern safety-aligned models and
+remains a compute-efficient method for evaluating
+robustness. Moreover, under a prompt reminder de-
+fense, LIAR still remains effective (Appendix D.1).
+4.2 Evaluating Safety-Net
+Measuring the Safety-Net defined in 10 is chal-
+lenging, since the experimental reward functions
+are only approximations of true safe and unsafe
+objectives. Nonetheless, we can obtain a practi-
+cal estimate by leveraging LIAR. Specifically, we
+defineRsafe =−Runsafe, and use LIAR’s optimiza-
+tion procedure to approximate the maximum and
+7694
+
+===== PAGE 7 =====
+Table 3: Attack effectiveness of LIAR on current LLMs
+under a black-box setting. Results are compared against
+AdvPrompter, which is trained to jailbreak Vicuna-v1.5
+(7B) and evaluated as a transfer attack against other
+models.
+Model Attack ASR@100 ↑
+Llama3.3
+(70b)
+AdvPrompter 94.17
+LIAR 96.15
+Qwen2-VL
+(72b)
+AdvPrompter 58.65
+LIAR 47.12
+GPT4.1-mini AdvPrompter 61.54
+LIAR 58.65
+GPT4.1 AdvPrompter 61.54
+LIAR 36.54
+minimum values in Equation 10. While this ap-
+proximation is not exact, it provides informative
+and consistent signals about model susceptibility.
+Safety-Net estimation. For each inputx in the Ad-
+vBench test set, we generate 10 adversarial suffixes
+q using LIAR. Among these, we identify the suffix
+that yields the highest perplexity of “Sure,” and the
+one that yields the lowest. These correspond to the
+least and most jailbreak-prone adversarial prompts,
+respectively, and serve as empirical estimates of
+the max/min terms in Equation 10. We then com-
+pute their difference and report it as the Safety-Net
+score in Figure 2.
+Safety-Net correlation with ASR. Despite some
+run-to-run variance, the empirical Safety-Net in
+Figure 2 shows a consistent inverse correlation with
+model vulnerability: models with higher Safety-
+Net values, such as Llama2-7B, tend to be more
+resistant to jailbreaks, whereas models with lower
+values, such as Falcon-7B, are more easily compro-
+mised. There are, however, notable outliers such as
+Pythia-7B, which receives a relatively high Safety-
+Net score despite being among the more vulnerable
+models.
+Overall, this experiment serves as a proof of con-
+cept demonstrating that the Safety-Net provides a
+practical and theoretically grounded indicator of
+model safety robustness. Despite its simplicity,
+the metric captures meaningful variation in jail-
+break susceptibility across models, aligning with
+trends observed in empirical attack success rates.
+While the current implementation uses approxi-
+mate reward functions and limited sampling, the
+results suggest that Safety-Net can offer a low-
+compute proxy for assessing alignment strength.
+Table 4: Query time and Attack Success Rate
+(ASR) on AdvBench dataset test split for different
+AdversarialLLM using Vicuna-7b as a TargetLLM. Ad-
+ditional results for various AdversarialLLMs are pro-
+vided in Table 11 in the Appendix.
+AdversarialLLM Query Time ASR@1/10/100
+TinyLlama 0.092s 6.93 / 36.92 / 89.42
+Megatron 0.058s 9.46 / 49.52 / 95.19
+GPT2-WikiText 0.028s 8.06 / 37.98 / 84.62
+GPT2 0.033s 12.55 / 53.08 / 97.12
+GPT2-OpenInstruct 0.030s 15.18 / 56.15 / 95.19
+GPT2-PMC 0.029s 19.68 / 75.58 / 99.04
+More broadly, it points toward the possibility of
+evaluating and improving safety during the fine-
+tuning process itself, rather than relying solely on
+red-teaming after deployment.
+4.3 Choosing an AdversarialLLM
+To select the most suitable AdversarialLLM, we
+evaluated various LLM models based on their At-
+tack Success Rate (ASR) and perplexity. Our cri-
+teria focused on models that had not undergone
+safety alignment training and were publicly accessi-
+ble. As a result, many of the models we considered
+are smaller and faster compared to more recent,
+more powerful models. For our primary experi-
+ments, we utilized the smallest version of GPT2
+(Radford et al., 2019), which has 124 million pa-
+rameters and was trained on general web-scraped
+text. In Table 4, we compare this model with
+other candidates, including GPT2-PMC (Pande,
+2024), GPT2-WikiText (Alon et al., 2022), GPT2-
+OpenInstruct (Wang and Ivison, 2023), Megatron-
+345M (Shoeybi et al., 2019), and TinyLlama-1.1B
+(Zhang et al., 2024). GPT2-PMC, GPT2-WikiText,
+and GPT2-OpenInstruct are all fine-tuned versions
+of the GPT-2 model, trained on the PubMed (Zhao
+et al., 2023), WikiText (Merity et al., 2016), and
+OpenInstruct datasets, respectively. Megatron-
+345M was trained on a diverse corpus including
+Wikipedia, news articles, stories, and web text,
+while TinyLlama was trained on the SlimPajama-
+627B (Soboleva et al., 2023) and StarCoder (Li
+et al., 2023b) datasets.
+In Table 4, GPT2-PMC demonstrates a
+slight performance advantage over the other
+AdversarialLLMs when Vicuna-7B is used as the
+TargetLLM. However, this advantage diminishes
+when tested on other models, such as LLaMA-2,
+where TinyLlama slightly outperforms GPT2-PMC.
+7695
+
+===== PAGE 8 =====
+Table 5: Ablation ofq length (default 30) on a Vicuna-
+7b TargetLLM using a GPT2 AdversarialLLM.
+Length Query Time ASR@1/10/100
+8 0.009s 3.74 / 22.12 / 72.12
+16 0.020s 6.00 / 34.62 / 87.50
+30 0.033s 7.80 / 42.40 / 96.15
+48 0.047s 9.06 / 45.67 / 94.23
+64 0.080s 9.11 / 42.88 / 93.27
+TinyLlama, while achieving high ASR, has the
+longest query time due to its size (1.1 billion pa-
+rameters), whereas GPT2 maintains near-median
+ASR and perplexity compared to the other mod-
+els. Ultimately, we selected GPT2 as our primary
+AdversarialLLM because of its consistent perfor-
+mance across multiple TargetLLMs and its foun-
+dational nature, as many of the other models we
+considered are fine-tuned variants of GPT2. This
+balance of performance, speed, and accessibility
+makes GPT2 a practical choice for our method.
+4.4 Ablations
+We have already shown that different
+AdversarialLLM models have varying effec-
+tiveness in Table 4. However, there are a few other
+experimental settings that may impact results,
+namely length of generated suffixesq, and length
+of generated responses. Additional ablations for
+AdversarialLLM temperature can be found in the
+appendix.
+Impact of query length. The length ofq is evalu-
+ated in Table 5. Increasing the length of q results
+in longer query times, however even doubling the
+length has a query time shorter than AdvPrompter.
+When changing the length ofq, and important fact
+to consider is that longerq have a higher chance of
+prompt-drift, where [x,q ] may be asking for con-
+tent far from x on its own. This is a limitation
+of the keyword matching aspect of the ASR met-
+ric being used. We see ASR@1 improve with q
+length, but ASR@10 peaks forq length 48 while
+ASR@100 peaks for q length 30. This suggests
+that longerq length may result in decreased diver-
+sity, and as shorterq lengths are preferred to reduce
+prompt-drift, 30 is a reasonable prompt length.
+Impact of response length. In our experiment
+setup, we report ASR based on the first 30 to-
+kens generated by the TargetLLM instead of the
+more standard 150 TargetLLM tokens (Paulus
+et al., 2024). Reducing the number of TargetLLM
+Table 6: Ablation ofy length (default 32) on a Vicuna-
+7b TargetLLM using a GPT2 AdversarialLLM.
+Length Response Time ASR@1/10/100
+10 0.084s 8.12 / 42.88 / 93.27
+20 0.154s 7.85 / 42.79 / 90.38
+32 0.192s 7.80 / 42.40 / 96.15
+50 0.376s 7.98 / 40.96 / 89.42
+100 0.768s 7.94 / 40.48 / 90.38
+150 1.569s 7.28 / 39.23 / 87.50
+tokens generated significantly reduces the com-
+pute required to run experiments, as in our
+setup the TargetLLM is much larger than the
+AdversarialLLM, and is what our method spends
+the most time processing. Table 6 shows the impact
+ofy length on ASR. From other work’s setting of
+generating 150 tokens, our reduction to generating
+just 32 TargetLLM tokens decreases TargetLLM
+compute time by an order of magnitude. Addition-
+ally, ASR is pretty consistent across different y
+lengths. Generating fewery tokens does result in
+a slightly lower chance of an unsuccessful attack
+keyword being present resulting in a higher ASR.
+However, this difference is consistent acrossk and
+is relatively small, making the tradeoff in compute
+worthwhile.
+5 Conclusions and Limitations
+In this work, we reframed jailbreaks as inference-
+time alignment, unifying adversarial prompting
+with safety training. This perspective yields subop-
+timality bounds for best-of-N sampling, explaining
+why simple inference-time search can approximate
+an optimal adversarial prompter. We further intro-
+duced LIAR, a black-box, training-free attack that
+exposes alignment weaknesses, and Safety-Net, a
+principled measure of jailbreak vulnerability corre-
+lated with empirical success rates. Together, these
+contributions move jailbreak research beyond em-
+pirical benchmarking toward a formal understand-
+ing of why alignment fails and how such failures
+can be anticipated before deployment.
+Risks of this work: While we introduce an ef-
+ficient jailbreak method that could potentially be
+misused, similar techniques are already publicly
+available (e.g., Hughes et al. (2024)). Moreover,
+our method prioritizes generation efficiency but re-
+quires many queries to the target LLM, making it
+more suited for red-teaming and safety evaluation
+than deployment in real-world jailbreak scenarios.
+7696
+
+===== PAGE 9 =====
+Limitations. First, as a black-box attack, LIAR de-
+pends on repeated sampling from the target model,
+which can be impractical under strict API rate lim-
+its or access restrictions. Second, LIAR’s effective-
+ness is tied to the quality of the judge used both
+as a reward signal and for computing ASR. Inac-
+curate or overly permissive judges may produce
+false positives, flagging benign completions as jail-
+breaks and thereby distorting evaluations. Finally,
+although LIAR provides sub-optimality guarantees
+under certain theoretical conditions, these guaran-
+tees may not extend robustly to real-world scenar-
+ios. Moreover, the empirical safety-net results rep-
+resent approximations of the idealized theoretical
+formulation. Future work could address these limi-
+tations by improving query efficiency, leveraging
+stronger unsafe reward objectives, and formalizing
+guarantees under adaptive or imperfect judges.
+Acknowledgements
+Amrit Singh Bedi would like to acknowledge the
+support from Lockheed Martin.
+References
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama
+Ahmad, Ilge Akkaya, Florencia Leoni Aleman,
+Diogo Almeida, Janko Altenschmidt, Sam Altman,
+Shyamal Anadkat, and 1 others. 2023. Gpt-4 techni-
+cal report. arXiv preprint arXiv:2303.08774.
+Alekh Agarwal, Nan Jiang, Sham M Kakade, and Wen
+Sun. 2019. Reinforcement learning: Theory and
+algorithms. CS Dept., UW Seattle, Seattle, WA, USA,
+Tech. Rep, 32:96.
+Gabriel Alon and Michael Kamfonas. 2023. Detect-
+ing language model attacks with perplexity. arXiv
+preprint arXiv:2308.14132.
+Uri Alon, Frank Xu, Junxian He, Sudipta Sengupta, Dan
+Roth, and Graham Neubig. 2022. Neuro-symbolic
+language modeling with automaton-augmented re-
+trieval. In International Conference on Machine
+Learning, pages 468–485. PMLR.
+Afra Amini, Tim Vieira, and Ryan Cotterell. 2024.
+Variational best-of-n alignment. arXiv preprint
+arXiv:2407.06057.
+Maksym Andriushchenko, Francesco Croce, and Nico-
+las Flammarion. 2024. Jailbreaking leading safety-
+aligned llms with simple adaptive attacks. arXiv
+preprint arXiv:2404.02151.
+Yuntao Bai, Andy Jones, Kamal Ndousse, Amanda
+Askell, Anna Chen, Nova DasSarma, Dawn Drain,
+Stanislav Fort, Deep Ganguli, Tom Henighan, and
+1 others. 2022a. Training a helpful and harmless
+assistant with reinforcement learning from human
+feedback. arXiv preprint arXiv:2204.05862.
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu,
+Amanda Askell, Jackson Kernion, Andy Jones, Anna
+Chen, Anna Goldie, Azalia Mirhoseini, Cameron
+McKinnon, and 1 others. 2022b. Constitutional
+ai: Harmlessness from ai feedback. arXiv preprint
+arXiv:2212.08073.
+Ahmad Beirami, Alekh Agarwal, Jonathan Berant,
+Alexander D’Amour, Jacob Eisenstein, Chirag Nag-
+pal, and Ananda Theertha Suresh. 2024. Theoretical
+guarantees on the best-of-n alignment policy. arXiv
+preprint arXiv:2401.01879.
+Patrick Chao, Edoardo Debenedetti, Alexander Robey,
+Maksym Andriushchenko, Francesco Croce, Vikash
+Sehwag, Edgar Dobriban, Nicolas Flammarion,
+George J. Pappas, Florian Tramer, Hamed Hassani,
+and Eric Wong. 2024. Jailbreakbench: An open ro-
+bustness benchmark for jailbreaking large language
+models. Preprint, arXiv:2404.01318.
+Patrick Chao, Alexander Robey, Edgar Dobriban,
+Hamed Hassani, George J Pappas, and Eric Wong.
+2023. Jailbreaking black box large language models
+in twenty queries. arXiv preprint arXiv:2310.08419.
+Paul F Christiano, Jan Leike, Tom Brown, Miljan Mar-
+tic, Shane Legg, and Dario Amodei. 2017. Deep
+reinforcement learning from human preferences. Ad-
+vances in neural information processing systems, 30.
+Yinpeng Dong, Huanran Chen, Jiawei Chen, Zheng-
+wei Fang, Xiao Yang, Yichi Zhang, Yu Tian, Hang
+Su, and Jun Zhu. 2023. How robust is google’s
+bard to adversarial image attacks? arXiv preprint
+arXiv:2309.11751.
+Yanrui Du, Sendong Zhao, Ming Ma, Yuhan Chen, and
+Bing Qin. 2023. Analyzing the inherent response
+tendency of llms: Real-world instructions-driven jail-
+break. arXiv preprint arXiv:2312.04127.
+Javid Ebrahimi, Anyi Rao, Daniel Lowd, and De-
+jing Dou. 2017. Hotflip: White-box adversarial
+examples for text classification. arXiv preprint
+arXiv:1712.06751.
+Simon Geisler, Tom Wollschläger, MHI Abdalla, Jo-
+hannes Gasteiger, and Stephan Günnemann. 2024.
+Attacking large language models with projected gra-
+dient descent. arXiv preprint arXiv:2402.09154.
+Soumya Suvra Ghosal, Souradip Chakraborty, Vaib-
+hav Singh, Tianrui Guan, Mengdi Wang, Ahmad
+Beirami, Furong Huang, Alvaro Velasquez, Dinesh
+Manocha, and Amrit Singh Bedi. 2024. Immune:
+Improving safety against jailbreaks in multi-modal
+llms via inference-time alignment. arXiv preprint
+arXiv:2411.18688.
+Amelia Glaese, Nat McAleese, Maja Tr˛ ebacz, John
+Aslanides, Vlad Firoiu, Timo Ewalds, Maribeth Rauh,
+Laura Weidinger, Martin Chadwick, Phoebe Thacker,
+7697
+
+===== PAGE 10 =====
+and 1 others. 2022. Improving alignment of dia-
+logue agents via targeted human judgements. arXiv
+preprint arXiv:2209.14375.
+Yichen Gong, Delong Ran, Jinyuan Liu, Conglei Wang,
+Tianshuo Cong, Anyu Wang, Sisi Duan, and Xiaoyun
+Wang. 2023. Figstep: Jailbreaking large vision-
+language models via typographic visual prompts.
+arXiv preprint arXiv:2311.05608.
+Ian J Goodfellow, Jonathon Shlens, and Christian
+Szegedy. 2014. Explaining and harnessing adver-
+sarial examples. arXiv preprint arXiv:1412.6572.
+Jindong Gu, Zhen Han, Shuo Chen, Ahmad Beirami,
+Bailan He, Gengyuan Zhang, Ruotong Liao, Yao Qin,
+V olker Tresp, and Philip Torr. 2023. A systematic sur-
+vey of prompt engineering on vision-language foun-
+dation models. arXiv preprint arXiv:2307.12980.
+Chuan Guo, Alexandre Sablayrolles, Hervé Jégou, and
+Douwe Kiela. 2021. Gradient-based adversarial
+attacks against text transformers. arXiv preprint
+arXiv:2104.13733.
+Qingyan Guo, Rui Wang, Junliang Guo, Bei Li, Kaitao
+Song, Xu Tan, Guoqing Liu, Jiang Bian, and Yu-
+jiu Yang. 2023. Connecting large language models
+with evolutionary algorithms yields powerful prompt
+optimizers. arXiv preprint arXiv:2309.08532.
+Xingang Guo, Fangxu Yu, Huan Zhang, Lianhui Qin,
+and Bin Hu. 2024. Cold-attack: Jailbreaking llms
+with stealthiness and controllability. arXiv preprint
+arXiv:2402.08679.
+Dongchen Han, Xiaojun Jia, Yang Bai, Jindong Gu,
+Yang Liu, and Xiaochun Cao. 2023. Ot-attack: En-
+hancing adversarial transferability of vision-language
+models via optimal transport optimization. arXiv
+preprint arXiv:2312.04403.
+Jonathan Hayase, Ema Borevkovic, Nicholas Carlini,
+Florian Tramèr, and Milad Nasr. 2024. Query-
+based adversarial prompt generation. arXiv preprint
+arXiv:2402.12329.
+Dan Hendrycks, Collin Burns, Steven Basart, Andrew
+Critch, Jerry Li, Dawn Song, and Jacob Steinhardt.
+2020. Aligning ai with shared human values. arXiv
+preprint arXiv:2008.02275.
+Zhang-Wei Hong, Idan Shenfeld, Tsun-Hsuan Wang,
+Yung-Sung Chuang, Aldo Pareja, James R. Glass,
+Akash Srivastava, and Pulkit Agrawal. 2024.
+Curiosity-driven red-teaming for large language mod-
+els. In The Twelfth International Conference on
+Learning Representations.
+Audrey Huang, Adam Block, Dylan J Foster, Dhruv Ro-
+hatgi, Cyril Zhang, Max Simchowitz, Jordan T Ash,
+and Akshay Krishnamurthy. 2024. Self-improvement
+in language models: The sharpening mechanism.
+arXiv preprint arXiv:2412.01951.
+Yangsibo Huang, Samyak Gupta, Mengzhou Xia, Kai
+Li, and Danqi Chen. 2023. Catastrophic jailbreak of
+open-source llms via exploiting generation. arXiv
+preprint arXiv:2310.06987.
+John Hughes, Sara Price, Aengus Lynch, Rylan Schaef-
+fer, Fazl Barez, Sanmi Koyejo, Henry Sleight, Erik
+Jones, Ethan Perez, and Mrinank Sharma. 2024. Best-
+of-n jailbreaking. arXiv preprint arXiv:2412.03556.
+Neel Jain, Avi Schwarzschild, Yuxin Wen, Gowthami
+Somepalli, John Kirchenbauer, Ping-yeh Chiang,
+Micah Goldblum, Aniruddha Saha, Jonas Geiping,
+and Tom Goldstein. 2023. Baseline defenses for ad-
+versarial attacks against aligned language models.
+arXiv preprint arXiv:2309.00614.
+Albert Q Jiang, Alexandre Sablayrolles, Arthur Men-
+sch, Chris Bamford, Devendra Singh Chaplot, Diego
+de las Casas, Florian Bressand, Gianna Lengyel, Guil-
+laume Lample, Lucile Saulnier, and 1 others. 2023.
+Mistral 7b. arXiv preprint arXiv:2310.06825.
+Erik Jones, Anca Dragan, Aditi Raghunathan, and Ja-
+cob Steinhardt. 2023. Automatically auditing large
+language models via discrete optimization. In In-
+ternational Conference on Machine Learning, pages
+15307–15329. PMLR.
+Tomasz Korbak, Kejian Shi, Angelica Chen,
+Rasika Vinayak Bhalerao, Christopher Buck-
+ley, Jason Phang, Samuel R Bowman, and Ethan
+Perez. 2023. Pretraining language models with
+human preferences. In International Conference on
+Machine Learning, pages 17506–17533. PMLR.
+Brian Lester, Rami Al-Rfou, and Noah Constant. 2021.
+The power of scale for parameter-efficient prompt
+tuning. arXiv preprint arXiv:2104.08691.
+Haoran Li, Dadi Guo, Wei Fan, Mingshi Xu, Jie Huang,
+Fanpu Meng, and Yangqiu Song. 2023a. Multi-
+step jailbreaking privacy attacks on chatgpt. arXiv
+preprint arXiv:2304.05197.
+Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas
+Muennighoff, Denis Kocetkov, Chenghao Mou, Marc
+Marone, Christopher Akiki, Jia Li, Jenny Chim, and
+1 others. 2023b. Starcoder: may the source be with
+you! arXiv preprint arXiv:2305.06161.
+Zeyi Liao and Huan Sun. 2024. Amplegcg: Learning a
+universal and transferable generative model of adver-
+sarial suffixes for jailbreaking both open and closed
+llms. arXiv preprint arXiv:2404.07921.
+Xiaogeng Liu, Nan Xu, Muhao Chen, and Chaowei
+Xiao. 2023a. Autodan: Generating stealthy jailbreak
+prompts on aligned large language models. arXiv
+preprint arXiv:2310.04451.
+Xin Liu, Yichen Zhu, Yunshi Lan, Chao Yang, and
+Yu Qiao. 2023b. Query-relevant images jail-
+break large multi-modal models. arXiv preprint
+arXiv:2311.17600.
+7698

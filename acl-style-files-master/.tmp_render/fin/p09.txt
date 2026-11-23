@@ -1,0 +1,92 @@
+610 Limitations
+611 Our threat model concerns recovery from unsafe
+612 generation states, not prevention of every jailbreak.
+613 LTRM and the recovery margins are predictive
+614 statistics over sampled states, not certificates: they
+615 bound nothing over the full reachable-state space,
+616 and an adversary can construct states outside our
+617 sampling distribution. The adaptive attack of Sec￾618 tion 5.2 narrows this gap but does not close it: it
+619 adapts to the defended checkpoint rather than to the
+620 defense, so an attacker who used a recovery margin
+621 to search directly for weakly recovered states is a
+622 stronger threat model that we leave to future work.
+623 The harmful and recovery branches are con￾624 structed alternatives. Although we filter for intent
+625 match, audit a sample of pairs, and evaluate on
+626 an unseen harmful-response source, the harmful
+627 source and the recovery policy jointly shape what
+628 “recovery” means, and a different source could shift
+629 both the mined hard states and the learned behavior.
+630 Our scope is two English, text-only instruction
+631 models (Qwen3.5-9B and Llama-3.1-8B-Instruct),
+632 one full-parameter recipe, and three seeds. Three
+633 seeds support only weak seed-level inference,
+634 which is why we report seed and prompt-level un￾635 certainty separately instead of pooling them into
+636 one interval. We do not evaluate other languages,
+637 modalities, larger models, or reasoning-style gener￾638 ation.
+639 Depth extrapolation is tested to 512 tokens; be￾640 havior at the multi-thousand token states typical
+641 of long agentic traces is untested. The naturally
+642 occurring suite depends on an evaluator to locate
+643 the first unsafe span, so states whose harmfulness is
+644 encoded or metaphorical are under-represented in
+645 it—the same blind spot that appears in our failure
+646 analysis.
+647 Our over-refusal measurement covers behavior
+648 decided at or near the root of a short response:
+649 ORR on XSTest and OR-Bench-Hard, plus IFE￾650 val and MMLU-Pro. One failure mode specific
+651 to same-state training therefore falls outside it—
+652 a model taught to abandon a trajectory it has be￾653 gun could in principle abandon a benign long-form
+654 generation mid-way, where the response starts cor￾655 rectly and truncation happens later. Measuring mid￾656 generation behavior on benign long-form prompts
+657 is left to future work.
+658 In our experiments, stronger safety carries a mea￾659 surable helpfulness cost. CURE-DPO increases
+660 over-refusal on benign professional prompts con￾taining high-risk terminology (Table 16 shows one 661
+such case), and tightening safety further would 662
+raise that cost. We report over-refusal and utility 663
+next to every safety number so the trade-off stays 664
+explicit. 665
+Ethical Considerations 666
+This work uses harmful prompts and constructed 667
+harmful continuations solely to study and improve 668
+recovery. We build on the public safety datasets 669
+named in Appendix C and respect their licenses, 670
+including the non-commercial research restriction 671
+on PKU-SafeRLHF, BeaverTails, and Alpaca. The 672
+method and its diagnostics are dual-use, since a 673
+margin that guides safety training could in prin- 674
+ciple be inverted to locate exploitable states; we 675
+therefore report aggregate statistics rather than at- 676
+tack recipes and keep all per-state mining artifacts 677
+and harmful branch pools internal. The two gener- 678
+ations quoted in Appendix M are the only model 679
+outputs reproduced in the paper, and their opera- 680
+tional content is replaced by bracketed redactions. 681
+All labeling was carried out by the authors, so no 682
+external annotators were exposed to harmful text, 683
+and no personal or user data was collected. 684
+References 685
+Andy Arditi, Oscar Obeso, Aaquib Syed, Daniel Paleka, 686
+Nina Panickssery, Wes Gurnee, and Neel Nanda. 687
+2024. Refusal in language models is mediated by 688
+a single direction. In Advances in Neural Informa- 689
+tion Processing Systems. 690
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu, 691
+Amanda Askell, Jackson Kernion, Andy Jones, 692
+Anna Chen, Anna Goldie, Azalia Mirhoseini, 693
+Cameron McKinnon, et al. 2022. Constitutional 694
+AI: Harmlessness from AI feedback. arXiv preprint 695
+arXiv:2212.08073. 696
+James Beetham, Souradip Chakraborty, Mengdi Wang, 697
+Furong Huang, Amrit Singh Bedi, and Mubarak Shah. 698
+2026. Jailbreaks as inference-time alignment: A 699
+framework for understanding safety failures in LLMs. 700
+In Proceedings of the 19th Conference of the Euro- 701
+pean Chapter of the Association for Computational 702
+Linguistics (EACL), pages 7689–7713. 703
+Patrick Chao, Edoardo Debenedetti, Alexander Robey, 704
+Maksym Andriushchenko, Francesco Croce, Vikash 705
+Sehwag, Edgar Dobriban, Nicolas Flammarion, 706
+George J. Pappas, Florian Tramèr, Hamed Hassani, 707
+and Eric Wong. 2024. JailbreakBench: An open ro- 708
+bustness benchmark for jailbreaking large language 709
+models. In Advances in Neural Information Process- 710
+ing Systems. 711
+9

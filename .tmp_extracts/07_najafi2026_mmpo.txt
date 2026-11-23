@@ -1,0 +1,960 @@
+
+===== PAGE 1 =====
+Offline Preference Optimization
+via Maximum Marginal Likelihood Estimation
+Saeed Najafi and Alona Fyshe
+Department of Computing Science, University of Alberta, Canada
+{snajafi,alona}@ualberta.ca
+Abstract
+Aligning Large Language Models (LLMs) with
+human preferences is crucial, but standard
+methods like Reinforcement Learning from
+Human Feedback (RLHF) are often complex
+and unstable. In this work, we propose a
+new, simpler approach that recasts alignment
+through the lens of Maximum Marginal Like-
+lihood (MML) estimation. Our newMML-
+based Preference Optimization (MMPO)
+maximizes the marginal log-likelihood of a pre-
+ferred text output, using the preference pair
+as samples for approximation, and forgoes the
+need for both an explicit reward model and en-
+tropy maximization. We theoretically demon-
+strate that MMPO implicitly performs prefer-
+ence optimization, producing a weighted gradi-
+ent that naturally up-weights chosen responses
+over rejected ones. Across models ranging
+from 135M to 8B parameters, we empirically
+show that MMPO: 1) is more stable with re-
+spect to the hyperparameter β compared to al-
+ternative baselines, and 2) achieves competitive
+or superior preference alignment while better
+preserving the base model’s general language
+capabilities. Through a series of ablation ex-
+periments, we show that this improved perfor-
+mance is indeed attributable to MMPO’s im-
+plicit preference optimization within the gradi-
+ent updates.
+1 Introduction
+LLMs have demonstrated remarkable capabilities
+across a wide range of tasks. This success is largely
+due to a multi-stage training process involving
+pre-training, supervised fine-tuning, and prefer-
+ence alignment (Ouyang et al., 2022). The final
+alignment stage, which ensures that model outputs
+are helpful, harmless, and consistent with human
+preferences, is critical for real-world deployment.
+The predominant paradigm for this alignment has
+been RLHF (Ouyang et al., 2022), typically imple-
+mented with complex policy gradient algorithms
+like Proximal Policy Optimization (PPO) (Schul-
+man et al., 2017). However, the RLHF pipeline
+is notoriously challenging; it requires training a
+separate reward model, which can be unstable and
+poorly calibrated, and its PPO-based optimization
+is sensitive to hyperparameters and computation-
+ally expensive (Engstrom et al., 2020; Patterson
+et al., 2024).
+Recent advancements have sought to simplify
+this pipeline. Direct Preference Optimization
+(DPO) marked a significant breakthrough by re-
+framing preference learning as a direct classifica-
+tion problem on human preference data (Rafailov
+et al., 2023a). This approach elegantly sidesteps
+the need for an explicit reward model and the insta-
+bilities of reinforcement learning, demonstrating
+strong empirical performance. The success of DPO
+motivates a natural question: can the alignment
+objective be simplified even further? While DPO
+removes the reward model, its loss is still derived
+directly from the RLHF objective, which implicitly
+encourages optimizing the entropy of the language
+model. We investigate whether effective alignment
+can be achieved under even more relaxed assump-
+tions, removing the explicit need for both a reward
+function and the entropy maximization term inher-
+ent in the standard RLHF objective.
+In this paper, we proposeMMPO, a novel and
+simple algorithm for offline preference alignment.
+Drawing inspiration from the principle of MML
+estimation (Guu et al., 2017), MMPO recasts the
+alignment problem. Instead of directly optimizing
+for preferences, we maximize the marginal log-
+likelihood of a preferred text output, where the
+given preference pair is treated as two samples to
+approximate this marginalization. We show theo-
+retically (Theorem 3.2) that this MML objective,
+when optimized with a numerically stable ‘log-sum-
+exp’ formulation, implicitly performs preference
+optimization. The resulting gradient updates natu-
+rally up-weight the preferred response higher than
+arXiv:2510.22881v2  [cs.LG]  23 Jan 2026
+
+===== PAGE 2 =====
+the dispreferred one, modulated by a sigmoid of
+their score difference, without explicitly formulat-
+ing a reward or an entropy-maximizing term.
+Our extensive experiments on models ranging
+from 135M to 8B parameters demonstrate the ef-
+fectiveness and stability of MMPO compared to
+strong baselines like DPO and SimPO (Meng et al.,
+2024). Our main contributions are as follows:
+1) We introduceMMPO, a new offline prefer-
+ence optimization algorithm, and provide a
+theoretical analysis showing that the MMPO
+on preference pairs is equivalent to a weighted
+gradient update that inherently favors pre-
+ferred responses.
+2) We empirically show that MMPO ismore
+stablewhen varying the key hyperparameter
+β(compared to both DPO and SimPO).
+3) We find that MMPObetter preserves the
+general language capabilitiesof the base
+instruction-tuned models.
+4) We demonstrate that MMPO achievesstrong
+and consistent preference alignment, reach-
+ing competitive or superior win-rates on the
+AlpacaEval-2 benchmark.
+This paper is structured as follows. We first
+review the preliminaries of RLHF in Section 2.
+In Section 3, we introduce the MML framework,
+present our core theoretical result showing its con-
+nection to preference optimization, and derive our
+proposed MMPO algorithm. Finally, in Section 4,
+we empirically validate MMPO, demonstrating its
+superior stability and its effectiveness at balanc-
+ing alignment with reasoning and common-sense
+capability retention.
+2 Methods
+In our learning setting, we are provided with a
+dataset of input-output text pairs (x, y), where x
+represents an input text and y denotes its corre-
+sponding target text completion. We assume the ex-
+istence of an oracle reward function r(y, z), which
+quantifies the alignment between a generated sam-
+ple z and the target completion y. The objective for
+RLHF (Ouyang et al., 2022) is formulated as a con-
+strained optimization problem. In this problem, a
+language model πθ, parameterized by θ, is updated
+by maximizing the following objective function
+JRLHF(θ) =
+Ez∼πθ(·|x) [r(y, z)]−βD KL [πθ(·|x)||πsft(·|x)]
+=E z∼πθ(·|x)
+
+r(y, z)−βlog πθ(z|x)
+πsft(z|x)
+
+(1)
+In the RLHF objective, Ez∼πθ(·|x) denotes the
+expectation over text completionszsampled from
+the language model πθ conditioned on input x. The
+term DKL represents the Kullback-Leibler diver-
+gence, measuring the difference between the pol-
+icy πθ and πsft, a Supervised Fine-Tuned (SFT)
+language model that serves as the initial check-
+point for πθ. By maximizing the objective function
+JRLHF(θ), we update the main modelπθ to generate
+text completions z that achieve higher expected re-
+wards while remaining close to the initially trained
+model πsft. The hyper-parameter β≥0 introduces
+the KL constraint to balance between reward max-
+imization and minimizing the deviation from πsft.
+For further background discussion on RLHF and
+DPO, please see Appendix A.1.
+3 Maximum Marginal Likelihood
+MML operates under the assumption that the target
+text output y is generated by a partially observed
+random process. Specifically, a text completion z
+is sampled conditioned on the input x using the
+language model πθ. Then, each sample z is scored
+using the true data distribution P ∗(y|x, z). This
+true underlying distribution P ∗ is generally un-
+known. The objective of MML is to maximize the
+log-likelihood of y given x, marginalized over all
+possiblez:P θ(y|x) =P
+z πθ(z|x)×P ∗(y|x, z).
+As the distribution of the generated samples
+πθ(z|x) approaches the true distribution P ∗(z|x),
+our objective Pθ(y|x) will approach the true like-
+lihood P ∗(y|x). The key challenge in optimiz-
+ing MML lies in the computation of the summa-
+tion over the space of all possible text samples z.
+When training to maximize logP θ(y|x), we are
+effectively dealing with the log of a sum over all
+possible text completions, as expressed by the fol-
+lowing objective:
+JMML(θ) = log
+X
+z
+πθ(z|x)×P ∗(y|x, z) (2)
+As explored in earlier work on program synthe-
+sis (Guu et al., 2017) or and in the recent task of
+paraphrase generation (Najafi and Fyshe, 2024),
+the MML objective is closely related to the ob-
+jective of policy gradient methods. Through the
+
+===== PAGE 3 =====
+application of Jensen’s inequality, it can be shown
+that the MML objective is an upper bound for the
+policy-gradient objective, yet still MML gradient
+estimations are more stable (Guu et al., 2017; Na-
+jafi and Fyshe, 2024). This relationship can be
+expressed by the following inequality:
+JMML(θ)≥
+X
+z
+πθ(z|x)×logP ∗(y|x, z) (3)
+3.1 MML with Automatic Differentiation
+In practice, optimizing the language model πθ us-
+ing the MML objective, as presented in Equation 2,
+requires an approximation due to the intractable
+summation over all possible samples z. To this
+end, we draw n samples from the conditional dis-
+tribution πθ(·|x), denoted as z1, z2, . . . , zn. The
+expectation over the sample space is then approx-
+imated using numerical summation, which yields
+the estimate ˆJMML(θ). To enhance numerical sta-
+bility during training, it is advantageous to refor-
+mulate the objective function in terms of the ‘log-
+sum-exp’ operation. This reformulation leverages
+the stable implementation of the ‘log-sum-exp’
+function provided by popular machine learning li-
+braries such as PyTorch, TensorFlow, or JAX. In
+PyTorch, this operation corresponds to the function
+‘torch.logsumexp’1. This reformulation results in
+the following approximate objective:
+ˆJMML(θ) =torch.logsumexp(si); 1≤i≤n
+si = logπθ(zi|x) + logP∗(y|x, zi)
+(4)
+The ‘log-sum-exp’ operation provides numeri-
+cal stability by mitigating potential issues with ex-
+ploding exponentials, motivated by the following
+Lemma:
+Lemma 3.1 Let s1, s2, . . . , sn be real numbers,
+and let s∗ = maxi si. Then, si −s ∗ ≤0 and
+we have:
+log
+nX
+i=1
+exp(si) = log
+ nX
+i=1
+exp(si −s ∗)
+!
++s ∗
+3.2 MML & Preference Optimization
+We now articulate our central idea to apply MML
+estimation for offline preference optimization. Con-
+sider a scenario within preference optimization for
+aligning language models where we have access
+1https://docs.pytorch.org/docs/stable/
+generated/torch.logsumexp.html
+to only two samples, zw and zl, for a given input
+x. The RLHF objective can be understood as maxi-
+mizing two distinct components. The first compo-
+nent is to optimize a new reward function, R(y, z),
+defined as R(y, z) =r(y, z) +βlogπ sft(z|x).
+The second component of the RLHF objective is
+to maximize the entropy of the language model,
+βH(π θ(·|x)). This connection is summarized by
+the following equation:
+JRLHF(θ) =Ez∼πθ(·|x) [R(y, z)] +βH(πθ(·|x))
+We first simplify the RLHF objective by ignor-
+ing the entropy term. Then, within our MML es-
+timation, we assume that P ∗(y|x, z)∝e R(y,z),
+optimizing the following objective:
+J rlhf
+MML(θ) = log
+X
+z
+πθ(z|x)×e R(y,z) ,
+R(y, z) =r(y, z) +βlogπsft(z|x)(5)
+The following theorem demonstrates that train-
+ing the language model using the approximate
+MML estimation, achieved by optimizing J rlhf
+MML(θ)
+with the ‘log-sum-exp’ operation is implicitly con-
+ducting preference optimization.
+Theorem 3.2 MML Estimation on Preference
+Dataset:Consider preference data consisting of
+triplets (x, zw, zl), where x is an input, zw is the
+preferred response, and zl is a less preferred re-
+sponse.
+When optimizing the approximate MML objec-
+tive, denoted as ˆJ rlhf
+MML(θ), and utilizing only the
+two samples zw and zl for the approximation, the
+resulting gradient update ∇θ ˆJ rlhf
+MML(θ) is equiva-
+lent to the sum of two subgradient components:
+∇w
+θ +∇ l
+θ, defined as:
+∇w
+θ =σ(s w −s l)∇θ logπ θ(zw|x)
+∇l
+θ =σ(s l −s w)∇θ logπ θ(zl|x)
+(6)
+In the above subgradient definitions, σ repre-
+sents the sigmoid function. When applying the
+‘logsumexp’ operation to approximate the MML ob-
+jective with the two samples, we inherently assume
+that the score of the less preferred response, sl,
+is less than or equal to the score of the preferred
+response, sw (i.e., sl ≤s w). These scores are
+determined by the following equations:
+sw = logπθ(zw|x) +r(y, zw) +βlogπ sft(zw|x)
+sl = logπθ(zl|x) +r(y, zl) +βlogπ sft(zl|x)
+(7)
+
+===== PAGE 4 =====
+The core insight of this theorem (see the ap-
+pendix A.2 for the proof) lies in how the difference
+in scores between the preferred and less preferred
+responses modulates the gradient update. The sig-
+moid function, σ(sw −s l), plays a crucial role in
+scaling the gradient component for the preferred
+response. When the preferred response has a sig-
+nificantly higher score ( sw ≫s l), the sigmoid
+approaches 1, and the update strongly encourages
+generating zw. Conversely, the gradient for the less
+preferred response, ∇l
+θ, is scaled by σ(sl −s w),
+which is small when sl is much smaller than sw.
+This mechanism ensures that the model learns to
+amplify the probability of the highly preferred re-
+sponse while having a lesser, though non-zero, ef-
+fect on the less preferred response.
+3.3 MML-based Preference Optimization
+(MMPO)
+In this section, we describe the loss function for
+our proposed MMPO objective. We do not have
+access to the reward functionr(y, z), but we aim to
+enforce the preference constraint sw ≥s l. We
+introduce a hyperparameter rϵ representing the
+target positive margin for the reward difference,
+r(y, zw)−r(y, zl). Moreover, to provide a better
+learning signal, we normalize the rewards R(y, z)
+within a mini-batch of preference pairs. This in-
+batch normalization stabilizes training, as it en-
+sures the relative scores ( sw, sl) are on a consis-
+tent scale across a mini-batch, preventing outlier
+examples with unusually high or low reference log-
+probabilities from dominating the gradient. This
+kind of reward normalization resembles the nor-
+malization of advantage terms in algorithms like
+PPO (Schulman et al., 2017), but is distinct from
+the per-instance (i.e., per-input) reward normaliza-
+tion used in on-policy algorithms like RLOO (Kool
+et al., 2019; Ahmadian et al., 2024) or GRPO (Shao
+et al., 2024). Since for each input, we have only
+one preferred (zw) and one dispreferred (zl) com-
+pletion, we employ in-batch normalization.
+In addition to the ˆJ rlhf
+MML(θ) objective, we intro-
+duce an auxiliary objective to further reinforce
+the preference condition sw ≥s l. While the pri-
+mary objective implicitly optimizes for preference
+via its gradient dynamics, we add an auxiliary
+logσ(s w(θ)−s l(θ)) term. This component, in-
+spired by DPO’s formulation, provides a more di-
+rect and explicit supervisory signal to maximize the
+margin between the scores of the preferred and dis-
+preferred responses, further stabilizing the learning
+process. This structural form logσ(s w −s l) is sim-
+ilar to the core term in the DPO’s loss function, but
+crucially, it operates on our normalized scores sw
+and sl rather than the log-probability ratios relative
+to the SFT model used in DPO.
+We have implemented the loss function used
+for the MMPO objective in our experiments
+within the PyTorch library. This implemen-
+tation follows the same coding pattern as the
+TRL ( https://huggingface.co/docs/trl/en/
+index) library used for DPO and SimPO. The fol-
+lowing code snippet provides this implementation.
+1def mmpo_loss (
+2self ,
+3chosen_logps : torch . FloatTensor ,
+4rejected_logps : torch . FloatTensor ,
+5ref_c hosen_lo gps : torch . FloatTensor ,
+6r ef _ r ej e c te d _ lo g p s : torch . FloatTensor ,
+7) -> tuple [ torch . FloatTensor , torch . FloatTensor , torch .
+FloatTensor ]:
+8" " "
+9Compute the MMPO loss for a batch of policy and
+reference model log probabilities . " " "
+10
+11ep = 1e -6
+12b = self . beta # hyper - param
+13r_ep = self . reward_epsilon # hyper - param
+14
+15chosen_rs = r_ep + b * re f_chosen_ logps
+16rejected_rs = 0.1 + b * r e f_ r e je c t ed _ l og p s
+17
+18# In - batch reward normalization
+19all_rs = torch . cat (( chosen_rs , rejected_rs ) , dim =0)
+20rs_gather = self . accelerator . g at h e r_ f o r_ m e tr i c s ( all_rs )
+21
+22min = rs_gather . min ()
+23max = rs_gather . max ()
+24denom = max + ep - min
+25norm_chosen_rs = ( chosen_rs + ep - min ) / denom
+26norm_ rejected _rs = ( rejected_rs + ep - min ) / denom
+27
+28chosen_s = chosen_logps + norm_chosen_rs
+29rejected_s = rejected_logps + no rm_rejec ted_rs
+30
+31chosen_s_un = chosen_s . unsqueeze (1)
+32rejected_s_un = rejected_s . unsqueeze (1)
+33scores = torch . cat (( chosen_s_un , rejected_s_un ) , dim =1)
+34losses = - torch . logsumexp ( scores , dim =1)
+35losses += -F . logsigmoid ( chosen_s - rejected_s )
+36
+37return losses , chosen_s . detach () , rejected_s . detach ()
+Listing 1: Implementation of MMPO in PyTorch.
+4 Experiments
+4.1 Setup
+LM Models:We experimented with two fami-
+lies of language models. First, we instruction-
+tuned the pre-trained SmolLM2 models (135M
+and 360M parameters) (Allal et al., 2025) for two
+epochs on the small-smoltalk dataset2, which
+contains approximately 460K examples. Although
+we adopted the chat template from the publicly
+available instruction-tuned versions of SmolLM2,
+we did not use the models themselves because they
+had already undergone DPO training.
+For our second model, Llama3.2-1B, we
+performed instruction tuning for three epochs
+2https://huggingface.co/datasets/
+HuggingFaceTB/smol-smoltalk
+
+===== PAGE 5 =====
+Figure 1: The performance trade-off between preference alignment (AlpacaEval2 length-controlled win-rate) and
+general language capabilities (average LM Harness accuracy). The plots compare MMPO and DPO across four
+model sizes, with arrows indicating the performance trajectory over five training epochs for various β values.
+Optimal performance would be for the model to retain general language capabilities while increasing preference
+optimization performance, indicated by lines moving towards the right while falling as little as possible along the
+y-axis. Stability across βs is achieved when all β-specific trajectories for a particular model family are clustered
+together on the graph.
+on a combination of the UltraChat3 and
+sftdatasetv34 datasets. The latter was recently
+used to train hybrid Transformer-Mamba mod-
+els (Wang et al., 2024).
+Our last model, Llama3-8B, is the publicly
+available instruction-tuned model trained by the
+SimPO5 authors. This model was trained on the
+UltraChat6 dataset for one epoch (Meng et al.,
+2024).7
+Preference Datasets:For the preference optimiza-
+tion of our instruction-tuned models, SmolLM2
+(135M and 360M), Llama3.2-1B and Llama3-
+8B, we combined two publicly available datasets.
+The first was the Orca DPO Pairs dataset (Lian
+et al., 2023), which contains 12,359 training and
+500 test preference pairs 8. The second was the
+UltraFeedback-Binarized dataset (Cui et al.,
+2023), containing 61,135 training and 2,000 test
+preference pairs9. In the latter, preference pairs
+were generated by using GPT-4 to score and select
+completions for prompts from the UltraFeedback
+dataset.
+3https://huggingface.co/datasets/
+HuggingFaceH4/ultrachat_200k
+4https://huggingface.co/datasets/JunxiongWang/
+sftdatasetv3
+5https://huggingface.co/princeton-nlp/
+Llama-3-Base-8B-SFT
+6https://huggingface.co/datasets/
+HuggingFaceH4/ultrachat_200k
+7These LM models were pre-trained for a varying number
+of epochs, depending on resource availability.
+8https://huggingface.co/datasets/
+HuggingFaceH4/orca_dpo_pairs
+9https://huggingface.co/datasets/
+HuggingFaceH4/ultrafeedback_binarized
+Baselines:We consider two baselines in our exper-
+iments. We compare against DPO, which optimizes
+a logistic objective of the log-probability ratios (see
+Appendix A.1 for the exact objective). Our second
+baseline is the recent SimPO method (Meng et al.,
+2024), which adopts a similar pairwise logistic ob-
+jective but removes the reference policy, using only
+the model’s own log-probabilities:
+logσ(βlogπ θ(zw|x)−βlogπ θ(zl|x)−γ) (8)
+By eliminating the reference model, SimPO is com-
+putationally lighter than DPO but relies on β and
+the margin γ to regulate distributional drift com-
+pared to the initial reference model.
+Hyperparameters:We tuned the hyperparameters
+for the preference optimization stage using a multi-
+stage grid search for each model size (135M, 360M,
+1B, and 8B). To select the best-performing hyper-
+parameters, we used the reward accuracy metric on
+the validation split of our preference datasets. This
+metric evaluates how frequently the internal score
+assigned to a chosen response is higher than the
+score for the corresponding rejected response. We
+observed that the reward accuracy metric consis-
+tently favored the smallest value, β= 0.01, across
+all models. To provide a comprehensive analy-
+sis of the objectives under different β settings, we
+subsequently trained the models for five epochs
+for each value of β∈ {0.01,0.05,0.5} . Further
+optimization and training details are outlined in
+Appendix B.1.
+
+===== PAGE 6 =====
+Figure 2: The performance trade-off between preference alignment (AlpacaEval2 length-controlled win-rate) and
+general language capabilities (average LM Harness accuracy). The plots compare MMPO and SimPO across four
+model sizes, with arrows indicating the performance trajectory over five training epochs for variousβvalues.
+4.2 Results
+4.2.1 Language Evaluation
+One of our key questions is the extent to which
+the preference optimization impacts the general
+capabilities acquired during the pre-training and
+instruction-tuning stages, particularly given that
+these earlier phases use orders of magnitude more
+data. While a specific preference optimization
+method may improve a model’s ability to dis-
+tinguish between preferred and dispreferred re-
+sponses, it is crucial to ensure this does not cause
+a degradation in the model’s broader language un-
+derstanding and reasoning abilities.
+To assess the general capabilities of our mod-
+els, we employ the Language Model Evalua-
+tion Harness benchmark (Gao et al., 2021). We
+evaluate the models in a zero-shot setting on
+the test splits of 10 diverse language under-
+standing tasks: winogrande, arc_easy, piqa,
+hellaswag, openbookqa, arc_challenge, mmlu,
+mathqa, race, and commonsense_qa (Sakaguchi
+et al., 2019; Clark et al., 2018; Bisk et al.,
+2019; Zellers et al., 2019; Mihaylov et al., 2018;
+Hendrycks et al., 2021; Amini et al., 2019; Lai
+et al., 2017; Talmor et al., 2019). These datasets
+cover multiple question-answering and common-
+sense reasoning tasks. Our final reported metric is
+the average accuracy across these ten tasks.
+Our experiments, summarized in y-axis of Fig-
+ures 1 and 2, compare MMPO with DPO and
+SimPO on the LM Harness benchmark. A key
+finding is the stability of MMPO with respect to
+the hyperparameter β. Unlike MMPO, both DPO
+and SimPO show significant sensitivity to β. We
+hypothesize that MMPO’s stability is primarily due
+to in-batch normalization of the scores and implicit
+subtraction of the scores within the gradients.
+Furthermore, MMPO proved to be more effec-
+tive at preserving the general language understand-
+ing and reasoning capabilities of instruction-tuned
+models. While all preference optimization methods
+can cause some performance degradation at the end
+of epoch five, this impact is minimal with MMPO
+(corresponding to β= 0.01). In Llama-3-8B, the
+tuned learning rate for DPO is 10 times smaller
+than the tuned learning rate for MMPO, however,
+after three epochs, we still see more performance
+degradation compared to the MMPO (correspond-
+ing toβ= 0.01).
+4.2.2 Preference Evaluation
+For preference evaluation, we use the AlpacaEval-
+2 benchmark, which consists of 805 diverse ques-
+tions (Li et al., 2023). For our evaluation, we com-
+pute the win-rate of our models against the base-
+line instruction-tuned model. The comparison is
+performed by two LLM-as-judges, which evaluate
+pairs of responses to determine the preferred one.
+Our first judge is “weighted_alpaca_eval_gpt-4o-
+mini-2024-07-18”, and the second judge is “claude-
+haiku-4-5-20251001”. To mitigate the known ten-
+dency of LLM judges to favor longer outputs re-
+gardless of quality, we report the length-controlled
+win-rate, which normalizes for this bias. This met-
+ric reflects the percentage of times our model’s
+response is judged superior to the baseline’s, fo-
+cusing purely on instruction adherence and help-
+fulness (Dubois et al., 2024)10. Results from these
+two judges are averaged and summarized in x-axis
+of Figures 1 and 2.
+MMPO demonstrates stability under hyperpa-
+rameter tuning, with negligible performance vari-
+10We used the github code for AlpacaEval 2.0 benchmark.
+More information about the templates used within judges are
+provided by the benchmark itself.
+
+===== PAGE 7 =====
+ation across a range of β values. For instance,
+with the SmolLM2-135M model, MMPO’s win-
+rate improves monotonically from 47.7% at epoch
+1 to a final rate of 67.3% by epoch 5 (averaged
+across all β values). This stable behavior is in stark
+contrast to DPO, which yields very low win-rates,
+and SimPO, which degrades from an early peak of
+about 37% to 5–20%.
+With the SmolLM2-360M, MMPO again climbs
+steadily to 65–67% while remaining highly stable
+to β. In contrast, DPO shows strong β-sensitivity,
+starting at a high of 71.8% for β= 0.01 but then
+drifting downward to 53.2% by epoch 5. SimPO’s
+performance tops out near 41% and is otherwise
+lower. While DPO with β= 0.01 achieves the
+highest single win-rate on the AlpacaEval-2 bench-
+mark, this performance comes at a significant cost,
+corresponding to a 1.5% average performance drop
+on the LM Harness benchmark compared to the
+MMPO (see DPO’s performance at epoch 1 in Fig-
+ure 1).
+On the Llama3.2-1B model, MMPO reaches
+62–67% within two epochs and settles at 51–54%
+by epoch 5. DPO, however, proves highly unsta-
+ble; for example, with β= 0.01 , DPO collapses
+from around 44.7% to 11.8%, with only the set-
+tingβ= 0.05approaching MMPO’s performance
+late in training (51.4%). SimPO consistently re-
+mains far below MMPO across all β values. On
+the Llama3.2-1B model, we observe that with only
+1 epoch of MMPO training with any of the beta
+values, we achieve a 62% win-rate with minimally
+sacrificing the LM harness accuracy.
+In Llama3-8B, MMPO with β= 0.5 achieves
+the win-rate of 63.4% by the end of epoch 4, which
+is competitive to DPO with the highest win rate of
+64.5% (β= 0.01).
+Across the models SmolLM2-135M, SmolLM2-
+360M, and Llama3.2-1B, MMPO offers a more
+favorable Pareto profile: it delivers consistently
+higher preference win-rates with minimal degrada-
+tion in general capabilities. Across all model sizes,
+MMPO is largely invariant to β. DPO can achieve
+strong early win-rates under carefully tuned β, but
+at the cost of instability with respect toβ. SimPO is
+generally less competitive and less stable according
+to our experiments11.
+11The original SimPO paper tested the objective only with
+models having 8B parameters under full-parameter training;
+therefore, it’s unclear if SimPO’s superior performance over
+DPO holds true in smaller models with limited capacity or
+under parameter-efficient training.
+Table 1: Comparison of peak LM Harness accuracies
+and corresponding AlpacaEval-2 win-rates across model
+sizes.
+Model Size Method Peak LM Acc Win-Rate
+SmolLM 135M MMPO34.44 61.86
+DPO 33.05 6.21
+SmolLM 360M MMPO 36.5866.47
+DPO36.6257.06
+Llama3 1B MMPO 46.6964.03
+DPO47.6746.57
+Llama3 8B MMPO 56.36 57.11
+DPO59.19 64.01
+Table 2: Comparison of peak AlpacaEval-2 win-rates
+and corresponding LM Harness accuracies across model
+sizes.
+Model Size Method Peak Win-Rate LM Acc
+SmolLM 135M MMPO68.09 34.08
+DPO 16.29 32.79
+SmolLM 360M MMPO 67.5036.53
+DPO71.8035.00
+Llama3 1B MMPO67.32 43.93
+DPO 51.45 43.74
+Llama3 8B MMPO 63.37 54.77
+DPO64.53 57.40
+Tables 1 and 2 summarize the relationship be-
+tween LM Harness accuracy and the averaged
+length-controlled win-rates (computed across two
+judges). Table 1 reports the win-rate observed at
+the point of peak LM Harness accuracy (across all
+β values), while Table 2 reports the LM Harness
+accuracy observed at the point of peak win-rate
+(across all β values). Please note that win-rates
+are computed against the SFT baseline of the re-
+spective model size and are not comparable across
+different model sizes.
+For smaller model sizes (135M, 360M, and 1B),
+MMPO demonstrates a superior Pareto profile. We
+note that our 8B experiments were conducted under
+a more constrained parameter-efficient setting, us-
+ing the 8-bit Adam optimizer and applying LoRA
+exclusively to attention projection matrices. Inves-
+tigating full-parameter training with the 8B model
+remains a promising direction for future work.
+5 Ablation Experiments
+We conducted four ablation studies on the
+SmolLM2-360M model to systematically investi-
+
+===== PAGE 8 =====
+Figure 3: An ablation study of the MMPO objective (β= 0.05) on the SmolLM2-360M model. The plot evaluates
+the trade-off between preference alignment, measured by the AlpacaEval2 length-controlled (LC) win-rate, and
+general language capabilities, measured by the average LM Harness accuracy. The tested modifications include
+removing the DPO-style auxiliary loss, removing in-batch normalization, adding length normalization, and adding
+entropy maximization. Arrows indicate the performance trajectory over five training epochs.
+gate the contribution of key components within the
+MMPO objective. The experiments focused on: (1)
+Length Normalization, (2)Entropy Maximiza-
+tion, (3) theDPO-style Auxiliary Objective, and
+(4)In-batch Normalization. All studies were per-
+formed with a β value of 0.05, a setting that demon-
+strated robust performance on the LM-Harness and
+AlpacaEval-2 benchmarks.
+Length Normalization:For our first ablation
+study, we modified the MMPO objective to nor-
+malize the total log-probability of a sequence by
+the number of tokens, thereby optimizing for the
+average log-probability per token.
+Entropy Maximization:We studied the impact
+of entropy maximization. We reintroduced the
+entropy term, βH(π θ(·|x)), which was excluded
+from our final objective, to explicitly encourage
+a more diverse policy. The gradient of this term
+was approximated using a token-level entropy ob-
+jective at each generation step, as detailed in Ap-
+pendix B.2.
+DPO-style Auxiliary Objective:Our third study
+evaluated the necessity of the DPO-style auxiliary
+objective, logσ(s w(θ)−s l(θ)). By removing this
+term, we determine if the main ‘logsumexp’ term in
+the MMPO loss is sufficient on its own for effective
+preference optimization.
+In-batch Normalization:Finally, we explored
+the importance of in-batch normalization. This ab-
+lation involved removing the normalization step
+from the MMPO objective and relying solely on
+the unnormalized scores sw and sl. The goal was
+to understand if this normalization is a critical com-
+ponent for the method’s success or if the implicit
+preference optimization from the main objective is
+the dominant factor driving performance gains.
+Figure 3 summarizes the results for our ablation
+experiments:
+• Length Normalizationimproves the average
+LM Harness accuracy, but it does not lead
+to a significant improvement in AlpacaEval-
+2 win-rates. This suggests that while it may
+help the model to learn more accurate token
+probabilities, it does not translate directly to
+more helpful or preferred responses.
+• In contrast,Entropy Maximizationconsis-
+tently degrades performance on both the LM
+Harness and AlpacaEval-2 benchmarks, indi-
+cating that explicitly encouraging language
+model diversity via this method is detrimental
+to our objective. Note that explicit entropy
+regularization, approximated as token-level
+entropy, is not helping our objective. This
+observation does not prove that the full KL-
+regularization used in RLHF is irrelevant. The
+scores from the reference model still con-
+tribute to the scoressw and sl within the MML
+
+===== PAGE 9 =====
+objective or even the DPO-style auxiliary loss.
+• Furthermore, removing theDPO-style Aux-
+iliary ObjectiveorIn-batch Normalization
+leads to a drop in peak LM Harness accu-
+racy but a slight improvement in AlpacaEval-2
+win rates. This intriguing result suggests that
+the implicit preference learning signal from
+the core logsumexp term is a strong driver
+of performance on its own. These ablation
+results illustrate a trade-off rather than a fun-
+damental flaw in the objective; As discussed,
+while omitting the DPO-style auxiliary loss
+(“MMPO - DPO Loss”) or in-batch normaliza-
+tion slightly improves AlpacaEval-2 win rates,
+it simultaneously degrades peak LM Harness
+accuracy.
+6 Related Works
+Numerous methods have generalized
+DPO (Rafailov et al., 2023a). The method
+f-DPO (Wang et al., 2023) broadens the objective
+by replacing the reverse-KL regularizer in RLHF
+with a more general class of f-divergences,
+allowing for different constraints on model
+deviation. Generalized Preference Optimization
+(GPO) (Tang et al., 2024) provides a unifying
+perspective, showing that methods like DPO can
+be seen as specific instances of optimizing convex
+contrastive losses. More recently, Calibrated DPO
+(Cal-DPO) (Xiao et al., 2024) addresses DPO’s
+training instability by explicitly calibrating the
+implicit reward scale ( β parameter) to achieve
+more robust performance.
+MMPO is fundamentally different from this fam-
+ily of methods, as it is not a contrastive surrogate
+for a reward maximization problem. The gradient
+of MMPO produces an implicit, data-dependent
+weighting of the chosen and rejected responses,
+rather than relying on an explicit, fixed divergence
+constraint. Furthermore, MMPO achieves stable
+training without the explicit mechanisms of Cal-
+DPO. Its stability is an inherent property of the
+formulation, stemming from in-batch score nor-
+malization and the natural subtraction within the
+‘logsumexp’ operation, which prevents scores from
+growing unbounded.
+Another category of methods avoids online pref-
+erence optimization by leveraging ranking or data
+filtering. Rank Responses to Align Human Feed-
+back (RRHF) (Yuan et al., 2023) trains a model
+using a ranking loss over multiple candidate re-
+sponses for a given prompt, encouraging it to as-
+sign higher likelihoods to better responses. Reward-
+Ranked Fine-Tuning (RAFT) (Dong et al., 2023)
+uses an external reward model to score and rank
+multiple model-generated responses, then performs
+standard supervised fine-tuning on a filtered dataset
+containing only the top-ranked response for each
+prompt. MMPO’s approach is distinct from both.
+Unlike RRHF, it operates on pairwise preference
+data without requiring multi-candidate rankings.
+Unlike RAFT, it is self-contained and does not de-
+pend on an external reward model to curate or filter
+training data.
+For our experiments, we chose to compare
+MMPO against well-tuned DPO and SimPO. This
+decision was based on the findings by the SimPO
+authors that a well-tuned DPO can outperform
+many alternative preference optimization tech-
+niques such as RRHF. It is worth noting, however,
+that we were unable to replicate the reported su-
+perior performance of SimPO over DPO. In all of
+our experiments, DPO consistently outperforms
+SimPO.
+7 Conclusion
+We introduced the MMPO objective, a novel and
+simple objective for offline LLM alignment. Our
+approach treats preference pairs as samples to ap-
+proximate the marginal likelihood of generating
+the desirable output given the input text, which we
+have shown theoretically to be equivalent to an im-
+plicit preference optimization scheme that requires
+neither an explicit reward function nor an entropy
+bonus.
+Our extensive experiments on models up to 8B
+parameters demonstrate MMPO’s key advantages.
+It exhibits stability with respect to the hyperparam-
+eter β, a common source of instability in methods
+like DPO and SimPO. Crucially, MMPO achieves
+competitive preference alignment score, as mea-
+sured by win-rates on AlpacaEval-2 benchmark,
+while causing less degradation to the model’s gen-
+eral language understanding and reasoning abilities
+on the LM Harness benchmark.
+8 Limitations
+A limitation of our current experimental setup is
+the inability to directly evaluate our preference op-
+timization methods on models exceeding 1 billion
+parameters without employing memory-efficiency
+techniques such as LoRA or 8-bit optimizers. Test-
+
+===== PAGE 10 =====
+ing these approaches on larger-scale models is cru-
+cial for understanding their full potential and scal-
+ability. This was primarily constrained by access
+to computing resources with sufficient GPU mem-
+ory. Investigating the performance of MMPO on
+larger models, potentially updating all the param-
+eters using full-precision optimizers, remains an
+interesting direction for future work.
+Our proposed MMPO algorithm is presented and
+evaluated in the context of offline preference op-
+timization using a static dataset. While MMPO
+is designed for this offline setting, it could poten-
+tially be adapted for online preference optimization.
+This would likely involve incorporating access to
+dynamic reward functions and potentially sampling
+multiple responses per input during training. Ex-
+ploring the application of MMPO to online scenar-
+ios and conducting comparisons with established
+online methods like PPO or GRPO represents an-
+other promising avenue for future research.
+References
+Arash Ahmadian, Chris Cremer, Matthias Gallé,
+Marzieh Fadaee, Julia Kreutzer, Olivier Pietquin,
+Ahmet Üstün, and Sara Hooker. 2024. Back to
+basics: Revisiting reinforce style optimization for
+learning from human feedback in llms.Preprint,
+arXiv:2402.14740.
+Loubna Ben Allal, Anton Lozhkov, Elie Bak-
+ouch, Gabriel Martín Blázquez, Guilherme Penedo,
+Lewis Tunstall, Andrés Marafioti, Hynek Kydlíˇcek,
+Agustín Piqueres Lajarín, Vaibhav Srivastav, Joshua
+Lochner, Caleb Fahlgren, Xuan-Son Nguyen, Clé-
+mentine Fourrier, Ben Burtenshaw, Hugo Larcher,
+Haojun Zhao, Cyril Zakka, Mathieu Morlon, Colin
+Raffel, Leandro von Werra, and Thomas Wolf.
+2025. Smollm2: When smol goes big – data-
+centric training of a small language model.Preprint,
+arXiv:2502.02737.
+Aida Amini, Saadia Gabriel, Shanchuan Lin, Rik
+Koncel-Kedziorski, Yejin Choi, and Hannaneh Ha-
+jishirzi. 2019. MathQA: Towards interpretable math
+word problem solving with operation-based for-
+malisms. InProceedings of the 2019 Conference
+of the North American Chapter of the Association for
+Computational Linguistics: Human Language Tech-
+nologies, Volume 1 (Long and Short Papers), pages
+2357–2367, Minneapolis, Minnesota. Association for
+Computational Linguistics.
+Yonatan Bisk, Rowan Zellers, Ronan Le Bras, Jianfeng
+Gao, and Yejin Choi. 2019. Piqa: Reasoning about
+physical commonsense in natural language.Preprint,
+arXiv:1911.11641.
+Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot,
+Ashish Sabharwal, Carissa Schoenick, and Oyvind
+Tafjord. 2018. Think you have solved question
+answering? try arc, the ai2 reasoning challenge.
+Preprint, arXiv:1803.05457.
+Ganqu Cui, Lifan Yuan, Ning Ding, Guanming Yao,
+Wei Zhu, Yuan Ni, Guotong Xie, Zhiyuan Liu, and
+Maosong Sun. 2023. Ultrafeedback: Boosting lan-
+guage models with high-quality feedback.Preprint,
+arXiv:2310.01377.
+Tim Dettmers, Mike Lewis, Sam Shleifer, and Luke
+Zettlemoyer. 2022. 8-bit optimizers via block-wise
+quantization.Preprint, arXiv:2110.02861.
+Hanze Dong, Wei Xiong, Deepanshu Goyal, Yihan
+Zhang, Winnie Chow, Rui Pan, Shizhe Diao, Jipeng
+Zhang, Kashun Shum, and Tong Zhang. 2023. RAFT:
+Reward ranked finetuning for generative foundation
+model alignment.arXiv preprint arXiv:2304.06767.
+Yann Dubois, Balázs Galambosi, Percy Liang, and Tat-
+sunori B Hashimoto. 2024. Length-controlled al-
+pacaeval: A simple way to debias automatic evalua-
+tors.arXiv preprint arXiv:2404.04475.
+Logan Engstrom, Andrew Ilyas, Shibani Santurkar,
+Dimitris Tsipras, Firdaus Janoos, Larry Rudolph, and
+Aleksander Madry. 2020. Implementation matters in
+deep policy gradients: A case study on ppo and trpo.
+Preprint, arXiv:2005.12729.
+Leo Gao, Jonathan Tow, Bena Abbasi, Stella Bider-
+man, Sid Black, Anthony DiPofi, Charles Foster, Lau-
+rence Gold, Jeffrey Hsu, Kyle Leahy, et al. 2021. A
+framework for evaluating language models. In2021
+NeurIPS Workshop on Datasets and Benchmarks.
+Kelvin Guu, Panupong Pasupat, Evan Liu, and Percy
+Liang. 2017. From language to programs: Bridging
+reinforcement learning and maximum marginal like-
+lihood. InProceedings of the 55th Annual Meeting of
+the Association for Computational Linguistics (Vol-
+ume 1: Long Papers), pages 1051–1062, Vancouver,
+Canada. Association for Computational Linguistics.
+Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou,
+Mantas Mazeika, Dawn Song, and Jacob Steinhardt.
+2021. Measuring massive multitask language under-
+standing.Preprint, arXiv:2009.03300.
+Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan
+Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and
+Weizhu Chen. 2021. Lora: Low-rank adaptation of
+large language models.Preprint, arXiv:2106.09685.
+Andrew Ilyas, Logan Engstrom, Shibani Santurkar,
+Dimitris Tsipras, Firdaus Janoos, Larry Rudolph, and
+Aleksander Madry. 2020. A closer look at deep pol-
+icy gradients.Preprint, arXiv:1811.02553.
+Wouter Kool, Herke van Hoof, and Max Welling. 2019.
+Buy 4 REINFORCE samples, get a baseline for free!
+Guokun Lai, Qizhe Xie, Hanxiao Liu, Yiming Yang,
+and Eduard Hovy. 2017. RACE: Large-scale ReAd-
+ing comprehension dataset from examinations. In

@@ -1,0 +1,544 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 42,
+    "fail": 36,
+    "warn": 6,
+    "passed": false,
+    "clean": false
+  },
+  "fails": [
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "depth_axis",
+      "message": "Edge 'depth_axis' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "depth_axis",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(75,183)→(345,183)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "tick_0",
+      "message": "Edge 'tick_0' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "tick_0",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(88,169)→(88,197)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "tick_1",
+      "message": "Edge 'tick_1' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "tick_1",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(136,169)→(136,197)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "tick_2",
+      "message": "Edge 'tick_2' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "tick_2",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(190,169)→(190,197)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "tick_3",
+      "message": "Edge 'tick_3' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "tick_3",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(246,169)→(246,197)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "tick_4",
+      "message": "Edge 'tick_4' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "tick_4",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(304,169)→(304,197)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "hard_tick",
+      "message": "Edge 'hard_tick' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "hard_tick",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(351,163)→(351,203)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "pair_to_anchor",
+      "message": "Edge 'pair_to_anchor' passes through box 'p2' (438,34 560×395)",
+      "detail": {
+        "edge_id": "pair_to_anchor",
+        "box_id": "p2",
+        "box_type": "shape",
+        "box_rect": "438,34 560×395",
+        "segment": "(551,194)→(676,194)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "pair_to_recovery",
+      "message": "Edge 'pair_to_recovery' passes through box 'p2' (438,34 560×395)",
+      "detail": {
+        "edge_id": "pair_to_recovery",
+        "box_id": "p2",
+        "box_type": "shape",
+        "box_rect": "438,34 560×395",
+        "segment": "(676,194)→(846,150)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "pair_to_harmful",
+      "message": "Edge 'pair_to_harmful' passes through box 'p2' (438,34 560×395)",
+      "detail": {
+        "edge_id": "pair_to_harmful",
+        "box_id": "p2",
+        "box_type": "shape",
+        "box_rect": "438,34 560×395",
+        "segment": "(676,194)→(846,280)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "flow12",
+      "message": "Edge 'flow12' passes through box 'p1' (22,34 385×395)",
+      "detail": {
+        "edge_id": "flow12",
+        "box_id": "p1",
+        "box_type": "shape",
+        "box_rect": "22,34 385×395",
+        "segment": "(407,231)→(438,231)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "flow23",
+      "message": "Edge 'flow23' passes through box 'p2' (438,34 560×395)",
+      "detail": {
+        "edge_id": "flow23",
+        "box_id": "p2",
+        "box_type": "shape",
+        "box_rect": "438,34 560×395",
+        "segment": "(998,231)→(1029,231)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "flow34",
+      "message": "Edge 'flow34' passes through box 'p3' (1029,34 400×395)",
+      "detail": {
+        "edge_id": "flow34",
+        "box_id": "p3",
+        "box_type": "shape",
+        "box_rect": "1029,34 400×395",
+        "segment": "(1429,231)→(1460,231)"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p1",
+      "message": "Element 'p1' (shape) overlaps 'p1_badge' (shape): (22,34 385×395) vs (38,49 36×36)",
+      "detail": {
+        "elem_a": "p1",
+        "elem_b": "p1_badge",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "22,34 385×395",
+        "rect_b": "38,49 36×36"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p1",
+      "message": "Element 'p1' (shape) overlaps 'frozen_arm_tag' (shape): (22,34 385×395) vs (68,354 290×42)",
+      "detail": {
+        "elem_a": "p1",
+        "elem_b": "frozen_arm_tag",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "22,34 385×395",
+        "rect_b": "68,354 290×42"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p2",
+      "message": "Element 'p2' (shape) overlaps 'p2_badge' (shape): (438,34 560×395) vs (454,49 36×36)",
+      "detail": {
+        "elem_a": "p2",
+        "elem_b": "p2_badge",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "438,34 560×395",
+        "rect_b": "454,49 36×36"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p2",
+      "message": "Element 'p2' (shape) overlaps 'pair_state' (shape): (438,34 560×395) vs (476,151 150×86)",
+      "detail": {
+        "elem_a": "p2",
+        "elem_b": "pair_state",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "438,34 560×395",
+        "rect_b": "476,151 150×86"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p2",
+      "message": "Element 'p2' (shape) overlaps 'pair_anchor' (shape): (438,34 560×395) vs (670,188 11×11)",
+      "detail": {
+        "elem_a": "p2",
+        "elem_b": "pair_anchor",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "438,34 560×395",
+        "rect_b": "670,188 11×11"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p2",
+      "message": "Element 'p2' (shape) overlaps 'pair_recovery' (shape): (438,34 560×395) vs (741,116 210×69)",
+      "detail": {
+        "elem_a": "p2",
+        "elem_b": "pair_recovery",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "438,34 560×395",
+        "rect_b": "741,116 210×69"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p2",
+      "message": "Element 'p2' (shape) overlaps 'pair_harmful' (shape): (438,34 560×395) vs (741,245 210×69)",
+      "detail": {
+        "elem_a": "p2",
+        "elem_b": "pair_harmful",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "438,34 560×395",
+        "rect_b": "741,245 210×69"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p3",
+      "message": "Element 'p3' (shape) overlaps 'p3_badge' (shape): (1029,34 400×395) vs (1045,49 36×36)",
+      "detail": {
+        "elem_a": "p3",
+        "elem_b": "p3_badge",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1029,34 400×395",
+        "rect_b": "1045,49 36×36"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p3",
+      "message": "Element 'p3' (shape) overlaps 'loss_card' (shape): (1029,34 400×395) vs (1064,137 330×140)",
+      "detail": {
+        "elem_a": "p3",
+        "elem_b": "loss_card",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1029,34 400×395",
+        "rect_b": "1064,137 330×140"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'p4_badge' (shape): (1460,34 505×395) vs (1476,49 36×36)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "p4_badge",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1476,49 36×36"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'loss_0' (shape): (1460,34 505×395) vs (1491,161 58×54)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "loss_0",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1491,161 58×54"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'loss_1' (shape): (1460,34 505×395) vs (1563,161 58×54)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "loss_1",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1563,161 58×54"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'loss_2' (shape): (1460,34 505×395) vs (1635,161 58×54)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "loss_2",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1635,161 58×54"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'loss_3' (shape): (1460,34 505×395) vs (1707,161 58×54)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "loss_3",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1707,161 58×54"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'loss_4' (shape): (1460,34 505×395) vs (1779,161 58×54)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "loss_4",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1779,161 58×54"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'loss_5' (shape): (1460,34 505×395) vs (1851,161 58×54)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "loss_5",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1851,161 58×54"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'clean_anchor' (shape): (1460,34 505×395) vs (1515,279 170×50)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "clean_anchor",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1515,279 170×50"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'benign_anchor' (shape): (1460,34 505×395) vs (1727,279 170×50)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "benign_anchor",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1727,279 170×50"
+      }
+    },
+    {
+      "rule": "element-overlap",
+      "element_id": "p4",
+      "message": "Element 'p4' (shape) overlaps 'ref_tag' (shape): (1460,34 505×395) vs (1615,350 185×48)",
+      "detail": {
+        "elem_a": "p4",
+        "elem_b": "ref_tag",
+        "a_type": "shape",
+        "b_type": "shape",
+        "rect_a": "1460,34 505×395",
+        "rect_b": "1615,350 185×48"
+      }
+    },
+    {
+      "rule": "element-overlap-row",
+      "element_id": "p1",
+      "message": "Boxes 'p1' and 'p1_badge' overlap horizontally in row (gap=-369px). Adjust positions.",
+      "detail": {
+        "box_a": "p1",
+        "box_b": "p1_badge",
+        "gap": -369.0
+      }
+    },
+    {
+      "rule": "element-overlap-row",
+      "element_id": "p2",
+      "message": "Boxes 'p2' and 'p2_badge' overlap horizontally in row (gap=-544px). Adjust positions.",
+      "detail": {
+        "box_a": "p2",
+        "box_b": "p2_badge",
+        "gap": -544.0
+      }
+    },
+    {
+      "rule": "element-overlap-row",
+      "element_id": "p3",
+      "message": "Boxes 'p3' and 'p3_badge' overlap horizontally in row (gap=-384px). Adjust positions.",
+      "detail": {
+        "box_a": "p3",
+        "box_b": "p3_badge",
+        "gap": -384.0
+      }
+    },
+    {
+      "rule": "element-overlap-row",
+      "element_id": "p4",
+      "message": "Boxes 'p4' and 'p4_badge' overlap horizontally in row (gap=-489px). Adjust positions.",
+      "detail": {
+        "box_a": "p4",
+        "box_b": "p4_badge",
+        "gap": -489.0
+      }
+    }
+  ],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['438', '97', '14', '14', '14', '14', '14'], mean=86, cv=1.69). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          438.0,
+          97.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 86.4,
+        "cv": 1.69,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "color-too-many-fills",
+      "element_id": "*",
+      "message": "9 distinct fill colors used across diagram. Palette is scattered — reduce to 3-6 fill colors. Colors: #1a1a1a, #e8f2ee, #eef2f7, #f4f4f6, #f7f9fc, #f8fbf9, #fafafb, #fbedec, #ffffff",
+      "detail": {
+        "fill_count": 9,
+        "colors": [
+          "#1a1a1a",
+          "#e8f2ee",
+          "#eef2f7",
+          "#f4f4f6",
+          "#f7f9fc",
+          "#f8fbf9",
+          "#fafafb",
+          "#fbedec",
+          "#ffffff"
+        ]
+      }
+    },
+    {
+      "rule": "orphan-empty-box",
+      "element_id": "p1",
+      "message": "Box 'p1' (385×395) has no text label. Add content or reduce size.",
+      "detail": {
+        "box_id": "p1",
+        "size": "385×395"
+      }
+    },
+    {
+      "rule": "orphan-empty-box",
+      "element_id": "p2",
+      "message": "Box 'p2' (560×395) has no text label. Add content or reduce size.",
+      "detail": {
+        "box_id": "p2",
+        "size": "560×395"
+      }
+    },
+    {
+      "rule": "orphan-empty-box",
+      "element_id": "p3",
+      "message": "Box 'p3' (400×395) has no text label. Add content or reduce size.",
+      "detail": {
+        "box_id": "p3",
+        "size": "400×395"
+      }
+    },
+    {
+      "rule": "orphan-empty-box",
+      "element_id": "p4",
+      "message": "Box 'p4' (505×395) has no text label. Add content or reduce size.",
+      "detail": {
+        "box_id": "p4",
+        "size": "505×395"
+      }
+    }
+  ],
+  "vertex_count": 47,
+  "edge_count": 13,
+  "canvas": "1987x562"
+}

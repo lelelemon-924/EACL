@@ -1,0 +1,93 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 4,
+    "fail": 0,
+    "warn": 4,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['438', '97', '14', '14', '14', '14', '14'], mean=86, cv=1.69). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          438.0,
+          97.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 86.4,
+        "cv": 1.69,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "sh_note",
+      "message": "Row at y≈272: horizontal gaps vary (gaps=['1135', '42'], mean=588, cv=0.93). Use uniform spacing.",
+      "detail": {
+        "row_y": 272,
+        "gaps": [
+          1135.0,
+          42.0
+        ],
+        "mean": 588.5,
+        "cv": 0.93,
+        "element_ids": [
+          "sh_note",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "frozen_arm_tag",
+      "message": "Row at y≈350: horizontal gaps vary (gaps=['109', '653'], mean=381, cv=0.71). Use uniform spacing.",
+      "detail": {
+        "row_y": 350,
+        "gaps": [
+          109.0,
+          653.0
+        ],
+        "mean": 381.0,
+        "cv": 0.71,
+        "element_ids": [
+          "frozen_arm_tag",
+          "pair_sources",
+          "ref_tag"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 39,
+  "edge_count": 17,
+  "canvas": "1987x562"
+}

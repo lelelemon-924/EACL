@@ -1,0 +1,45 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 1,
+    "fail": 0,
+    "warn": 1,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['438', '97', '14', '14', '14', '14', '14'], mean=86, cv=1.69). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          438.0,
+          97.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 86.4,
+        "cv": 1.69,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    }
+  ],
+  "vertex_count": 43,
+  "edge_count": 17,
+  "canvas": "1987x562"
+}

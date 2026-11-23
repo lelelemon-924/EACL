@@ -1,0 +1,144 @@
+{
+    "injected_packages": {},
+    "main_package": {
+        "app_paths": [
+            {
+                "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/aclpubcheck",
+                "__type__": "Path"
+            }
+        ],
+        "app_paths_of_dependencies": {
+            "cffi": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/cffi-gen-src",
+                    "__type__": "Path"
+                }
+            ],
+            "charset-normalizer": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/normalizer",
+                    "__type__": "Path"
+                }
+            ],
+            "numpy": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/f2py",
+                    "__type__": "Path"
+                },
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/numpy-config",
+                    "__type__": "Path"
+                }
+            ],
+            "pdfminer-six": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/dumppdf.py",
+                    "__type__": "Path"
+                },
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/pdf2txt.py",
+                    "__type__": "Path"
+                }
+            ],
+            "pdfplumber": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/pdfplumber",
+                    "__type__": "Path"
+                }
+            ],
+            "pybtex": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/pybtex",
+                    "__type__": "Path"
+                },
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/pybtex-convert",
+                    "__type__": "Path"
+                },
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/pybtex-format",
+                    "__type__": "Path"
+                }
+            ],
+            "pylatexenc": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/latex2text",
+                    "__type__": "Path"
+                },
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/latexencode",
+                    "__type__": "Path"
+                },
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/latexwalker",
+                    "__type__": "Path"
+                }
+            ],
+            "pypdfium2": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/pypdfium2",
+                    "__type__": "Path"
+                }
+            ],
+            "rebiber": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/rebiber",
+                    "__type__": "Path"
+                }
+            ],
+            "tqdm": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/tqdm",
+                    "__type__": "Path"
+                }
+            ],
+            "unidecode": [
+                {
+                    "__Path__": "/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/unidecode",
+                    "__type__": "Path"
+                }
+            ]
+        },
+        "apps": [
+            "aclpubcheck"
+        ],
+        "apps_of_dependencies": [
+            "tqdm",
+            "f2py",
+            "numpy-config",
+            "pdfplumber",
+            "dumppdf.py",
+            "pdf2txt.py",
+            "normalizer",
+            "cffi-gen-src",
+            "pypdfium2",
+            "rebiber",
+            "pybtex",
+            "pybtex-convert",
+            "pybtex-format",
+            "latex2text",
+            "latexencode",
+            "latexwalker",
+            "unidecode"
+        ],
+        "include_apps": true,
+        "include_dependencies": false,
+        "man_pages": [],
+        "man_pages_of_dependencies": [],
+        "man_paths": [],
+        "man_paths_of_dependencies": {},
+        "package": "aclpubcheck",
+        "package_or_url": "git+https://github.com/acl-org/aclpubcheck",
+        "package_version": "0.1",
+        "pinned": false,
+        "pip_args": [],
+        "suffix": ""
+    },
+    "pipx_metadata_version": "0.5",
+    "python_version": "Python 3.13.3",
+    "source_interpreter": {
+        "__Path__": "/opt/homebrew/opt/python@3.13/libexec/bin/python",
+        "__type__": "Path"
+    },
+    "venv_args": []
+}

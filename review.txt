@@ -1,0 +1,220 @@
+OpenReview
+.net
+
+Notifications
+Activity
+Tasks
+Lesen Zhao 
+back arrowGo to ACL ARR 2026 August homepage
+Refusal Is Not Recovery: Same-State Preference Optimization from Unsafe Generation States
+Download PDF
+Lesen Zhao, Tingkai Mu, Zejia Liu, Jun Xu 
+04 Aug 2026 (modified: 07 Sep 2026)
+ACL ARR 2026 August Submission
+August, Senior Area Chairs, Area Chairs, Reviewers, Authors
+Revisions
+CC BY 4.0
+Keywords: large language model safety, safety alignment, unsafe generation states, state-conditional recovery, direct preference optimization, jailbreak robustness, red teaming
+Abstract:
+Safety alignment is evaluated at the conversation root: does the model refuse a harmful request? But generation repeatedly re-enters partially unsafe states—after a prefill, a contaminated tool result, or multi-turn drift—and root refusal does not determine whether the model recovers from them. When we hold the reached state fixed and vary only the continuation, 47.9% of examples with a positive root safety margin have a negative same-state recovery margin. The margin’s lower-tail aggregate over a prompt’s weakest states (LTRM) predicts held-out attack success better than root-level margins under a fully separated protocol (AUROC 0.779 vs. 0.648). CURE-DPO trains on this signal: it ranks recovery against harmful continuations from the same reached state, concentrates updates on each prompt’s hardest states, and anchors clean-safety and benign behavior. It lowers mid-generation attack success from 58.6% to 20.2%, below matched reproductions of five published defenses. A factorial analysis decomposes the gain into contributions from same-state conditioning, pairwise ranking, and lower-tail selection; the gain persists on a second model family, at unseen depths, on naturally occurring states, and under an adaptive attack. Root refusal is insufficient: state-conditional recovery is a complementary alignment target.
+
+Paper Type: Long
+Research Area: Language Modeling
+Research Area Keywords: safety, security, red teaming, adversarial attacks, fine-tuning, robustness
+Contribution Types: Model analysis & interpretability, NLP engineering experiment
+Languages Studied: English
+Reassignment Request Area Chair: This is not a resubmission
+Reassignment Request Reviewers: This is not a resubmission
+Author Submission Checklist: yes
+A1 Potential Risks: Yes
+A1 Elaboration: Ethical Considerations (pp. 8–9) discusses dual use, harmful-content exposure, release restrictions, over-refusal, and mitigation through redaction and withholding actionable artifacts.
+B Use Or Create Scientific Artifacts: Yes
+B1 Cite Creators Of Artifacts: Yes
+B1 Elaboration: Sections 2, 5.1, and 5.4 and Appendices C, E, and I cite the datasets, models, evaluators, benchmarks, and reproduced defenses.
+B2 Discuss The License For Artifacts: Yes
+B2 Elaboration: Ethical Considerations (“Artifact release”) and Appendix C discuss source licenses, non-commercial research restrictions, permitted use, and inherited restrictions.
+B3 Data Contains Personally Identifying Info: N/A
+B3 Elaboration: We do not release any artifacts. All prompt sources are public safety benchmarks that contain no personally identifying information, and no personal or user data was collected (Ethical Considerations).
+B4 Data Contains Offensive Content: Yes
+B4 Elaboration: Ethical Considerations (pp. 8–9) and Appendices B, C, and M describe redaction, non-redistribution of raw harmful continuations, withholding the harmful branch pool/mining outputs, and release of only a small redacted pair pool.
+B5 Documentation Of Artifacts: Yes
+B5 Elaboration: Sections 5.1–5.4 and Appendices B–E and I document sources, English-language scope, construction, filtering, splits, models, training, evaluation, and release contents.
+B6 Statistics For Data: Yes
+B6 Elaboration: Sections 5.1 and 5.4 and Appendices B, C, and E report prompt/pair counts, train/dev/test splits, filtering yields, and evaluation denominators.
+C Computational Experiments: Yes
+C1 Model Size And Budget: Yes
+C1 Elaboration: Section 5.1 and Appendix D, including Table 4, report the model sizes, computing infrastructure, training GPU-hours, hard-state mining cost, number of GPUs, GPU memory, precision, batch size, and random seeds. The primary model is Qwen3.5-9B and the replication model is Llama-3.1-8B-Instruct; runs use 4×A100 80GB GPUs.
+C2 Experimental Setup And Hyperparameters: Yes
+C2 Elaboration: Sections 4.2–4.4 and 5.1 and Appendices B, D, E, I, and K describe the objectives, state selection, data construction, optimizer, learning-rate search, selected hyperparameters, anchor-weight selection, batch composition, decoding settings, training schedule, evaluator settings, and ablations. Hyperparameters are selected on development data, and no test metric is used for model or checkpoint selection.
+C3 Descriptive Statistics: Yes
+C3 Elaboration: Section 5.5, the result tables, and Appendix L report means and seed standard deviations over three runs, prompt-clustered paired bootstrap confidence intervals with 10,000 replicates, sample sizes, and the distinction between seed-level and prompt-level uncertainty.
+C4 Parameters For Packages: Yes
+C4 Elaboration: Section 5.4 and Appendices D, E, I, and L.5 identify the implementations, checkpoints, decoding settings, thresholds, prompts, and parameter settings used for HarmBench, StrongREJECT, WildGuard, Llama Guard, the fourth LLM judge, DeepSpeed ZeRO-3, and the reproduced defenses.
+D Human Subjects Including Annotators: Yes
+D1 Instructions Given To Participants: Yes
+D1 Elaboration: The annotation inputs, label set, decision rule, sampling procedure, independent labeling, and adjudication are described in Section 5.4 and Appendix L.3; outcome categories are defined in Appendix M.
+D2 Recruitment And Payment: N/A
+D2 Elaboration: All annotations were provided by the authors of the submission (Ethical Considerations; Appendix L.3). No external annotators were recruited, paid, or exposed to harmful text.
+D3 Data Consent: N/A
+D3 Elaboration: The study did not collect data from external human participants, and all annotations were performed by the authors. No personal or user data were collected.
+D4 Ethics Review Board Approval: N/A
+D4 Elaboration: No data was collected from human participants. All labeling was done by the authors on publicly released benchmark data, so no ethics review board protocol applied.
+D5 Annotator Population: N/A
+D5 Elaboration: All annotations were provided by the authors, so an external annotator population and its demographic or geographic characteristics are not applicable.
+E Ai Assistants In Research Or Writing: Yes
+E1 Information About Use Of Ai Assistants: Yes
+E1 Elaboration: AI assistants were used for writing polish and for coding and analysis support, under author supervision. All experimental design, execution, results, and claims were produced and verified by the authors, who take full responsibility for the content of the paper. No AI system meets the authorship criteria and none is listed as an author.
+TLDR: CURE-DPO trains LLMs to recover from partially unsafe generation states using same-state preference pairs and lower-tail state selection, reducing mid-generation attack success from 58.6% to 20.2%.
+Preprint: no
+Preprint Status: We are considering releasing a non-anonymous preprint in the next two months (i.e., during the reviewing process).
+Preferred Venue: EACL
+Visa Needs: yes
+Country Of Origin: CN
+Consent To Share Data: yes
+Consent To Share Submission Details: On behalf of all authors, we agree to the terms above to share our submission details.
+Association For Computational Linguistics - Blind Submission License Agreement: On behalf of all authors, I agree
+Submission Number: 2632
+Discussion
+Filter by reply type...
+
+Filter by author...
+
+
+
+
+3 / 3 replies shown
+Add:
+Official Review of Submission2632 by Reviewer u76e
+Official Reviewby Reviewer u76e08 Sep 2026 at 18:38 (modified: 15 Sep 2026 at 22:27)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Reviewer u76e, AuthorsRevisions
+Paper Summary:
+Building on prior work showing that LLM safety can deteriorate when generation continues from unsafe prefilled states, this paper focuses on quantifying and improving recovery from such states.
+The authors quantify a model’s ability to recover when generation begins from a given state and define LTRM, which summarizes performance over the lower tail of this recovery distribution. They show that LTRM predicts attack susceptibility more accurately than alternative metrics.
+The paper proposes CURE-DPO, a training method designed to improve recovery from unsafe generation states, and demonstrates improvements over several prior methods and baselines.
+Summary Of Strengths:
+Prefill attacks can pose a significant problem for open-weight models. Developing effective defenses against such attacks is therefore highly valuable.
+The paper evaluates the proposed method under several settings and demonstrates that it outperforms the compared methods.
+Summary Of Weaknesses:
+The rationale for selecting the prior methods used as baselines is unclear. The paper states, “We reproduce the five most directly comparable training-time defenses under our recipe (Section 5.3).” (L163–165), but it should explain more clearly why other relevant methods are excluded from the comparison.
+The paper states that “Jailbreak prefills, tool outputs, retrieved passages, multi-turn drift, and the model’s own partial completions all push generation into states that were never present at the root.” (L44–46), suggesting a broad range of realistic scenarios in which unsafe generation states may arise. However, the empirical evaluation is relatively toy-like and does not adequately cover these diverse settings.
+The manuscript appears incomplete in its current form, with many important concepts and details insufficiently explained. Examples include the following:
+The introduction begins with, “Safety alignment for large language models is predominantly measured at the conversation root: given a harmful request, does the model refuse?” However, the term “conversation root” is unlikely to be widely understood outside researchers already familiar with prefill attacks. The paper should introduce the underlying concept more explicitly before using this terminology.
+Section 3.2 omits definitions of several variables/concepts. Although some of them appear in Figure 1, they should also be explicitly defined in the main text. Similarly, several variables in Equation (9) in Section 4.4 are not adequately explained.
+The paper states, “Section 6.5 sweeps K and softmax-weighted alternatives.” (L303–304), but the corresponding section does not appear to discuss softmax-weighted alternatives. This information may be included in the appendix, but the main paper should be sufficiently self-contained.
+The explanations of AUROC and Figure 3(a) are insufficient.
+Comments Suggestions And Typos:
+As stated in the Summary of Weaknesses.
+
+Confidence: 3 =  Pretty sure, but there's a chance I missed something. Although I have a good feel for this area in general, I did not carefully check the paper's details, e.g., the math or experimental design.
+Soundness: 3 = Acceptable: This study provides sufficient support for its main claims. Some minor points may need extra support or details.
+Excitement: 3.5
+Overall Assessment: 2.5 = Borderline Findings
+Ethical Concerns:
+There are no concerns with this submission
+
+Needs Ethics Review: No
+Reproducibility: 4 = They could mostly reproduce the results, but there may be some variation because of sample variance or minor variations in their interpretation of the protocol or method.
+Datasets: 1 = No usable datasets submitted.
+Software: 1 = No usable software released.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+Publication Ethics Policy Compliance: I used a privacy-preserving tool exclusively for the use case(s) approved by PEC policy, such as language edits
+Add:
+
+Author-Editor Confidential Comment
+
+Official Comment
+
+Author Response
+Official Review of Submission2632 by Reviewer ptEw
+Official Reviewby Reviewer ptEw08 Sep 2026 at 14:09 (modified: 15 Sep 2026 at 22:27)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Reviewer ptEw, AuthorsRevisions
+Paper Summary:
+This paper argues that root-level refusal—the dominant safety-alignment metric—does not determine whether a model recovers once it has already entered an unsafe generation state (e.g., after a jailbreak prefix, tool output, or multi-turn drift). The authors formalize a same-state recovery margin comparing recovery and harmful branches conditioned on an identical reached state, and introduce LTRM (Lower-Tail Recovery Margin), an offline diagnostic that aggregates margins over a model's weakest states. They show LTRM predicts held-out attack success better than root-level metrics (AUROC 0.779 vs. 0.648) and that 47.9% of examples with a positive root-level safety margin actually have a negative same-state recovery margin—a "preference reversal." Building on this diagnosis, they propose CURE-DPO, which trains DPO on same-state pairs where both branches share an identical reached state and only the continuation differs, with state selection targeting the highest-loss states per prompt. Experiments on Qwen3.5-9B (with a Llama-3.1-8B replication) across four unsafe-state evaluation suites show CURE-DPO reduces mid-generation attack success from 58.6% to 20.2%, outperforming five reproduced external defenses and several internal factorial baselines while maintaining clean ASR and acceptable utility trade-offs.
+
+Summary Of Strengths:
+The distinction between "refusing at the root" and "recovering from an already-unsafe state" is well-motivated and under-explored, and the preference-reversal finding (47.9%) is a striking, concrete result that convincingly demonstrates root-level metrics are insufficient for measuring safety alignment.
+Extensive experiments: four distinct unsafe-state suites (constructed insertions, unseeded depths, naturally occurring states, adaptive attacks), a full internal factorial ablation isolating conditioning from objective choice, five reproduced external defenses under matched recipe, two model families, three seeds, and human-annotated labels. The factorial decomposition (Table 2) and prefix-unmasked control (26.0 vs. 26.2) cleanly show the gain comes from state selection rather than masking artifacts.
+Summary Of Weaknesses:
+Although the reached state is byte-for-byte frozen, the recovery and harmful branches are mined from different sources (PKU-SafeRLHF/BeaverTails vs. harmful generations) and then filtered for compatibility. The claim that "only the continuation differs" holds at the token level, but the distribution of continuations may differ in style, specificity, or topic coherence beyond the safety label, potentially confounding the preference signal; the paper does not fully rule out that the model learns stylistic or topical preferences rather than pure safety recovery.
+Experiments are limited to two 8–9B instruction-tuned models with one full-parameter recipe, with no evaluation of larger models (70B+), RLHF-only models, or reasoning-style models.
+The comparison to Recovery SFT may be under-optimized: it is unclear whether Recovery SFT receives the same state selection, per-state weighting, lower-tail aggregation, and training schedule as CURE-DPO, so the observed gap could be attributable to the aggregation strategy rather than DPO itself—a "Recovery SFT + lower-tail state aggregation" cell would more fairly isolate the objective's contribution.
+Over-refusal and utility evaluation is narrow—measured only at ORR on XSTest/OR-Bench-Hard plus IFEval and MMLU-Pro—and the paper explicitly does not measure mid-generation behavior on benign long-form prompts, which is precisely where a recovery-oriented objective might cause the most collateral damage (e.g., prematurely refusing a benign technical discussion that passes through a "risky-looking" intermediate state).
+Comments Suggestions And Typos:
+Please refer to the weakness section.
+
+Confidence: 4 = Quite sure. I tried to check the important points carefully. It's unlikely, though conceivable, that I missed something that should affect my ratings.
+Soundness: 3.5
+Excitement: 3.5
+Overall Assessment: 2.5 = Borderline Findings
+Ethical Concerns:
+There are no concerns with this submission
+
+Reproducibility: 3 = They could reproduce the results with some difficulty. The settings of parameters are underspecified or subjectively determined, and/or the training/evaluation data are not widely available.
+Datasets: 1 = No usable datasets submitted.
+Software: 1 = No usable software released.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+Publication Ethics Policy Compliance: I used a privacy-preserving tool exclusively for the use case(s) approved by PEC policy, such as language edits
+Add:
+
+Author-Editor Confidential Comment
+
+Official Comment
+
+Author Response
+Official Review of Submission2632 by Reviewer FaVn
+Official Reviewby Reviewer FaVn07 Sep 2026 at 18:47 (modified: 15 Sep 2026 at 22:27)Program Chairs, Senior Area Chairs, Area Chairs, Reviewers Submitted, Reviewer FaVn, AuthorsRevisions
+Paper Summary:
+This paper introduces CURE-DPO, a preference optimization method that improves LLM safety by focusing on recovery from unsafe generation states rather than only evaluating initial refusal behavior. The authors show that a model can refuse harmful prompts at the conversation root but still continue harmful generations after reaching partially unsafe states. They propose same-state recovery margins and lower-tail recovery metrics to identify vulnerable states, then train models by ranking safe and harmful continuations from identical states.
+
+Summary Of Strengths:
+The paper identifies an important limitation of existing safety alignment methods by moving evaluation from root-level refusal to state-conditional recovery. This provides a more realistic analysis of multi-turn, tool-augmented, and partially compromised generation scenarios.
+The proposed same-state preference optimization provides a clear training objective that directly targets recovery behavior. The factorial analysis effectively separates the contributions of state conditioning, pairwise ranking, and lower-tail state selection.
+Summary Of Weaknesses:
+The evaluation is limited to two text-only instruction models, Qwen3.5-9B and Llama-3.1-8B-Instruct, with three random seeds. It remains unclear whether the observed improvements generalize to larger models, multimodal systems, or reasoning-focused models.
+The proposed recovery metrics depend on sampled unsafe states and constructed harmful/recovery branches. Since these states may not cover the full reachable generation space, the method may miss failure modes outside the sampling distribution.
+Comments Suggestions And Typos:
+Evaluate CURE-DPO on larger frontier models and more diverse model families to verify whether same-state recovery behavior scales consistently.
+Provide a detailed analysis of which types of unsafe states contribute most to performance gains, such as jailbreak prefixes, tool contamination, or multi-turn drift.
+Compare CURE-DPO with additional inference-time safety methods to clarify whether training-time recovery optimization provides complementary benefits.
+Include experiments on longer agentic trajectories beyond 512 tokens to evaluate recovery behavior in realistic extended interactions.
+Analyze the trade-off between improved recovery and potential over-refusal in benign long-form conversations, especially for professional or technical domains.
+Confidence: 4 = Quite sure. I tried to check the important points carefully. It's unlikely, though conceivable, that I missed something that should affect my ratings.
+Soundness: 2.5
+Excitement: 3 = Interesting: I might mention some points of this paper to others and/or attend its presentation in a conference if there's time.
+Overall Assessment: 2.5 = Borderline Findings
+Ethical Concerns:
+There are no concerns with this submission
+
+Needs Ethics Review: No
+Reproducibility: 4 = They could mostly reproduce the results, but there may be some variation because of sample variance or minor variations in their interpretation of the protocol or method.
+Datasets: 4 = Useful: I would recommend the new datasets to other researchers or developers for their ongoing work.
+Software: 4 = Useful: I would recommend the new software to other researchers or developers for their ongoing work.
+Knowledge Of Or Educated Guess At Author Identity: No
+Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Knowledge Of Paper Source: N/A, I do not know anything about the paper from outside sources
+Impact Of Knowledge Of Paper: N/A, I do not know anything about the paper from outside sources
+Reviewer Certification: I certify that the review I entered accurately reflects my assessment of the work. If you used any type of automated tool to help you craft your review, I hereby certify that its use was restricted to improving grammar and style, and the substance of the review is either my own work or the work of an acknowledged secondary reviewer.
+Publication Ethics Policy Compliance: I used a privacy-preserving tool exclusively for the use case(s) approved by PEC policy, such as language edits
+Add:
+
+Author-Editor Confidential Comment
+
+Official Comment
+
+Author Response
+About OpenReview
+Contact
+FAQ
+Hosting a Venue
+Sponsors
+Terms of Use / Privacy Policy
+All Venues
+Donate
+News
+OpenReview is a long-term project to advance science through improved peer review with legal nonprofit status. We gratefully acknowledge the support of the OpenReview Sponsors. © 2026 OpenReview

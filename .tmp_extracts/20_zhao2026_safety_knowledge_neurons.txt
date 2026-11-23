@@ -1,0 +1,944 @@
+
+===== PAGE 1 =====
+Unraveling LLM Jailbreaks Through Safety Knowledge Neurons
+Chongwen Zhao, Yutong Ke, Kaizhu Huang *
+Duke Kunshan University
+{chongwen.zhao, yutong.ke, kaizhu.huang}@dukekunshan.edu.cn
+Abstract
+Large Language Models (LLMs) have
+achieved substantial progress in alignment,
+ensuring safer and more reliable outputs.
+However, jailbreak attacks can still bypass
+these safeguards and provoke harmful re-
+sponses from well-aligned models. While
+some studies have achieved defenses against
+jailbreak attacks by modifying output dis-
+tributions or detecting harmful content, the
+exact rationale still remains elusive. In this
+work, we present a novel neuron-level inter-
+pretability method that focuses on the role
+of safety-related knowledge neurons. Unlike
+existing approaches, our method projects the
+model’s internal representation into a more
+consistent and interpretable vocabulary space.
+We then show that adjusting the activation of
+safety-related neurons can effectively control
+the models behavior with a mean ASR higher
+than 97%. Building on this insight, we pro-
+pose SafeTuning, a ﬁne-tuning strategy that
+reinforces safety-critical neurons to improve
+model robustness against jailbreaks. Safe-
+Tuning consistently reduces attack success
+rates across multiple LLMs and outperforms
+all four baseline defenses. These ﬁndings
+offer a new perspective on understanding and
+defending against jailbreak attacks.
+Warning: this paper may contain offensive
+prompts and outputs.
+1 Introduction
+Large Language Models (LLMs) have attracted
+signiﬁcant attention and widespread application
+within the ﬁeld of artiﬁcial intelligence, with
+prominent examples including chatbots such as
+ChatGPT ( Achiam et al. , 2023) and Llama ( Tou-
+vron et al., 2023). Despite their impressive capabil-
+ities, a critical concern persists: these models can
+inadvertently generate inappropriate or harmful
+content, including biased, illegal, pornographic, or
+*Corresponding author.
+Figure 1: (a) Our interpretation method for safety
+knowledge. (b) Different activation patterns between
+harmful and benign prompts. (c) Adjusting responses
+by adjusting activations.
+deceptive material ( Weidinger et al. , 2021). To
+address these risks, researchers have developed
+a range of alignment algorithms ( Ouyang et al. ,
+2022; Song et al. , 2024). These techniques enable
+chatbots to recognize and decline prompts that at-
+tempt to solicit harmful or unethical responses.
+However, researchers have discovered that care-
+fully crafted jailbreak prompts can bypass align-
+ment safeguards, introducing new challenges for
+ensuring the safety of LLM outputs ( Zou et al. ,
+2023; Liu et al., 2024; Wei et al., 2024a). While ef-
+forts to counter such attacks are ongoing, prompt-
+based defenses that aim to detect or manipulate
+user inputs have shown limited practicality due
+to signiﬁcant performance degradation ( Xie et al. ,
+2023; Jain et al. , 2023; Wei et al. , 2023). In re-
+sponse, researchers have shifted focus to decoding-
+based defense strategies ( Robey et al. , 2024; Xu
+et al., 2024a; Zhao et al., 2024, 2026). Rather than
+intervening at the prompt level, decoding-based
+defenses operate on the models internal mech-
+anisms during generation, preserving core func-
+arXiv:2509.01631v2  [cs.AI]  21 Jan 2026
+
+===== PAGE 2 =====
+tionality while enhancing safety, making them a
+promising solution for mitigating jailbreak vulner-
+abilities. Methods such as Smooth-LLM ( Robey
+et al., 2024) attempt to counter character-sensitive
+adversarial sufﬁxes by generating multiple re-
+sponses with random dropouts. SafeDecoding
+(Xu et al. , 2024a) increases the likelihood of gen-
+erating disclaimers to suppress harmful outputs.
+Despite the effectiveness, current decoding-based
+defense techniques offer limited insight into the
+underlying mechanisms of jailbreak attacks. A
+deeper understanding of LLM jailbreak remains a
+crucial gap in developing robust models and their
+defenses.
+More recently, studies have shown that knowl-
+edge is stored in the MLP layers of the transformer
+structure of LLM ( V oita et al., 2023). Scientists
+have introduced techniques to identify and ana-
+lyze key neurons associated with model behavior
+(Y ao et al., 2025; Achtibat et al. , 2024; Wei et al.,
+2024b). In this work, we ﬁrst extend this concept
+to LLM jailbreak. We propose a new method for
+identifying and interpreting safety-related knowl-
+edge neurons involved in safety decision-making
+within the MLP layers, as shown in Figure 1(a).
+With our method, the knowledge of neurons can
+be interpreted into a vocabulary table with human-
+understandable keywords. As illustrated in Fig-
+ure 1(b), our key ﬁnding reveals that model be-
+havior shows regular duality: the model will acti-
+vate “Rejection" knowledge for harmful prompts,
+or “Conformity" knowledge for benign prompts.
+Unlike previous studies’ observation in Zhou et al.
+(2024) and Zou et al. (2025) that directly trans-
+late model’s internal hidden states using vocab-
+ulary projecting matrix, where this different pat-
+tern is performed by excursive emotional tokens in
+middle layers (after the 16th layer) and somehow
+turns into refusal or conform decision at late lay-
+ers, our method translate this difference right after
+the activation of safety critical knowledge neurons.
+Consequently, we observe conceptually coherent
+refusal or conformity tokens emerging as early as
+the 10th layer and persisting throughout the subse-
+quent layers of the model, as shown in Figure 2.
+Following our novel interpretation method, we
+introduce ActCali, an embedding-level attack
+method that causally manipulates the activation of
+safety neurons through targeted calibration. By
+moving the “Rejection" activation towards the
+“Conformity" activation, the well-aligned model
+could easily respond to a harmful request. In
+the opposite direction, the model will reject any
+prompts despite their innocuous semantic informa-
+tion. This attack method can be abstracted into
+the process illustrated in Figure 1(c). Our exper-
+iments on two models and two subtasks demon-
+strate near-perfect attack success rates with only
+modifying 0.3% parameters, surpassing all exist-
+ing representation-level attack baselines. This re-
+sult validates the exactness of our interpretation
+method, providing strong evidence that the iden-
+tiﬁed safety-critical neurons play a causal role in
+the model’s aligned behavior.
+Building on this insight, we propose SafeTun-
+ing to ﬁne-tune these safety knowledge neurons to
+construct a better defending barrier. Speciﬁcally,
+we identify and isolate safety-critical activations
+within the model. By manipulating these activa-
+tions to generate refusal responses, we construct
+a dataset comprising (harmful prompt, safety re-
+sponse) pairs. This dataset is then used to jointly
+ﬁne-tune the identiﬁed safety/refusal neurons and
+their upstream activation pathways, enhancing its
+robustness against jailbreak without modifying the
+model’s fundamental abilities. Our experiments
+on four baselines and ﬁve tasks demonstrate that
+SafeTuning substantially reduces the attack suc-
+cess rate (ASR) across LLMs, demonstrating its ef-
+fectiveness as a reliable defense strategy for large
+language models.
+In summary, our contributions are three-fold:
+• Interpretability of model jailbreak: We pro-
+pose a novel method for interpreting model jail-
+break by projecting knowledge neuron activa-
+tions into vocabulary space. This might offer a
+new perspective for understanding how the mod-
+els output decisions towards conformity and re-
+jection.
+• Safety Neuron dominates model behavior:
+We propose ActCali and empirically show that
+the behavior of a model can be controlled via
+calibrating the activation of safety knowledge
+neurons. This enables us to steer the mod-
+els responses toward either refusal or confor-
+mity, achieving a 97% ASR in strong alignment
+trained models.
+• Enhancing defense via ﬁne-tuning: Based on
+our ﬁndings, we propose SafeTuning, a defense
+strategy that only ﬁne-tunes the model’s safety
+knowledge to strengthen its resistance to jail-
+break prompts. SafeTuning effectively reduces
+
+===== PAGE 3 =====
+attack success rates across LLM models.
+2 Preliminaries
+We ﬁrst deﬁne the key notations used in this paper.
+Jailbreak. The jailbreak process aims to con-
+struct an adversarial prompt to elicit a harmful out-
+put of LLMs. Let θ denote a language model. The
+process
+max
+x1:s
+|xs+1:|Y
+i=0
+pθ (xs+i | x1:s+i) ,
+where ∃i, j such that xi:j is a harmful question and
+xs+1: starting with “Sure, here is ..." instead of a
+disclaimer or rejection response.
+Harmful Prompts and Benign Prompts.
+Harmful prompts are straightforward requests for
+harmful or illegal behavior. In contrast, benign
+prompts are user prompts that adhere to ethical
+guidelines, requesting assistance from LLMs with-
+out violating any norms.
+Knowledge Neurons. Previous studies
+(Achtibat et al., 2024; Dai et al., 2022; V oita et al.,
+2023) show that human interpretable knowledge
+neurons could be found in the MLP structure
+of the transformer layer. These neurons encode
+factual knowledge and, therefore, after activation,
+could be mapped into a word embedding. By pro-
+jecting the word embedding into the vocabulary
+table, we can interpret the meaning of knowledge
+neurons. Formally, let l denote the MLP structure
+of l-th transformer layer. Considering the process
+of generating the next token, the computation
+process here can be deﬁned as
+el = σ(slΘup
+l )Θdown
+l ,
+where el ∈ R1×d denotes the output of the MLP
+structure, d is the dimension of model embedding
+space. sl ∈ R1×d denotes the output of attention
+score at the l-th layer, σ denote the activation func-
+tion of MLP ,Θup
+l ∈ Rd×w and Θdown
+l ∈ Rw×d de-
+note the weight matrix of MLP at layer l, where w
+denote the dimension of the transformer MLP hid-
+den space. By calculating the attention score and
+projecting the score into word space, we could ac-
+cess the knowledge neuron located in Θdown. We
+denote the i-th row of Θdown as knowledge neuron
+ri
+l .
+3 Identifying Safety Knowledge Neurons
+Although concurrent work ( Lin et al. , 2024)
+demonstrates that well-aligned LLMs can effec-
+tively distinguish between benign and harmful
+prompts within the model’s latent space, the mech-
+anisms behind alignment remain under debate. To
+gain a deeper understanding of how LLMs could
+refuse harmful requests, we further investigate the
+behavior of LLMs.
+3.1 Safety Knowledge Neurons inside LLM
+Several studies ( LeCun et al. , 1989; Sun et al. ,
+2024; Han et al. , 2015) have focused on reduc-
+ing a subset of network weights while minimizing
+performance degradation. Critical neurons for spe-
+ciﬁc functions can be identiﬁed through sensitivity
+analysis (Sundararajan et al., 2017).
+Let ri
+l denote the i-th knowledge neuron of layer
+l. Utilizing i-th column of matrix Θup
+l , which
+can be denoted by θi
+l , the scalar activation of this
+knowledge neuron ri
+l can be represented by:
+ai
+l = σ(slθi
+l ).
+The contribution c to the output of the layer of each
+knowledge neuron can be calculated by:
+ci
+l = ai
+l × ∥ri
+l ∥.
+For each layer, we follow Shen et al. (2024), re-
+garding neurons that receive top-k rscore among
+all ci
+l values as important knowledge neurons, con-
+structing a knowledge neuron set as N .
+Nl =
+n
+ri
+l
+ i ∈ TopK
+
+{cj
+l }w
+j=1, ⌈k w⌉
+o
+,
+N =
+L[
+l=1
+Nl.
+Therefore, we can get the safety knowledge neu-
+rons set Ns by feeding the LLM with a harmful
+query corpus H, which can be represented by:
+Ns = {ri
+l | ∀ri
+l ∈ N , for all N by feeding H}
+However, we found that isolating and calibrat-
+ing safety knowledge neurons alone signiﬁcantly
+degrades the LLM’s performance. Similar phe-
+nomena have been reported in other studies (Wang
+et al. , 2024). Directly altering the activation
+of such “All-Shared" neurons reduces the LLM’s
+overall capacity, as demonstrated in Section 6. To
+address this, we introduce a baseline benign query
+corpus B, and calculate the fundamental neuron
+set Nf by:
+Nf = {ri
+l | ∀ri
+l ∈ N , for all N by feeding B}
+
+===== PAGE 4 =====
+Figure 2: Interpretation of the safety knowledge neuron in Llama-2 on the vocabulary table.
+Finally, we disregard the knowledge neurons for
+fundamental understanding. The reﬁned safety
+neuron set Nr can be represented by:
+Nr = Ns − Nf.
+3.2 Interpreting Model Safety by V ocabulary
+Recent studies ( Shen et al. , 2024; Lin et al. , 2024)
+show that the hidden states of benign prompts
+and harmful prompts are distinguishable in deeper
+layers. Zhou et al. (2024) process hidden states
+from middle layers, yielding emotional tokens.
+These works emphasize representation but lack
+ﬁne-grained observation and control.
+In this work, we focus on the safety knowledge
+neurons and explain the effectiveness of alignment
+with a ﬁner grain. Inspired by V oita et al. (2023),
+which extracts words from knowledge neurons,
+and aiming to investigate how safety knowledge
+neurons respond to benign and harmful prompts,
+we propose projecting the activation values ai
+l of
+the set Nr into the vocabulary table.
+Formally, we record the representation p of cor-
+pus B and H at layer l in terms of safety neuron
+set, denoted as pB and pH:
+pB
+l = 1
+|B|
+X
+r∈Nr
+b∈B
+ab
+l × r
+pH
+l = 1
+|H|
+X
+r∈Nr
+h∈H
+ah
+l × r
+where ab
+l and ah
+l denote the activation value of
+corresponding knowledge neuron r when feeding
+harmful corpus and benign corpus, and p ∈ Rd.
+We deﬁne Top-T token Gd
+l at layer l for hidden
+state input p as:
+Gd
+l = Top-T (Γ(p)) ,
+where Γ denotes the projection matrix from model
+embedding space to token space.
+Next, we conduct PCA dimension reduction to
+visualize the activation value. Figure 2 shows the
+activation value for benign and harmful prompts.
+Our observation is that these activation values are
+linearly separable through all layers. We then de-
+ﬁne the compliance direction dc and rejection di-
+rection dr as:
+dc = pB − pH, d r = pH − pB,
+Following the direction of the arrows, the model
+activates the corresponding neuron, leading to re-
+fusal behavior or compliance behavior for input
+prompts.
+Experiment Setup We randomly select 100 be-
+nign prompts from AlpacaEval ( Li et al. , 2023)
+and 100 harmful prompts from AdvBench ( Zou
+et al., 2023). We use Llama-2-7b-chat and Vicuna-
+1.5 models, which are well-aligned models. We
+set t = 3 and k = 2.5%.
+Result The result of Gd
+l of each layer is shown
+in Figure 2 and Table 7, this pattern not only ex-
+ists at the last index of the token but also emerges
+at several tokens before the last index token. Ad-
+ditionally, we draw arrows in two colors: the blue
+arrows represent the compliance activation direc-
+tion dc, while the red arrows represent the rejec-
+tion activation direction dr. We successfully iden-
+tify safety knowledge neurons in the middle to late
+layers, whose projections are interpretable and ex-
+hibit distinct patterns for benign versus harmful
+
+===== PAGE 5 =====
+Model Attack AdvBench AlpacaEval
+ASR↑ Harmful Score↑ Language Score↑ ASR↑ Useful Score↓ Language Score↑
+Vicuna
+Logit Graft 100% 4.62 7.13 66% 4.76 8.00
+SCA V 79% 3.58 7.06 6% 5.86 7.25
+Soft Embedding 98% 4.18 4.82 96% 3.56 5.06
+ActCali 100% 4.62 7.07 92% 3.00 7.25
+Llama2
+Logit Graft 0% 1.00 8.94 22% 5.16 7.87
+SCA V 85% 4.18 7.05 68% 3.78 6.06
+Soft Embedding 87% 3.30 7.00 98% 3.76 5.40
+ActCali 99% 4.01 8.00 100% 3.02 7.20
+Table 1: Main result when applying ActCali and baselines to Vicuna and Llama2.
+prompts. For benign prompts, compliance neu-
+rons are activated, producing words such as “An-
+swer, Why, Execute, Safety". In contrast, harmful
+prompts trigger refusal-related words like “Impos-
+sible, controvers, Ban, Cannot". After these acti-
+vation values are added into the residual ﬂow until
+the last layer, the model ﬁnally outputs a rejection
+response or a compliance response.
+4 Achieving Jailbreak via Calibrating
+Safety Knowledge Activations
+Building on our new interpretation method pro-
+posed on Section 3, we propose an attack method
+by calibrating their activation values during gener-
+ation to simulate the model’s response to different
+prompt patterns, namely ActCali. The calibrated
+generation process for the MLP layer with param-
+eter α could be expressed as:
+e
+′
+l = σ(slΘup
+l )Θdown
+l + αd,
+where d could be either compliance direction dc
+or rejection direction dr. We hypothesize that in-
+creasing the "compliance" direction in response to
+harmful prompts will lead the model to generate
+harmful outputs, while enhancing the "rejection"
+direction for benign prompts will cause the model
+to decline the request, regardless of its semantic
+content. Note that we only calibrate safety neuron
+activations, keeping the model’s general ability is
+not being affected. Since our method does not in-
+volve the computation of model gradients, the in-
+ference time remains consistent with standard in-
+ference.
+4.1 Experiment Setup
+Dataset and Settings. We mainly consider con-
+trolling the model’s behavior of compliance and
+refusal. Therefore, we randomly select 100 be-
+nign prompts from the AlpacaEval dataset and
+100 harmful prompts from the AdvBench dataset,
+and our goal is to make the model refuse benign
+prompts and comply with harmful prompts. To
+avoid data leakage, we excluded prompts that have
+been applied in Section 3.2, and set parameter
+α = 3 and calibrated token depth as 5 for both
+model Vicuna and Llama-2-chat. This operation
+resulted in a total parameter change of about 0.3%.
+Baseline We selected 3 state-of-the-art accessi-
+ble white box representation level attack methods
+as our baseline. Logit Graft exchanges the mid-
+layer’s hidden state of benign and harmful prompts
+to induce the model to reply to harmful prompts
+(Zhou et al., 2024). SCA V attacks for multiple lay-
+ers of LLMs to simulate the characterization of in-
+nocuous cues inside the model ( Xu et al. , 2024b).
+Soft embedding aims to change the embedding
+of sufﬁxes to maximize the desired output and,
+therefore, requires a targeted goal ( Schwinn et al. ,
+2025). We use the original attack goal in the Ad-
+vBench dataset and create a refusal response preﬁx
+for the Alpaca dataset. For more settings of attack
+methods, please refer to Appendix C.1.
+Evaluation Metric. We use keyword matching
+to distinguish refusal behavior. The keyword table
+is listed in Appendix E. If the model refuses to re-
+spond to benign prompts or fails to refuse the ma-
+licious question, it will be considered a successful
+attack. For benign and harmful prompts, we con-
+sider ASR (Attack Success Rate) as a criterion. In
+addition, we use another LLM as a judge to quan-
+tify the harmfulness of harmful prompt attacks and
+the usefulness of benign prompts. A better attack
+method should have higher ASR and higher harm-
+ful scores on the Advbench dataset, as well as
+higher ASR and lower useful scores on the Alpaca
+dataset. To evaluate the effect of neuron activation
+modiﬁcations, we use Language Score to measure
+output ﬂuency and coherence (see Appendix E for
+details).
+
+===== PAGE 6 =====
+Figure 3: Overview of SafeTuning
+4.2 Experiment Results
+Table 1 compares our method with embedding-
+level attack baselines using keyword matching and
+automated evaluation metrics. Notably, although
+our approach does not rely on a predeﬁned target
+output as the attack objective, it consistently out-
+performs baseline methods in terms of Attack Suc-
+cess Rate (ASR) and LLM-based judgment across
+most settings. For models with both strong and
+weak defenses, our method achieves over 97%
+mean ASR, signiﬁcantly surpassing the perfor-
+mance of existing baselines.
+5 Defending Jailbreak via Tuning Safety
+Knowledge Neurons
+Given that safety knowledge neurons reside in the
+MLP layers of LLMs and directly inﬂuence model
+behavior, we propose a novel defense mechanism
+called SafeTuning. In this section, we detail the
+ﬁne-tuning methodology and evaluate its effective-
+ness against four attack methods and four baseline
+defense strategies.
+5.1 SafeTuning
+In this section, we propose SafeTuning to enhance
+the safety alignment of LLMs. Figure 3 illustrates
+the workﬂow of SafeTuning. Speciﬁcally, we de-
+velop the SafeTuning by three key steps in the fol-
+lowing.
+Finding safety and activation knowledge . In
+a manner similar to Section 3, we isolate the neu-
+rons that store safety knowledge. A unit of knowl-
+edge is a column of the down-project weight ma-
+trix stored inside LLM. Its corresponding activa-
+tion is calculated through inference by multiply-
+ing the row of the up-project weight. We only
+tune safety knowledge neurons and their activation
+pathways, and choose the top- k% critical column
+down-project weight as safety knowledge neurons
+to maintain the utility of the language model.
+Creating safety text corpus database . Other
+studies have shown that publicly available ﬁne-
+tuning datasets often induce a signiﬁcant token dis-
+tribution shift ( Xu et al. , 2024a). Therefore, we
+propose generating a safety corpus by the model
+itself. We could manipulate the model to out-
+put a rejection response for each harmful request
+through the method in Section 4. We randomly
+select harmful prompts from AdvBench, and col-
+lect rejected responses from models by calibrating
+safety knowledge activation, resulting in a set S
+of harmful input Xharm and refusal output Yrefuse
+pairs.
+Neuron-speciﬁc tuning . After locating safety
+knowledge and activation pathways, SafeTuning
+takes the safety text corpus S as input. The loss
+function is deﬁned as:
+L = −logP (Yrefuse|Xharm).
+We update safety knowledge and activation weight
+based on the gradient of L on the corresponding
+parameter. Finally, we conﬁne updates to causally
+veriﬁed safety-related units while leaving general
+capability neurons untouched. After tuning, we
+could obtain a more robust LLM against harm-
+ful requests and jailbreak attacks while preserving
+utility by ﬁxing other fundamental neurons.
+5.2 Experiment Setup
+In this section, we introduce the settings, base-
+lines, and metrics for evaluating the effectiveness
+of SafeTuning.
+Models and Settings. We follow the setting in
+Xu et al. (2024a), and conducted our experiment
+with two LLMs: Llama-2-7b-chat and Vicuna-7b-
+v1.5. We produced a (harmful input, refusal out-
+put) corpus of size 300 from the AdvBench ( Zou
+et al. , 2023) dataset and used this corpus for ﬁne-
+tuning. We set the only hyperparameter k = 3%
+as the identiﬁed critical safety knowledge neuron.
+
+===== PAGE 7 =====
+Model Defense AlpacaEval GCG Pair Prompt with RS AIM
+Win Rate↑ ASR↓ HScore↓ ASR↓ HScore↓ ASR↓ HScore↓ ASR↓ HScore↓
+Vicuna
+No Defense 61.5% 33% 2.78 66% 3.46 95% 4.64 68% 4.58
+PPL 41.0% 0% 1.00 53% 3.06 70% 4.44 59% 4.40
+ICD 47.5% 15% 1.20 37% 2.18 92% 4.34 57% 4.36
+SelfReminder 47.5% 17% 1.26 47% 2.54 93% 4.38 68% 4.58
+SafeDecoding 44.3% 2% 1.10 16% 1.62 40% 2.38 1% 1.16
+SafeTuning 54.1% 0% 1.00 5% 1.12 13% 1.46 0% 1.00
+Llama2
+No Defense 58.6% 10% 1.20 1% 1.06 69% 2.44 0% 1.00
+PPL 25.9% 0% 1.00 1% 1.06 69% 2.44 0% 1.00
+ICD 15.7% 2% 1.12 1% 1.06 0% 1.00 0% 1.00
+SelfReminder 15.6% 4% 1.08 1% 1.06 2% 1.04 0% 1.00
+SafeDecoding 36.2% 2% 1.02 0% 1.00 3% 1.04 0% 1.00
+SafeTuning 60.0% 1% 1.02 0% 1.00 1% 1.04 0% 1.00
+Table 2: Main result when applying SafeTuning and baselines to Vicuna and Llama2. (HScore = Harmfulness
+Score)
+Datasets and Baseline. We evaluate SafeTun-
+ing on four state-of-the-art attack methods by fol-
+lowing the setting in JailbreakBench ( Chao et al. ,
+2024a). Speciﬁcally, GCG ( Zou et al. , 2023),
+Pair ( Chao et al. , 2024b), Prompt with Random
+Search ( Andriushchenko et al. , 2025), and AIM
+(Wei et al. , 2024a) attack methods are applied in
+our experiment. First, we utilized the Jailbreak-
+Bench dataset that contains 100 harmful prompts
+as our attack goal. This dataset does not share any
+similar prompts used in our neuron tuning nor in
+Section 4. We then select four defending meth-
+ods that do not require the model’s output (PPL
+(Jain et al. , 2023), ICD ( Wei et al. , 2023), Self-
+Reminder ( Xie et al. , 2023), and SafeDecoding
+(Xu et al. , 2024a)) as baselines to evaluate these
+jailbreak prompts. To assess the model’s help-
+fulness with various defense methods, we used
+AlpacaEval ( Li et al. , 2023) to estimate models’
+availability, which has a 0.98 Spearman correla-
+tion with human evaluation. We randomly collect
+200 benign prompts from AlpacaEval. For the con-
+ﬁgurations of the attack method and defense base-
+line, please refer to Appendix C.2.
+Evaluation Metric. We adopt the Attack Suc-
+cess Rate (ASR), Harmful Score (HScore), and
+Win Rate as our main comparison metrics. For
+jailbreak attacks, the ASR refers to the ratio of jail-
+break prompts successfully bypassing the defense
+mechanism to the total number of inputs. If the
+model does not respond to the jailbreak prompt
+with a refusal starting answer but with a mean-
+ingful response, we consider it a successful attack.
+We set the preﬁx length as 32 tokens, and the key-
+word table is listed in the Appendix E. The Harm-
+ful Score is judged by another LLM, which aims
+to give a score based on the model output. For be-
+nign prompts, the Win Rate is calculated by the re-
+sult of the LLM based on the two models’ output.
+Following the original setting of AlpacaEval, we
+used text_davinci_003 as our base model. The pro-
+cess is detailed in the Appendix E. To gain compre-
+hensive defense mechanisms while maintaining a
+better usability of models, our defense goal is to
+reduce the harmfulness of the model by minimiz-
+ing ASR and Harmful Score while preserving the
+LLM’s usability by maintaining a high Win Rate
+against the base model.
+5.3 Experimental Results
+We present the Win Rate, ASR, and Harmful Score
+for Llama and Vicuna in Table 2. Our results show
+that SafeTuning can mitigate over 90% of ASR.
+For attack-sensitive models, i.e., Vicuna, prompt-
+based defense methods (ICD, SelfReminder) fail
+even with simple attacks (GCG, AIM). PPL per-
+forms well in GCG attacks but is weak against
+other attack methods. The decoding-based de-
+fense method (SafeDecoding) performs better than
+prompt-based methods, but not well enough for
+a complex attack (Prompt with Random Search).
+For models that have stronger defense barriers,
+e.g., Llama2, prompt-based defense signiﬁcantly
+downgrades the model’s utility. Overall, SafeTun-
+ing outperforms all baselines regarding safety and
+utility by only focusing on safety-critical knowl-
+edge. Moreover, our method only needs to ﬁne-
+tune the model without other helpers, introduc-
+ing no additional computation budget at inference
+time.
+
+===== PAGE 8 =====
+Figure 4: Usefulness Score and ASR as tuning ratio.
+6 Further Analysis
+Impact of isolating safety-critical neurons . Fol-
+lowing our ﬁndings at Section 3, we present sev-
+eral examples at Appendix D for better understand-
+ing. We show that isolating safety-critical knowl-
+edge neurons is vital for maintaining the function-
+ality of the model, in both modifying activation
+value and ﬁne-tuning the model.
+Safety-critical neuron tuning and calibration
+show negligible effect . When we isolate and
+update only safety-critical knowledge neurons on
+models, the utilization and language ability shows
+negligible difference. Language Score in Section
+4 and Win Rate in Section 5 have almost no drop
+compared to other methods. Additional examples
+in Appendix D further illustrate that isolating and
+adjusting only these neurons improves safety with-
+out harming overall model performance.
+Impact of parameter in Section 5. To assess
+the impact of the only hyperparameter, knowledge-
+neuron ratio, on the performance of SafeTun-
+ing, we conducted ablation studies on the Vicuna
+model, varying only the hyperparameter k. The
+relationship between the neuron ratio, Attack Suc-
+cess Rate (ASR), and Useful Score is illustrated
+in Figure 4. We observe that even just identifying
+1% safety neurons and then tuning less than 0.1%
+safety-critical neurons is sufﬁcient to achieve im-
+proved safety performance. However, when the
+ratio becomes too large, the tuning effectiveness
+diminishes. This could be due to a signiﬁcant over-
+lap in the ranking of functional neurons and safety
+neurons. As the ratio increases, more safety neu-
+rons are excluded, as they are included in terms of
+function. Overall, safety-critical knowledge neu-
+rons remain sparse and effective, as conﬁrmed in
+Wei et al. (2024b).
+Why our method yields conceptually coher-
+ent keywords? In contrast to previous works such
+as Zhou et al. (2024) and Zou et al. (2025), which
+Figure 5: One possible explanation for the results of the
+approaches. (a) Other methods are perturbed by other
+layers’ results. (b) Other methods are then perturbed by
+the decomposition process. Our method directly trans-
+lates the current layer’s gain, resulting in conceptually
+coherent keywords.
+interpret a model’s layer output directly through
+the internal hidden states or vocabulary mapping
+matrix, our approach instead accesses the output
+immediately following the normalization of the
+MLP layer. This methodological distinction is il-
+lustrated in Figure 5. By analyzing the model’s ac-
+tivations just before the application of the vocab-
+ulary projection, we aim to obtain a more local-
+ized and minimally transformed representation of
+model knowledge. This representation may better
+reﬂect the models immediate judgment under the
+parameters of the current layer, without the com-
+pounding inﬂuence of previous structures.
+On the other hand, interpreting hidden states
+from intermediate layers incorporates cumulative
+information from all preceding layers. Addition-
+ally, mapping these states into the vocabulary
+space through the projection matrix may introduce
+further distortions. As a consequence, prior meth-
+ods could only get a human-understandable vocab-
+ulary table at later layers where representations
+are closer to the output space. Moreover, this of-
+ten leads to the generation of emotionally charged
+or off-topic tokens, creating the illusion that these
+emotions are causing the model to refuse or con-
+form.
+Therefore, our method produces more conceptu-
+ally coherent vocabulary-level output, suggesting
+that it offers a more principled grounded approach
+to understanding model jailbreak.
+
+===== PAGE 9 =====
+7 Conclusion
+This paper focuses primarily on the safety knowl-
+edge neurons in Large Language Models (LLMs),
+highlighting their importance in understanding
+and analyzing jailbreak attacks. We demonstrate
+that these neurons are crucial for explaining the
+duality of LLMs’ rejection and conformity behav-
+iors by projecting activated safety neurons into
+the vocabulary space. Additionally, we propose
+a method for controlling the model’s response
+preference by calibrating the activation of safety-
+critical knowledge neurons, as well as a defense
+mechanism to protect LLMs against jailbreak at-
+tacks. These methods not only bring us closer to
+explaining the inference process of LLMs but also
+consistently outperform all baseline approaches.
+Our study underscores the critical role of safety
+knowledge neurons in defending against jailbreak
+attacks and enhancing LLM security. We will ad-
+vocate for further research into understanding the
+role of attention head of jailbreak attacks and the
+model’s defense methods.
+8 Limitation
+This work primarily investigates well-aligned
+models, leaving the challenge of effectively align-
+ing non-aligned models largely unexplored. Fur-
+thermore, while our focus has been on Large Lan-
+guage Models, extending these alignment tech-
+niques to emerging multi-modal LLMs remains an
+open problem and represents a promising direction
+for future research. In addition, the two methods
+proposed in this work require manual tuning of
+hyperparameters. Although we have carefully ad-
+justed these hyperparameters for the datasets con-
+sidered, developing automated techniques to iden-
+tify and adapt such parameters remains an impor-
+tant direction for future work.
+Ethical Considerations
+This work investigates how safety mechanisms in
+large language models can be bypassed, which
+may raise concerns about harmful content gener-
+ation. We acknowledge that revealing such mech-
+anisms could have societal impact, but our goal
+is to improve understanding and strengthen de-
+fenses, not to enable misuse. Importantly, exist-
+ing open-source models such as Llama and Vi-
+cuna already have publicly available attack meth-
+ods and unﬁltered versions, so this paper does not
+introduce new or greater risks. All experiments
+were conducted in controlled settings using sani-
+tized prompts and public benchmarks. We will not
+release any materials that could facilitate harmful
+model behavior. Our ﬁndings aim to inform safer
+model design and responsible research on LLM se-
+curity.
+Acknowledgments
+The work was partially supported by the following:
+National Natural Science Foundation of China un-
+der No. 92370119, and 62376113.
+References
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama
+Ahmad, Ilge Akkaya, Florencia Leoni Aleman,
+Diogo Almeida, Janko Altenschmidt, Sam Altman,
+Shyamal Anadkat, and 1 others. 2023. GPT-4 tech-
+nical report. Technical report, OpenAI.
+Reduan Achtibat, Sayed Mohammad V akilzadeh
+Hateﬁ, Maximilian Dreyer, Aakriti Jain, Thomas
+Wiegand, Sebastian Lapuschkin, and Wojciech
+Samek. 2024. AttnLRP: Attention-aware layer-wise
+relevance propagation for transformers. In Proceed-
+ings of the 41st International Conference on Ma-
+chine Learning, volume 235 of Proceedings of Ma-
+chine Learning Research, pages 135–168. PMLR.
+Maksym Andriushchenko, Francesco Croce, and Nico-
+las Flammarion. 2025. Jailbreaking leading safety-
+aligned llms with simple adaptive attacks . Preprint,
+arXiv:2404.02151.
+Patrick Chao, Edoardo Debenedetti, Alexander Robey,
+Maksym Andriushchenko, Francesco Croce, Vikash
+Sehwag, Edgar Dobriban, Nicolas Flammarion,
+George J. Pappas, Florian Tramèr, Hamed Hassani,
+and Eric Wong. 2024a. Jailbreakbench: An open ro-
+bustness benchmark for jailbreaking large language
+models. In NeurIPS Datasets and Benchmarks
+Track.
+Patrick Chao, Alexander Robey, Edgar Dobriban,
+Hamed Hassani, George J. Pappas, and Eric Wong.
+2024b. Jailbreaking black box large language mod-
+els in twenty queries . Preprint, arXiv:2310.08419.
+Damai Dai, Li Dong, Y aru Hao, Zhifang Sui, Baobao
+Chang, and Furu Wei. 2022. Knowledge neurons
+in pretrained transformers . In Proceedings of the
+60th Annual Meeting of the Association for Compu-
+tational Linguistics (V olume 1: Long Papers), pages
+8493–8502, Dublin, Ireland. Association for Com-
+putational Linguistics.
+Song Han, Jeff Pool, John Tran, and William J.
+Dally. 2015. Learning both weights and con-
+nections for efﬁcient neural networks . Preprint,
+arXiv:1506.02626.
+
+===== PAGE 10 =====
+Hakan Inan, Kartikeya Upasani, Jianfeng Chi, Rashi
+Rungta, Krithika Iyer, Y uning Mao, Michael
+Tontchev, Qing Hu, Brian Fuller, Davide Testuggine,
+and Madian Khabsa. 2023. Llama guard: Llm-based
+input-output safeguard for human-ai conversations .
+Preprint, arXiv:2312.06674.
+Neel Jain, Avi Schwarzschild, Y uxin Wen, Gowthami
+Somepalli, John Kirchenbauer, Ping yeh Chiang,
+Micah Goldblum, Aniruddha Saha, Jonas Geiping,
+and Tom Goldstein. 2023. Baseline defenses for
+adversarial attacks against aligned language models .
+Preprint, arXiv:2309.00614.
+Google Jigsaw. 2017. Perspective api. https://www.
+perspectiveapi.com/.
+Y ann LeCun, John Denker, and Sara Solla. 1989. Op-
+timal brain damage . In Advances in Neural In-
+formation Processing Systems , volume 2. Morgan-
+Kaufmann.
+Xuechen Li, Tianyi Zhang, Y ann Dubois, Rohan Taori,
+Ishaan Gulrajani, Carlos Guestrin, Percy Liang, and
+Tatsunori B. Hashimoto. 2023. Alpacaeval: An au-
+tomatic evaluator of instruction-following models.
+https://github.com/tatsu-lab/alpaca_eval.
+Y uping Lin, Pengfei He, Han Xu, Y ue Xing, Makoto
+Y amada, Hui Liu, and Jiliang Tang. 2024. Towards
+understanding jailbreak attacks in LLMs: A rep-
+resentation space analysis . In Proceedings of the
+2024 Conference on Empirical Methods in Natu-
+ral Language Processing, pages 7067–7085, Miami,
+Florida, USA. Association for Computational Lin-
+guistics.
+Xiaogeng Liu, Nan Xu, Muhao Chen, and Chaowei
+Xiao. 2024. AutoDAN: Generating stealthy jail-
+break prompts on aligned large language models . In
+The Twelfth International Conference on Learning
+Representations.
+Scott Lundberg and Su-In Lee. 2017. A uniﬁed ap-
+proach to interpreting model predictions . Preprint,
+arXiv:1705.07874.
+Anay Mehrotra, Manolis Zampetakis, Paul Kassianik,
+Blaine Nelson, Hyrum Anderson, Y aron Singer,
+and Amin Karbasi. 2024. Tree of attacks: Jail-
+breaking black-box llms automatically . Preprint,
+arXiv:2312.02119.
+nostalgebraist. 2020. Interpreting GPT: The logit lens .
+OpenAI. 2023. Moderation guide. https:
+//platform.openai.com/docs/guides/
+moderation. Accessed: 2024-02-13.
+Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida,
+Carroll Wainwright, Pamela Mishkin, Chong Zhang,
+Sandhini Agarwal, Katarina Slama, Alex Ray, John
+Schulman, Jacob Hilton, Fraser Kelton, Luke Miller,
+Maddie Simens, Amanda Askell, Peter Welinder,
+Paul F Christiano, Jan Leike, and Ryan Lowe. 2022.
+Training language models to follow instructions
+with human feedback. In Advances in Neural In-
+formation Processing Systems , volume 35, pages
+27730–27744. Curran Associates, Inc.
+Y ao Qiang, Xiangyu Zhou, and Dongxiao Zhu. 2024.
+Hijacking large language models via adversarial in-
+context learning. Preprint, arXiv:2311.09948.
+Marco Tulio Ribeiro, Sameer Singh, and Carlos
+Guestrin. 2016. "why should i trust you?": Ex-
+plaining the predictions of any classiﬁer . Preprint,
+arXiv:1602.04938.
+Alexander Robey, Eric Wong, Hamed Hassani, and
+George J. Pappas. 2024. Smoothllm: Defending
+large language models against jailbreaking attacks .
+Preprint, arXiv:2310.03684.
+Leo Schwinn, David Dobre, Sophie Xhonneux, Gau-
+thier Gidel, and Stephan Gunnemann. 2025. Soft
+prompt threats: Attacking safety alignment and un-
+learning in open-source llms through the embedding
+space. Preprint, arXiv:2402.09063.
+Guobin Shen, Dongcheng Zhao, Yiting Dong, Xiang
+He, and Yi Zeng. 2024. Jailbreak antidote: Run-
+time safety-utility balance via sparse representation
+adjustment in large language models . Preprint,
+arXiv:2410.02298.
+Feifan Song, Bowen Y u, Minghao Li, Haiyang Y u, Fei
+Huang, Y ongbin Li, and Houfeng Wang. 2024. Pref-
+erence ranking optimization for human alignment .
+Proceedings of the AAAI Conference on Artiﬁcial In-
+telligence, 38(17):18990–18998.
+Mingjie Sun, Zhuang Liu, Anna Bair, and J. Zico
+Kolter. 2024. A simple and effective pruning
+approach for large language models . Preprint,
+arXiv:2306.11695.
+Mukund Sundararajan, Ankur Taly, and Qiqi Y an. 2017.
+Axiomatic attribution for deep networks. In Interna-
+tional conference on machine learning , pages 3319–
+3328. PMLR.
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier
+Martinet, Marie-Anne Lachaux, Timothée Lacroix,
+Baptiste Rozière, Naman Goyal, Eric Hambro,
+Faisal Azhar, Aurelien Rodriguez, Armand Joulin,
+Edouard Grave, and Guillaume Lample. 2023.
+Llama: Open and efﬁcient foundation language mod-
+els. Preprint, arXiv:2302.13971.
+Alexander Matt Turner, Lisa Thiergart, Gavin Leech,
+David Udell, Juan J V azquez, Ulisse Mini, and
+Monte MacDiarmid. 2023. Steering language mod-
+els with activation engineering. arXiv preprint
+arXiv:2308.10248.
+Elena V oita, Javier Ferrando, and Christoforos
+Nalmpantis. 2023. Neurons in large language
+models: Dead, n-gram, positional . Preprint,
+arXiv:2309.04827.

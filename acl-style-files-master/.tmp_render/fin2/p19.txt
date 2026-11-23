@@ -1,0 +1,95 @@
+Defense Impl. Sanity-check metric Published Reproduced
+Deep safety alignment ours 10-token prefill ASR 2.9 3.0 ±0.3
+Backtracking official ASR 6.1 → 1.5 6.1 ±0.3 → 1.6 ±0.2
+Circuit breakers official† mean ASR 38.1 → 3.8 38.2 ±0.9 → 3.9 ±0.4
+DOOR official prefilling ASR 5.5 5.6 ±0.4
+W-DOOR official prefilling ASR 3.4 3.4 ±0.4
+PRESTO official StrongREJECT score 0.539 → 0.138 0.538 ±0.011 → 0.139 ±0.007
+Table 11: Reproduction sanity checks, each run in the setting its own paper evaluates rather than in ours; an arrow
+gives the undefended and defended values that paper reports. Rows are Qi et al. (2025), Zhang et al. (2025b),
+Zou et al. (2024), Zhao et al. (2025) (both forms), and Vega and Singh (2025). Values are percentages except
+PRESTO, whose StrongREJECT score lies in [0, 1]. Ours are means over three seeds with seed SD, and every
+reproduction falls within one seed SD of the published value. Impl.: official code, or our adaptation, with † adapted
+layer placement. Qi et al. (2025) is reproduced only for its data-augmentation component, the part comparable to
+mid-generation recovery.
+1481 helps only weakly (0.80). Splitting the fully sepa￾1482 rated states into recovery-margin quintiles, attack
+1483 success runs from 75.4% in the weakest quintile to
+1484 12.7% in the strongest, a 62.7 pp gap. Repeating
+1485 that comparison after exact matching on depth bin
+1486 and harmful-response source leaves 70.0% against
+1487 14.6% (n = 611 per group, 55.4 pp), and the trend
+1488 across bins is monotone. These establish predictive
+1489 association over the evaluated states, not a causal
+1490 or certified robustness guarantee.
+1491 K Aggregation, Mining, and Anchor
+1492 Ablations
+1493 Aggregation. Table 14 sweeps the state￾1494 aggregation rule over the mean of all six
+1495 states, dynamic top-1 through top-4, softmax
+weighting wi = exp(ℓi/τ )/
+P
+j
+1496 exp(ℓj/τ ) with
+1497 τ ∈ {0.1, 0.25, 0.5, 1.0}, and fixed base-margin
+1498 weighting. Three readings matter. Any form of
+1499 concentration beats the uniform mean, by 3.7–
+1500 5.9 pp on middle ASR, and the differences among
+1501 the concentrating rules are small: top-1, top-3,
+1502 and both low-temperature softmax variants all sit
+1503 within 0.5 pp of top-2, so the result is not specific
+1504 to the exact K = 2 choice. Top-2 achieves the
+1505 lowest middle ASR while avoiding the larger ORR
+1506 and utility costs of the most concentrated alterna￾1507 tives. Within the top-k and temperature-controlled
+1508 softmax families, stronger concentration generally
+1509 corresponds to higher churn, the per-step fraction
+1510 of the selected state set that changes.
+1511 Mining. Table 15 compares hard-state selection
+1512 strategies at matched budget and then sweeps the
+1513 budget itself. Allocating the budget adaptively
+1514 is what matters: at the same 66 evaluations per
+1515 prompt, Successive Halving with confirmation
+pulls reaches 20.2% where a single random extra 1516
+position reaches 24.7% and a single-pair argmin 1517
+over all 11 candidates 23.5%, and it agrees with 1518
+exhaustive search on 0.78 of prompts against their 1519
+0.19 and 0.31. The budget itself is flexible: B=20 1520
+already reaches 21.8% for 37.4 mining GPU-hours 1521
+and retains most of the observed improvement, 1522
+while the full B=66 buys both the final 1.6 pp 1523
+and markedly more stable selection (reselection 1524
+agreement 0.59 → 0.76). 1525
+Mining formalism. The frozen base model 1526
+searches a denser training-only grid Tsearch = 1527
+{5, 10, . . . , 80}. Each pull of position t inde- 1528
+pendently samples a matched pair and returns 1529
+Mt,i = β[S
+avg
+base(st
+, rt,i) − S
+avg
+base(st
+, ut,i)], using 1530
+the reference-free, continuation-length-normalized 1531
+score of Eq. (2), with µt = E[Mt,i]. We treat the 1532
+11 non-fixed positions as stochastic arms and min- 1533
+imize µt
+. Three screening rounds allocate 2, 2, 4 1534
+additional pulls to each surviving arm, reducing 1535
+the candidate set from 11 to 6, 3, 2 at a cost of 46 1536
+paired evaluations; each finalist receives ten fresh 1537
+confirmation pulls, for exactly 66 valid paired eval- 1538
+uations per prompt. To avoid reusing screening 1539
+samples, finalist means and bootstrap intervals use 1540
+only the 20 confirmation pulls; the selected position 1541
+is thard = arg mint∈F(x) µˆ
+conf
+t with |F(x)| = 2. 1542
+Anchors. Anchor weights are selected on devel- 1543
+opment before any test evaluation by minimizing 1544
+development middle ASR subject to the three con- 1545
+straints of Section 4.4, which on development read: 1546
+clean ASR ≤ 4.8%, ORR ≤ 8.4%, and IFEval 1547
+≥ 88.3. The three thresholds are set from the 1548
+base checkpoint’s development-time measurements 1549
+(clean ASR 4.8%, ORR 6.4%, IFEval 89.1), which 1550
+are drawn under a separate evaluation seed and sit 1551
+19

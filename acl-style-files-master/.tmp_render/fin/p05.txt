@@ -1,0 +1,96 @@
+306 objective is
+Ltail =
+1
+|H(x)|
+X
+s∈H(x)
+307 ℓstate(s, r, u). (8)
+308 All six losses are computed in one forward pass;
+309 the two indices are selected from detached values
+310 and gradients flow only through the selected losses,
+311 so top-k selection is a non-differentiable masking
+312 operation. Selection is recomputed whenever the
+313 prompt is sampled. Section 6.5 sweeps K and
+314 softmax-weighted alternatives.
+315 4.4 Anchored Objective
+316 L = Ltail + λcLclean + λbLbenign. (9)
+317 Both auxiliary terms are Eq. (7) applied to root￾318 conditioned pairs from the sets of Section 5.1,
+319 and neither is subject to the top-k selection (Ap￾320 pendix A). Batches are stratified 60/20/20 over
+321 unsafe-state, clean-safety, and benign loss units,
+322 with each component normalized within its stratum.
+323 One unsafe-state unit contains the six pairs for one
+324 prompt, whereas each anchor unit contains one pair.
+We select (λc, λb) from {0, 0.1, 0.25, 0.5, 1.0}
+2
+325 on
+326 development by minimizing middle-insertion at￾327 tack success subject to three design constraints:
+328 clean attack success does not exceed the base
+329 checkpoint, over-refusal rises by at most 2 points,
+330 and IFEval falls by at most 0.8 points; ties fa￾331 vor the smaller λc + λb. This selects (λc, λb) =
+332 (0.25, 0.5), frozen before any test evaluation, so the
+333 corresponding test-set changes are outcomes rather
+334 than guarantees.
+335 5 Experimental Design
+336 5.1 Models, Data, and Training
+337 Our primary model is Qwen3.5-9B, evaluated with
+338 thinking disabled and text-only inputs (Qwen Team,
+339 2026); we replicate on Llama-3.1-8B-Instruct
+340 (Dubey et al., 2024). All trainable methods update
+341 the full model in BF16 under one recipe—effective
+342 batch 96, a fixed shared optimizer-step schedule,
+343 a 2048-token limit, a development-selected learn￾344 ing rate of 8e−7, and three seeds (13, 42, 73) on
+345 4×A100 80GB (Appendix D).
+346 The corpus holds 6,000 training, 750 develop￾347 ment, and 1,000 test prompts, plus 12,000 clean￾348 safety and 12,000 benign-anchor pairs. Only train￾349 ing prompts carry same-state triples—six each,
+350 36,000 in all; development and test prompts are
+351 only evaluated, never mined. Training prompts
+come from WildJailbreak (Jiang et al., 2024), PKU- 352
+SafeRLHF/BeaverTails (Dai et al., 2024; Ji et al., 353
+2023), and SORRY-Bench (Xie et al., 2025a); test 354
+prompts from HarmBench (Mazeika et al., 2024), 355
+StrongREJECT (Souly et al., 2024), AdvBench 356
+(Zou et al., 2023), and JailbreakBench (Chao et al., 357
+2024); benign anchors from UltraChat (Ding et al., 358
+2023), Alpaca (Taori et al., 2023), and OR-Bench- 359
+80K (Cui et al., 2025). Counts, licenses, deduplica- 360
+tion, and split isolation are in Appendix C. 361
+5.2 Unsafe-State Suites 362
+A recurring weakness of mid-generation safety 363
+evaluation is that the unsafe states are all inserted 364
+by the experimenter. We therefore evaluate on four 365
+suites, only the first of which matches the training 366
+construction. 367
+(S1) Constructed insertions place a harmful 368
+partial continuation at a training-grid depth. (S2) 369
+Unseen depths use offsets disjoint from that grid, 370
+extending to {128, 256, 512} tokens—far beyond 371
+the 80-token training cap—to test length extrapo- 372
+lation. (S3) Naturally occurring states are not 373
+inserted at all: each evaluated checkpoint gener- 374
+ates freely on the same jailbreak prompts, and we 375
+truncate its generation at the first span an indepen- 376
+dent evaluator flags as unsafe (Llama Guard 3 8B, 377
+Dubey et al., 2024, none of the four judges of Sec- 378
+tion 5.5). It also includes tool/RAG-contaminated 379
+states and multi-turn drift over three to six turns 380
+(Appendix E). (S4) Adaptive attack optimizes 381
+against the defended checkpoint rather than Base, 382
+combining RAP (Vega and Singh, 2025) with a 383
+prefill-position search that maximizes the defended 384
+model’s own harmful-branch preference, at a 256- 385
+query budget (Appendix E adds 64 and 128). Suites 386
+S2–S4 are never used for training or mining, and 387
+S3 is rebuilt per checkpoint so it reflects that check- 388
+point’s own failure modes. 389
+5.3 Baselines 390
+Internal factorial. To attribute the gain we cross 391
+pair construction (same-state vs. root-conditioned) 392
+with objective (DPO, SimPO, recovery SFT), hold- 393
+ing prompts, branch texts, scored tokens, optimizer 394
+steps, model capacity, and seeds fixed. The root- 395
+conditioned cells reuse the identical branch texts 396
+but remove the reached state from the conditioning 397
+context, so the only difference is what the two alter- 398
+natives are conditioned on. We also include Worst- 399
+Insertion SFT and Clean DPO (root responses only) 400
+as endpoints, and a prefix-masking control that 401
+5

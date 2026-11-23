@@ -1,0 +1,100 @@
+825 Rafael Rafailov, Archit Sharma, Eric Mitchell, Christo￾826 pher D. Manning, Stefano Ermon, and Chelsea Finn.
+827 2023. Direct preference optimization: Your language
+828 model is secretly a reward model. In Advances in
+829 Neural Information Processing Systems (NeurIPS).
+830 R. Tyrrell Rockafellar and Stanislav Uryasev. 2000. Op￾831 timization of conditional value-at-risk. Journal of
+832 Risk, 2:21–41.
+833 Paul Röttger, Hannah Kirk, Bertie Vidgen, Giuseppe
+834 Attanasio, Federico Bianchi, and Dirk Hovy. 2024.
+835 XSTest: A test suite for identifying exaggerated
+836 safety behaviours in large language models. In Pro￾837 ceedings of the 2024 Conference of the North Amer￾838 ican Chapter of the Association for Computational
+839 Linguistics: Human Language Technologies (Volume
+840 1: Long Papers), pages 5377–5400. Association for
+841 Computational Linguistics.
+842 Alexandra Souly, Qingyuan Lu, Dillon Bowen,
+843 Tu Trinh, Elvis Hsieh, Sana Pandey, Pieter Abbeel,
+844 Justin Svegliato, Scott Emmons, Olivia Watkins, and
+845 Sam Toyer. 2024. A strongREJECT for empty jail￾846 breaks. In Advances in Neural Information Process￾847 ing Systems.
+848 Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann
+849 Dubois, Xuechen Li, Carlos Guestrin, Percy Liang,
+850 and Tatsunori B. Hashimoto. 2023. Stanford Alpaca:
+851 An instruction-following LLaMA model.
+852 Jason Vega and Gagandeep Singh. 2025. Matching
+853 ranks over probability yields truly deep safety align￾854 ment. arXiv preprint arXiv:2512.05518.
+855 Yubo Wang, Xueguang Ma, Ge Zhang, Yuansheng Ni,
+856 Abhranil Chandra, Shiguang Guo, Weiming Ren,
+857 Aaran Arulraj, Xuan He, Ziyan Jiang, Tianle Li, Max
+858 Ku, Kai Wang, Alex Zhuang, Rongqi Fan, Xiang Yue,
+859 and Wenhu Chen. 2024a. MMLU-Pro: A more ro￾860 bust and challenging multi-task language understand￾861 ing benchmark. In Advances in Neural Information
+862 Processing Systems.
+863 Yuxia Wang, Haonan Li, Xudong Han, Preslav Nakov,
+864 and Timothy Baldwin. 2024b. Do-not-answer: Eval￾865 uating safeguards in LLMs. In Findings of the Asso￾866 ciation for Computational Linguistics: EACL 2024,
+867 pages 896–911. Association for Computational Lin￾868 guistics.
+869 Nevan Wichers, Carson Denison, and Ahmad Beirami.
+870 2024. Gradient-based language model red teaming.
+871 In Proceedings of the 18th Conference of the Euro￾872 pean Chapter of the Association for Computational
+873 Linguistics (EACL).
+874 Tinghao Xie, Xiangyu Qi, Yi Zeng, Yangsibo Huang,
+875 Udari Madhushani Sehwag, Kaixuan Huang, Luxi
+876 He, Boyi Wei, Dacheng Li, Ying Sheng, Ruoxi Jia,
+877 Bo Li, Kai Li, Danqi Chen, Peter Henderson, and Pra￾878 teek Mittal. 2025a. SORRY-bench: Systematically
+879 evaluating large language model safety refusal. In
+880 The Thirteenth International Conference on Learning
+881 Representations (ICLR).
+Yuanbo Xie, Yingjie Zhang, Tianyun Liu, Duohe Ma, 882
+and Tingwen Liu. 2025b. Beyond surface alignment: 883
+Rebuilding LLMs safety mechanism via probabilis- 884
+tically ablating refusal direction. In Findings of the 885
+Association for Computational Linguistics: EMNLP 886
+2025. 887
+Yongcheng Zeng, Guoqing Liu, Weiyu Ma, Ning Yang, 888
+Haifeng Zhang, and Jun Wang. 2024. Token-level 889
+direct preference optimization. In Proceedings of the 890
+41st International Conference on Machine Learning 891
+(ICML). 892
+Jiawei Zhang, Andrew Estornell, David D. Baek, Bo Li, 893
+and Xiaojun Xu. 2025a. Any-depth alignment: Un- 894
+locking innate safety alignment of LLMs to any- 895
+depth. arXiv preprint arXiv:2510.18081. 896
+Yiming Zhang, Jianfeng Chi, Hailey Nguyen, Kar- 897
+tikeya Upasani, Daniel M. Bikel, Jason Weston, and 898
+Eric Michael Smith. 2025b. Backtracking improves 899
+generation safety. In The Thirteenth International 900
+Conference on Learning Representations (ICLR). 901
+Chongwen Zhao, Yutong Ke, and Kaizhu Huang. 2026. 902
+Unraveling LLM jailbreaks through safety knowl- 903
+edge neurons. In Proceedings of the 19th Conference 904
+of the European Chapter of the Association for Com- 905
+putational Linguistics (EACL). 906
+Xuandong Zhao, Will Cai, Tianneng Shi, David Huang, 907
+Licong Lin, Song Mei, and Dawn Song. 2025. Im- 908
+proving LLM safety alignment with dual-objective 909
+optimization. In Proceedings of the 42nd Interna- 910
+tional Conference on Machine Learning (ICML). 911
+Jeffrey Zhou, Tianjian Lu, Swaroop Mishra, Sid- 912
+dhartha Brahma, Sujoy Basu, Yi Luan, Denny Zhou, 913
+and Le Hou. 2023. Instruction-following evalu- 914
+ation for large language models. arXiv preprint 915
+arXiv:2311.07911. 916
+Andy Zou, Long Phan, Justin Wang, Derek Duenas, 917
+Maxwell Lin, Maksym Andriushchenko, J. Zico 918
+Kolter, Matt Fredrikson, and Dan Hendrycks. 2024. 919
+Improving alignment and robustness with circuit 920
+breakers. In Advances in Neural Information Pro- 921
+cessing Systems (NeurIPS). 922
+Andy Zou, Zifan Wang, Nicholas Carlini, Milad Nasr, 923
+J. Zico Kolter, and Matt Fredrikson. 2023. Univer- 924
+sal and transferable adversarial attacks on aligned 925
+language models. arXiv preprint arXiv:2307.15043. 926
+A Algorithm, Masking, and the DPO 927
+Equivalence 928
+One optimization step. Given a harmful prompt 929
+x, its six same-state pairs {(sk, rk, uk)}
+6
+k=1, and 930
+the clean and benign anchors: compute the six 931
+state losses in a single forward pass; select the two 932
+largest detached losses; average their same-state 933
+preference losses; add the clean-safety and benign- 934
+anchor terms; update the policy while keeping πref 935
+11

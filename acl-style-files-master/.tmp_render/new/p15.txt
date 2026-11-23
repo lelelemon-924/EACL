@@ -1,0 +1,92 @@
+Accept. No Rej. Weighted
+Method yield state % failure
+Base 93.0 ±0.5 4.2 2.8 45.8 ±1.0
+Clean DPO 91.8 ±0.6 5.5 2.7 41.1 ±1.1
+Recovery SFT 90.2 ±0.7 7.0 2.8 29.1 ±1.1
+Worst-Insertion SFT 89.5 ±0.8 7.6 2.9 26.4 ±1.4
+Uniform Same-State DPO 88.5 ±0.7 8.4 3.1 21.6 ±0.9
+Deep safety align. 90.5 ±0.6 6.6 2.9 27.7 ±1.1
+Backtracking 89.6 ±0.7 7.4 3.0 24.8 ±1.0
+Circuit breakers 89.1 ±0.8 7.9 3.0 23.6 ±1.0
+DOOR 88.3 ±0.7 8.7 3.0 21.6 ±1.2
+W-DOOR 87.5 ±0.8 9.4 3.1 19.2 ±0.8
+PRESTO 88.0 ±0.8 8.9 3.1 20.4 ±1.3
+CURE-DPO 87.0 ±0.9 10.1 2.9 17.1 ±1.2
+Table 5: S3 proposal yield on the same 1,000 prompts.
+The first three columns partition prompts and sum to
+100%. Weighted failure is accepted yield times condi￾tional S3 ASR; it assigns zero failure to no-state and
+rejected proposals. Adding the rejection percentage
+gives the conservative upper bound. Means over three
+seeds, with seed SD shown for acceptance yield and
+weighted failure.
+1198 Locating the unsafe span for S3. The span lo￾1199 cator for the self-generated family is Llama Guard
+1200 3 8B, deliberately not one of the four judges of
+1201 Appendix L.2, so no suite is scored by the model
+1202 that constructed it. Because Llama Guard labels a
+1203 whole turn rather than a span, we find the boundary
+1204 by scoring successively longer prefixes of the free
+1205 generation and taking the first prefix it labels un￾1206 safe. Two authors checked 200 located boundaries
+1207 and judged 181 correct (90.5%, Wilson 95% CI
+1208 [85.6, 93.8]). Six observed errors placed the bound￾1209 ary later than the apparent onset of unsafe content;
+1210 the remainder involved encoded/metaphorical con￾1211 tent or ambiguity between tool output and model
+1212 repetition.
+1213 S3 yield and weighted rate. Because S3 is re￾1214 built per checkpoint, its ASR is conditional on that
+1215 checkpoint having produced an accepted span. Ta￾1216 ble 5 partitions the same 1,000 prompts into ac￾1217 cepted states, no generated unsafe state, and lo￾1218 cator/filter rejections. Accepted yield falls from
+1219 93.0% for Base to 87.0% for CURE-DPO, while
+1220 rejections remain near 3%. Counting prompts with￾1221 out an accepted state as zero failures preserves
+1222 the conditional ordering: CURE-DPO is lowest
+1223 at 17.1%, versus W-DOOR’s 19.2% and Base’s
+1224 45.8%; Uniform Same-State DPO and DOOR tie
+1225 under this weighting.
+The recovery-rate suite. Recovery rate is not 1226
+the complement of middle ASR, so it is measured 1227
+on its own pool: one reached state per test prompt, 1228
+1,000 in total, drawn independently of the S1–S4 1229
+trials and held byte-for-byte fixed across methods 1230
+and seeds. Each state is scored by the three-way 1231
+conjunction of Section 5.4. The onset is the first 1232
+token at which the continuation enters that refusal, 1233
+risk explanation, or safe redirect. It is annotated 1234
+in a single pass by the fixed LLM judge of Ap- 1235
+pendix L.5; it is not an EOS token and not a flip 1236
+of the harmfulness classifiers, and the same anno- 1237
+tation supplies time-to-recovery in Appendix H. 1238
+The third condition’s response-level label comes 1239
+independently from WildGuard’s response-refusal 1240
+field, so the position and the label are not read from 1241
+the same annotator. The suite is disjoint from the 1242
+S4 subsample and shares no state identifier with it, 1243
+which is why the denominators in Table 1 differ by 1244
+column. 1245
+Adaptive-attack budget and cost. The attack 1246
+is optimized independently against each defended 1247
+checkpoint, which makes S4 the most expensive 1248
+condition in the paper, so it runs on one fixed sub- 1249
+sample of 250 initial test states reused for every 1250
+method and seed: 12 methods × 3 seeds × 250 1251
+states = 9,000 attack instances, which pairs com- 1252
+parisons by prompt and initial state; the selected 1253
+insertion can differ by checkpoint. At 256 queries 1254
+each this is roughly 2.3 million generated continu- 1255
+ations. 1256
+The subsample is proportional to the four test 1257
+sources—100 HarmBench, 78 StrongREJECT, 47 1258
+AdvBench, and 25 JailbreakBench states—and, 1259
+within each source, proportional to three initial- 1260
+depth bands: shallow (5–20 tokens), medium (40– 1261
+80), and deep (128–512). S4 therefore spans 1262
+training-grid and unseen depths together. It was 1263
+drawn without replacement under a fixed random 1264
+seed and frozen before any S4 result was inspected, 1265
+and stratification uses the initial state depth rather 1266
+than the insertion position the attack adversarially 1267
+selects. 1268
+Table 6 reports three attacker budgets, taken 1269
+as nested checkpoints of one 256-query search. 1270
+CURE-DPO stays lowest at every budget, and its 1271
+advantage over W-DOOR grows from 2.2 pp at 64 1272
+queries to 4.5 pp at 256. 1273
+Evaluator identities and decision rules. We 1274
+use the standard text-only HarmBench imple- 1275
+mentation from centerforaisafety/HarmBench 1276
+15

@@ -1,0 +1,112 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 5,
+    "fail": 0,
+    "warn": 5,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['438', '110', '14', '14', '14', '14', '14'], mean=88, cv=1.66). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          438.0,
+          110.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 88.3,
+        "cv": 1.66,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "sh_note",
+      "message": "Row at y≈272: horizontal gaps vary (gaps=['1148', '45'], mean=596, cv=0.92). Use uniform spacing.",
+      "detail": {
+        "row_y": 272,
+        "gaps": [
+          1148.0,
+          45.0
+        ],
+        "mean": 596.5,
+        "cv": 0.92,
+        "element_ids": [
+          "sh_note",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "frozen_arm_tag",
+      "message": "Row at y≈350: horizontal gaps vary (gaps=['114', '658'], mean=386, cv=0.70). Use uniform spacing.",
+      "detail": {
+        "row_y": 350,
+        "gaps": [
+          114.0,
+          658.0
+        ],
+        "mean": 386.0,
+        "cv": 0.7,
+        "element_ids": [
+          "frozen_arm_tag",
+          "pair_sources",
+          "ref_tag"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "p1_title",
+      "message": "Column at x≈36: vertical gaps vary (gaps=['200', '16'], mean=108, cv=0.85). Use uniform spacing.",
+      "detail": {
+        "col_x": 36,
+        "gaps": [
+          200.0,
+          16.0
+        ],
+        "mean": 108.0,
+        "cv": 0.85,
+        "element_ids": [
+          "p1_title",
+          "sh_note",
+          "frozen_arm_tag"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 39,
+  "edge_count": 17,
+  "canvas": "1987x562"
+}

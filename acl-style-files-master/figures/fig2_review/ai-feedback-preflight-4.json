@@ -1,0 +1,67 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 3,
+    "fail": 0,
+    "warn": 3,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "font-box-wide-empty",
+      "element_id": "loss_note",
+      "message": "Box 'loss_note' is 400px wide for effective fontSize=12.0 with short text '​'. Box is disproportionately wide. Reduce width or increase font.",
+      "detail": {
+        "box_width": 400.0,
+        "font_size": 12.0,
+        "text": "​"
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "icon_mining",
+      "message": "Row at y≈112: horizontal gaps vary (gaps=['634', '109', '99', '14', '14', '14', '14', '14'], mean=114, cv=1.76). Use uniform spacing.",
+      "detail": {
+        "row_y": 112,
+        "gaps": [
+          634.0,
+          109.0,
+          99.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 114.0,
+        "cv": 1.76,
+        "element_ids": [
+          "icon_mining",
+          "pair_recovery",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 44,
+  "edge_count": 18,
+  "canvas": "1987x562"
+}

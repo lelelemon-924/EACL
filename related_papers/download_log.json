@@ -1,0 +1,329 @@
+{
+  "01_ouyang2022_instructgpt": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2203.02155.pdf",
+    "bytes": 1797405,
+    "title": "InstructGPT / Ouyang et al. 2022",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/01_ouyang2022_instructgpt.pdf"
+  },
+  "02_bai2022_constitutional_ai": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2212.08073.pdf",
+    "bytes": 2088111,
+    "title": "Constitutional AI / Bai et al. 2022",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/02_bai2022_constitutional_ai.pdf"
+  },
+  "03_rafailov2023_dpo": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2305.18290.pdf",
+    "bytes": 1299212,
+    "title": "DPO / Rafailov et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/03_rafailov2023_dpo.pdf"
+  },
+  "04_meng2024_simpo": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2405.14734.pdf",
+    "bytes": 1315763,
+    "title": "SimPO / Meng et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/04_meng2024_simpo.pdf"
+  },
+  "05_zeng2024_tdpo": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2404.11999.pdf",
+    "bytes": 905379,
+    "title": "TDPO / Zeng et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/05_zeng2024_tdpo.pdf"
+  },
+  "06_liu2025_tis_dpo": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2410.04350.pdf",
+    "bytes": 1010274,
+    "title": "TIS-DPO / Liu et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/06_liu2025_tis_dpo.pdf"
+  },
+  "07_najafi2026_mmpo": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2510.22881.pdf",
+    "bytes": 1518673,
+    "title": "MMPO / Najafi & Fyshe 2026",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/07_najafi2026_mmpo.pdf"
+  },
+  "08_dai2023_safe_rlhf": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2310.12773.pdf",
+    "bytes": 1082404,
+    "title": "Safe-RLHF / Dai et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/08_dai2023_safe_rlhf.pdf"
+  },
+  "09_ji2023_beavertails": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2307.04657.pdf",
+    "bytes": 1873694,
+    "title": "BeaverTails / Ji et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/09_ji2023_beavertails.pdf"
+  },
+  "10_rockafellar2000_cvar": {
+    "status": "ok",
+    "url": "https://sites.math.washington.edu/~rtr/papers/rtr179-CVaR1.pdf",
+    "bytes": 200088,
+    "title": "CVaR / Rockafellar & Uryasev 2000",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/10_rockafellar2000_cvar.pdf"
+  },
+  "11_qi2025_shallow_safety": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2406.05946.pdf",
+    "bytes": 888843,
+    "title": "Shallow Safety Alignment / Qi et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/11_qi2025_shallow_safety.pdf"
+  },
+  "12_zhao2025_door": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2503.03710.pdf",
+    "bytes": 1177556,
+    "title": "DOOR / Zhao et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/12_zhao2025_door.pdf"
+  },
+  "13_vega2025_presto": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2512.05518.pdf",
+    "bytes": 1033129,
+    "title": "PRESTO & RAP / Vega et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/13_vega2025_presto.pdf"
+  },
+  "14_zhang2025_any_depth": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2510.18081.pdf",
+    "bytes": 8189044,
+    "title": "Any-Depth Alignment / Zhang et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/14_zhang2025_any_depth.pdf"
+  },
+  "15_kao2025_safety_depth": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2502.00669.pdf",
+    "bytes": 3391618,
+    "title": "Safety Depth / Kao et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/15_kao2025_safety_depth.pdf"
+  },
+  "16_xie2025_deeprefusal": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2509.15202.pdf",
+    "bytes": 1125656,
+    "title": "DeepRefusal / Xie et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/16_xie2025_deeprefusal.pdf"
+  },
+  "17_lyu2026_autoregressive_consistency": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2606.04168.pdf",
+    "bytes": 1759684,
+    "title": "Autoregressive Consistency / Lyu et al. 2026",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/17_lyu2026_autoregressive_consistency.pdf"
+  },
+  "18_park2026_inference_time_vulnerability": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2606.04778.pdf",
+    "bytes": 3217956,
+    "title": "Inference-Time Vulnerability / Park & Kim 2026",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/18_park2026_inference_time_vulnerability.pdf"
+  },
+  "19_beetham2026_jailbreaks_inference_alignment": {
+    "status": "ok",
+    "url": "https://aclanthology.org/2026.eacl-long.360.pdf",
+    "bytes": 691942,
+    "title": "Jailbreaks as Inference-Time Alignment / Beetham et al. 2026",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/19_beetham2026_jailbreaks_inference_alignment.pdf"
+  },
+  "19b_beetham2024_liar_arxiv": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2412.05232.pdf",
+    "bytes": 696210,
+    "title": "LIAR (arxiv preprint of Beetham line) / Beetham et al.",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/19b_beetham2024_liar_arxiv.pdf"
+  },
+  "20_zhao2026_safety_knowledge_neurons": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2509.01631.pdf",
+    "bytes": 2267525,
+    "title": "Safety Knowledge Neurons / Zhao et al. 2026",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/20_zhao2026_safety_knowledge_neurons.pdf"
+  },
+  "21_zou2023_gcg": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2307.15043.pdf",
+    "bytes": 4656473,
+    "title": "GCG / Zou et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/21_zou2023_gcg.pdf"
+  },
+  "22_wichers2024_gradient_red_teaming": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2401.16656.pdf",
+    "bytes": 406906,
+    "title": "Gradient-Based Red Teaming / Wichers et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/22_wichers2024_gradient_red_teaming.pdf"
+  },
+  "23_ganguli2022_red_teaming": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2202.03286.pdf",
+    "bytes": 3087681,
+    "title": "Red Teaming LMs / Ganguli et al. 2022",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/23_ganguli2022_red_teaming.pdf"
+  },
+  "24_wei2023_jailbroken": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2307.02483.pdf",
+    "bytes": 453581,
+    "title": "Jailbroken / Wei et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/24_wei2023_jailbroken.pdf"
+  },
+  "25_chao2023_pair": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2310.08419.pdf",
+    "bytes": 5353023,
+    "title": "PAIR / Chao et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/25_chao2023_pair.pdf"
+  },
+  "26_chao2024_jailbreakbench": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2404.01318.pdf",
+    "bytes": 641300,
+    "title": "JailbreakBench / Chao et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/26_chao2024_jailbreakbench.pdf"
+  },
+  "27_mazeika2024_harmbench": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2402.04249.pdf",
+    "bytes": 3233876,
+    "title": "HarmBench / Mazeika et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/27_mazeika2024_harmbench.pdf"
+  },
+  "28_souly2024_strongreject": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2402.10260.pdf",
+    "bytes": 600542,
+    "title": "StrongREJECT / Souly et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/28_souly2024_strongreject.pdf"
+  },
+  "29_rottger2024_xstest": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2308.01263.pdf",
+    "bytes": 433813,
+    "title": "XSTest / Röttger et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/29_rottger2024_xstest.pdf"
+  },
+  "30_cui2025_orbench": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2405.20947.pdf",
+    "bytes": 1075219,
+    "title": "OR-Bench / Cui et al. 2025",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/30_cui2025_orbench.pdf"
+  },
+  "31_zhou2023_ifeval": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2311.07911.pdf",
+    "bytes": 464152,
+    "title": "IFEval / Zhou et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/31_zhou2023_ifeval.pdf"
+  },
+  "32_wang2024_mmlu_pro": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2406.01574.pdf",
+    "bytes": 959520,
+    "title": "MMLU-Pro / Wang et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/32_wang2024_mmlu_pro.pdf"
+  },
+  "33_qwen2025_qwen3_tech_report": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2505.09388.pdf",
+    "bytes": 779424,
+    "title": "Qwen3 Technical Report (closest official report; Qwen3.5 blog noted in README)",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/33_qwen2025_qwen3_tech_report.pdf"
+  },
+  "34_dubey2024_llama3": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2407.21783.pdf",
+    "bytes": 9833173,
+    "title": "Llama 3 / Dubey et al. 2024",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/34_dubey2024_llama3.pdf"
+  },
+  "35_hu2022_lora": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2106.09685.pdf",
+    "bytes": 1609513,
+    "title": "LoRA / Hu et al. 2022",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/35_hu2022_lora.pdf"
+  },
+  "37_holm1979_multiple_test": {
+    "status": "fail",
+    "tried": [
+      "https://conservancy.umn.edu/bitstreams/731b96af-b756-48d7-807b-7f045a8379e3/download",
+      "https://portlandpress.com/biochemj/article-pdf/177/3/861/571367/bj1770861.pdf",
+      "https://www.jstor.org/stable/pdf/4615733.pdf",
+      "https://sci-hub.st/10.2307/4615733",
+      "https://sci-hub.ru/10.2307/4615733",
+      "https://sci-hub.se/10.2307/4615733"
+    ]
+  },
+  "38_cohen1960_kappa": {
+    "status": "ok",
+    "url": "https://www.osti.gov/servlets/purl/4142523",
+    "bytes": 3875439
+  },
+  "39_jamieson2016_successive_halving": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/1502.07943.pdf",
+    "bytes": 763452,
+    "title": "Successive Halving / Jamieson & Talwalkar 2016",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/39_jamieson2016_successive_halving.pdf"
+  },
+  "40_kalyanakrishnan2012_lucb": {
+    "status": "ok",
+    "url": "https://icml.cc/Conferences/2012/papers/359.pdf",
+    "bytes": 232823,
+    "title": "PAC Subset Selection / Kalyanakrishnan et al. 2012",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/40_kalyanakrishnan2012_lucb.pdf"
+  },
+  "41_zhang2025_backtracking": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2409.14586.pdf",
+    "bytes": 596070,
+    "title": "Backtracking / Zhang et al. 2025 (already cited in paper.tex)",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/41_zhang2025_backtracking.pdf"
+  },
+  "42_zou2024_circuit_breakers": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2406.04313.pdf",
+    "bytes": 920758,
+    "title": "Circuit Breakers / Zou et al. 2024 (already cited in paper.tex)",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/42_zou2024_circuit_breakers.pdf"
+  },
+  "43_andriushchenko2024_adaptive_attacks": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2404.02151.pdf",
+    "bytes": 1869120,
+    "title": "Jailbreaking Leading Safety-Aligned LLMs with Simple Adaptive Attacks",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/43_andriushchenko2024_adaptive_attacks.pdf"
+  },
+  "44_liu2023_autodan": {
+    "status": "ok",
+    "url": "https://arxiv.org/pdf/2310.04451.pdf",
+    "bytes": 611538,
+    "title": "AutoDAN / Liu et al. 2023",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/44_liu2023_autodan.pdf"
+  },
+  "33b_qwen35_9b_model_card": {
+    "status": "ok",
+    "path": "/Users/zhaoyuesen/Desktop/EACL/related_papers/33b_qwen35_9b_model_card.md",
+    "bytes": 77628
+  },
+  "36_efron1993_bootstrap": {
+    "status": "ok",
+    "url": "https://www.scielo.br/j/cagro/a/yyWQQVwqNcH6kzf9qT9Jdhv/?lang=en&format=pdf",
+    "bytes": 716248
+  },
+  "36_efron1979_bootstrap_methods": {
+    "status": "fail",
+    "tried": [
+      "https://projecteuclid.org/download/pdf_1/euclid.aos/1176344552",
+      "https://projecteuclid.org/journals/annals-of-statistics/volume-7/issue-1/Bootstrap-Methods-Another-Look-at-the-Jackknife/10.1214/aos/1176344552.pdf"
+    ]
+  }
+}

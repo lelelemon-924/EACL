@@ -1,0 +1,220 @@
+{
+  "01_ouyang2022_instructgpt": {
+    "arxiv_id": "2203.02155",
+    "title": "Training language models to follow instructions with human feedback",
+    "source": "known"
+  },
+  "02_bai2022_constitutional_ai": {
+    "arxiv_id": "2212.08073",
+    "title": "Constitutional AI: Harmlessness from AI Feedback",
+    "source": "known"
+  },
+  "03_rafailov2023_dpo": {
+    "arxiv_id": "2305.18290",
+    "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+    "source": "known"
+  },
+  "04_meng2024_simpo": {
+    "arxiv_id": "2405.14734",
+    "title": "SimPO: Simple Preference Optimization with a Reference-Free Reward",
+    "source": "known"
+  },
+  "05_zeng2024_tdpo": {
+    "arxiv_id": "2404.11999",
+    "title": "Token-level Direct Preference Optimization",
+    "source": "arxiv_search",
+    "query": "Token-level Direct Preference Optimization"
+  },
+  "06_liu2025_tis_dpo": {
+    "arxiv_id": "2410.04350",
+    "title": "TIS-DPO: Token-level Importance Sampling for Direct Preference Optimization With Estimated Weights",
+    "source": "arxiv_search",
+    "query": "TIS-DPO: Token-level Importance Sampling for Direct Preference Optimization"
+  },
+  "07_najafi2026_mmpo": {
+    "arxiv_id": "2510.22881",
+    "title": "Offline Preference Optimization via Maximum Marginal Likelihood Estimation",
+    "source": "arxiv_search",
+    "query": "Offline Preference Optimization via Maximum Marginal Likelihood Estimation"
+  },
+  "08_dai2023_safe_rlhf": {
+    "arxiv_id": "2310.12773",
+    "title": "Safe RLHF: Safe Reinforcement Learning from Human Feedback",
+    "source": "known"
+  },
+  "09_ji2023_beavertails": {
+    "arxiv_id": "2307.04657",
+    "title": "BeaverTails: Towards Improved Safety Alignment of LLM via a Human-Preference Dataset",
+    "source": "known"
+  },
+  "10_rockafellar2000_cvar": {
+    "arxiv_id": null,
+    "title": "Optimization of Conditional Value-at-Risk Rockafellar",
+    "source": "missing"
+  },
+  "11_qi2025_shallow_safety": {
+    "arxiv_id": "2406.05946",
+    "title": "Safety Alignment Should Be Made More Than Just a Few Tokens Deep",
+    "source": "known"
+  },
+  "12_zhao2025_door": {
+    "arxiv_id": "2503.03710",
+    "title": "Improving LLM Safety Alignment with Dual-Objective Optimization",
+    "source": "known"
+  },
+  "13_vega2025_presto": {
+    "arxiv_id": "2512.05518",
+    "title": "Matching Ranks Over Probability Yields Truly Deep Safety Alignment",
+    "source": "known"
+  },
+  "14_zhang2025_any_depth": {
+    "arxiv_id": "2510.18081",
+    "title": "Any-Depth Alignment: Unlocking Innate Safety Alignment of LLMs to Any-Depth",
+    "source": "known"
+  },
+  "15_kao2025_safety_depth": {
+    "arxiv_id": null,
+    "title": "Safety Depth in Large Language Models: A Markov Chain Perspective",
+    "source": "missing"
+  },
+  "16_xie2025_deeprefusal": {
+    "arxiv_id": "2509.15202",
+    "title": "Beyond Surface Alignment: Rebuilding LLMs Safety Mechanism via Probabilistically Ablating Refusal Direction",
+    "source": "arxiv_search",
+    "query": "Beyond Surface Alignment: Rebuilding LLMs Safety Mechanism via Probabilistically Ablating Refusal Direction"
+  },
+  "17_lyu2026_autoregressive_consistency": {
+    "arxiv_id": "2606.04168",
+    "title": "When Autoregressive Consistency Hurts Safety Alignment",
+    "source": "known"
+  },
+  "18_park2026_inference_time_vulnerability": {
+    "arxiv_id": "2606.04778",
+    "title": "Inference-Time Vulnerability Beyond Shallow Safety: Alignment Along Generation Trajectories",
+    "source": "known"
+  },
+  "19_beetham2026_jailbreaks_inference_alignment": {
+    "arxiv_id": null,
+    "title": "Jailbreaks as Inference-Time Alignment: A Framework for Understanding Safety Failures",
+    "source": "missing"
+  },
+  "20_zhao2026_safety_knowledge_neurons": {
+    "arxiv_id": "2509.01631",
+    "title": "Unraveling LLM Jailbreaks Through Safety Knowledge Neurons",
+    "source": "arxiv_search",
+    "query": "Unraveling LLM Jailbreaks Through Safety Knowledge Neurons"
+  },
+  "21_zou2023_gcg": {
+    "arxiv_id": "2307.15043",
+    "title": "Universal and Transferable Adversarial Attacks on Aligned Language Models",
+    "source": "known"
+  },
+  "22_wichers2024_gradient_red_teaming": {
+    "arxiv_id": "2401.16656",
+    "title": "Gradient-Based Language Model Red Teaming",
+    "source": "arxiv_search",
+    "query": "Gradient-Based Language Model Red Teaming"
+  },
+  "23_ganguli2022_red_teaming": {
+    "arxiv_id": "2202.03286",
+    "title": "Red Teaming Language Models with Language Models",
+    "source": "known"
+  },
+  "24_wei2023_jailbroken": {
+    "arxiv_id": "2307.02483",
+    "title": "Jailbroken: How Does LLM Safety Training Fail",
+    "source": "known"
+  },
+  "25_chao2023_pair": {
+    "arxiv_id": "2310.08419",
+    "title": "Jailbreaking Black Box Large Language Models in Twenty Queries",
+    "source": "known"
+  },
+  "26_chao2024_jailbreakbench": {
+    "arxiv_id": "2404.01318",
+    "title": "JailbreakBench: An Open Robustness Benchmark for Jailbreaking Large Language Models",
+    "source": "known"
+  },
+  "27_mazeika2024_harmbench": {
+    "arxiv_id": "2402.04249",
+    "title": "HarmBench: A Standardized Evaluation Framework for Automated Red Teaming",
+    "source": "known"
+  },
+  "28_souly2024_strongreject": {
+    "arxiv_id": "2402.10260",
+    "title": "A StrongREJECT for Empty Jailbreaks",
+    "source": "known"
+  },
+  "29_rottger2024_xstest": {
+    "arxiv_id": "2308.01263",
+    "title": "XSTest: A Test Suite for Identifying Exaggerated Safety Behaviours",
+    "source": "known"
+  },
+  "30_cui2025_orbench": {
+    "arxiv_id": "2602.18540",
+    "title": "Rodent-Bench",
+    "source": "arxiv_search",
+    "query": "OR-Bench: An Over-Refusal Benchmark for Large Language Models"
+  },
+  "31_zhou2023_ifeval": {
+    "arxiv_id": "2311.07911",
+    "title": "Instruction-Following Evaluation for Large Language Models",
+    "source": "known"
+  },
+  "32_wang2024_mmlu_pro": {
+    "arxiv_id": "2406.01574",
+    "title": "MMLU-Pro: A More Robust and Challenging Multi-Task Language Understanding Benchmark",
+    "source": "known"
+  },
+  "33_qwen2026_qwen35": {
+    "arxiv_id": null,
+    "title": "Qwen3.5 Technical Report",
+    "source": "missing"
+  },
+  "34_dubey2024_llama3": {
+    "arxiv_id": "2407.21783",
+    "title": "The Llama 3 Herd of Models",
+    "source": "known"
+  },
+  "35_hu2022_lora": {
+    "arxiv_id": "2106.09685",
+    "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+    "source": "known"
+  },
+  "36_efron1993_bootstrap": {
+    "arxiv_id": null,
+    "title": "An Introduction to the Bootstrap Efron Tibshirani",
+    "source": "missing"
+  },
+  "37_holm1979_multiple_test": {
+    "arxiv_id": null,
+    "title": "A Simple Sequentially Rejective Multiple Test Procedure Holm",
+    "source": "missing"
+  },
+  "38_cohen1960_kappa": {
+    "arxiv_id": null,
+    "title": "A Coefficient of Agreement for Nominal Scales Cohen",
+    "source": "missing"
+  },
+  "39_jamieson2016_successive_halving": {
+    "arxiv_id": "1502.07943",
+    "title": "Non-stochastic Best Arm Identification and Hyperparameter Optimization",
+    "source": "arxiv_search",
+    "query": "Non-stochastic Best Arm Identification and Hyperparameter Optimization"
+  },
+  "40_kalyanakrishnan2012_lucb": {
+    "arxiv_id": null,
+    "title": "PAC Subset Selection in Stochastic Multi-Armed Bandits",
+    "source": "missing"
+  },
+  "41_zhang2025_backtracking": {
+    "arxiv_id": "2409.14586",
+    "title": "Backtracking Improves Generation Safety",
+    "source": "known"
+  },
+  "42_zou2024_circuit_breakers": {
+    "arxiv_id": "2406.04313",
+    "title": "Improving Alignment and Robustness with Circuit Breakers",
+    "source": "known"
+  }
+}

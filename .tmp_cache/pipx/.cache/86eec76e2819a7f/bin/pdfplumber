@@ -1,0 +1,6 @@
+#!/Users/zhaoyuesen/Desktop/EACL/.tmp_cache/pipx/.cache/86eec76e2819a7f/bin/python
+import sys
+from pdfplumber.cli import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())

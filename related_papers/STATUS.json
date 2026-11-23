@@ -1,0 +1,8 @@
+{
+  "pdf_count": 45,
+  "missing_originals": [
+    "Efron & Tibshirani 1993 book (replaced by Wasserman bootstrap chapter)",
+    "Cohen 1960 journal PDF (replaced by Buffalo course notes; DOI 10.1177/001316446002000104)"
+  ],
+  "folder": "/Users/zhaoyuesen/Desktop/EACL/related_papers"
+}

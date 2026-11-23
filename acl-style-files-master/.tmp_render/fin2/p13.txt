@@ -1,0 +1,95 @@
+Source Split Prompts
+WildJailbreak (vanilla + adv.) Train/Dev 4,500
+PKU-SafeRLHF / BeaverTails Train/Dev 1,350
+SORRY-Bench Train/Dev 900
+HarmBench (standard) Test 400
+StrongREJECT Test 313
+AdvBench Test 187
+JailbreakBench Test 100
+UltraChat Anchor 8,000
+Alpaca Anchor 2,500
+OR-Bench-80K (non-Hard) Anchor 1,500
+Table 3: Prompt sources by split. Train/Dev totals 6,750,
+split into 6,000 training and 750 development prompts
+in source proportion; Test totals the 1,000 test prompts;
+Anchor totals the 12,000 benign-anchor pairs. The
+12,000 clean-safety pairs are two per training prompt
+and introduce no additional source.
+1033 Figure 1b changes only the scoring model, not the
+1034 ranked branches. Checkpoint-specific S3 states and
+1035 adaptive S4 attacks are instead constructed under
+1036 the common protocols of Appendix E.
+1037 Yield and audit. Hard-state mining yields
+1038 396,000 valid paired evaluations from 526,931 at￾1039 tempted generations (75.2%). Pair construction,
+1040 which produces the 36,000 training triples, accepts
+1041 67.7% of 53,184 attempted pairs. The four filters
+1042 run in the order intent mismatch, unsafe recovery
+1043 branch, length incompatibility, degeneracy, and the
+1044 first failing condition supplies the rejection cate￾1045 gory, so the four rates, each as a fraction of at￾1046 tempted pairs, partition the rejected 32.3%: 11.7%,
+1047 9.0%, 6.6%, and 5.0% respectively. The screen is
+1048 automatic on every pair and is validated on a 100-
+1049 pair sample independently audited by two authors.
+1050 In that sample, 89 pairs satisfy both human-audit
+1051 criteria: the recovery branch is safe and helpful in
+1052 93 pairs, and the harmful branch preserves the orig￾1053 inal harmful intent in 95, with pair-level κ = 0.79.
+1054 C Data Sources, Licenses, and Split Audit
+1055 Named sources. Table 3 lists every prompt
+1056 source with its split assignment and count. The
+1057 design rule is that the training/development pool
+1058 and the test pool are drawn from disjoint families
+1059 of resources: training uses safety corpora excluded
+1060 from evaluation, and testing uses the four published
+1061 harmful-behavior suites the safety literature scores
+1062 on. No source appears on both sides.
+1063 Anchor pair construction. A clean-safety pair is
+1064 rooted at an unmodified harmful prompt. Its chosen
+response is a refusal, a concise risk explanation, or 1065
+a safe redirect, and its rejected response is a length- 1066
+compatible harmful answer from the same fixed 1067
+harmful-response pool as the same-state branches 1068
+(Appendix B). Each training prompt contributes 1069
+two such pairs, one with a concise refusal and one 1070
+with a refusal plus a safe redirect, giving 12,000 1071
+pairs. A benign pair is rooted at an UltraChat, Al- 1072
+paca, or non-Hard OR-Bench prompt. Its chosen 1073
+response is the source dataset’s helpful response 1074
+after quality filtering, and its rejected response is 1075
+a fluent but unnecessary refusal sampled from the 1076
+frozen base checkpoint under a safety-biased sys- 1077
+tem prompt, retained only when WildGuard labels 1078
+it a refusal and the harmfulness classifiers of Sec- 1079
+tion 5.4 label it non-harmful. The benign anchor 1080
+therefore ranks helpful compliance above excessive 1081
+refusal without introducing harmful text. 1082
+Licenses and permitted use. Each source is used 1083
+under the license attached to its public release and 1084
+only for defensive safety training. PKU-SafeRLHF, 1085
+BeaverTails, and Alpaca are used subject to their 1086
+non-commercial research restrictions; the evalua- 1087
+tion suites, WildJailbreak, SORRY-Bench, Ultra- 1088
+Chat, and OR-Bench are released under permissive 1089
+research licenses. We do not redistribute raw harm- 1090
+ful continuations. 1091
+Deduplication and split isolation. We dedupli- 1092
+cate in four passes: exact normalized text; harmful- 1093
+intent cluster; embedding-neighbor cluster at co- 1094
+sine 0.95 on a sentence encoder; and harmful- 1095
+source/template identity. Deduplication runs across 1096
+sources before splitting and clusters are assigned 1097
+atomically to one split, so no near-duplicate crosses 1098
+a boundary; matched training-pool prompts are 1099
+dropped rather than test prompts, keeping the test 1100
+suites complete. Over-refusal anchors are sampled 1101
+from OR-Bench-80K with the OR-Bench-Hard 1102
+evaluation prompts and their near-duplicate clus- 1103
+ters removed first, and XSTest is never used for 1104
+training. After all four passes the source/template- 1105
+identity join between the training, development, 1106
+and test pools is empty. 1107
+D Training Configurations and Compute 1108
+All trainable methods update the full model in 1109
+BF16 with FP32 optimizer states, using AdamW 1110
+(β1 = 0.9, β2 = 0.95, weight decay 0.1), Deep- 1111
+Speed ZeRO-3, activation checkpointing, and 1112
+global-norm clipping at 1.0. The peak learning rate 1113
+13

@@ -1,0 +1,98 @@
+Method
+Harmful
+tokens ↓
+Severity
+(0–3) ↓
+Seed-wise median
+TTR (cond.) ↓
+Base 6.3 1.38 19.7
+Clean DPO 6.0 1.31 17.3
+Recovery SFT 4.3 1.03 13.0
+Worst-Insertion SFT 4.5 0.90 13.3
+Uniform Same-State DPO 3.1 0.73 11.3
+Deep safety align. 4.0 0.88 12.3
+Backtracking 3.5 0.82 12.3
+Circuit breakers 3.3 0.77 12.3
+DOOR 3.0 0.67 11.7
+W-DOOR 3.0 0.63 11.7
+PRESTO 3.2 0.72 11.7
+CURE-DPO 2.5 0.55 10.3
+Table 9: Recovery quality on the depth-resolved state
+pool of Appendix G (7,021 states per seed, identical
+across methods). Severity follows the 0–3 LLM-judge
+rubric of Appendix L.4. TTR is conditional on recovery
+onset within the 256-token window and does not use
+the recovery-rate metric’s 64-token cutoff. Means are
+micro-averaged within seed and then across seeds; TTR
+is the mean of the three seed-wise medians.
+1419 and 0.1 pp on naturally occurring states, for 19%
+1420 more compute, without changing the method order￾1421 ing. The other documented adaptation is the layer
+1422 placement for circuit breakers, flagged in Table 11.
+1423 DOOR combines robust refusal training—next￾1424 token supervision toward a safe refusal on harmful￾1425 prefix-augmented inputs x ⊕ h≤k with k drawn
+1426 over our fixed-depth grid—with NPO-based tar￾1427 geted unlearning of the matched harmful branch
+1428 and a benign retention term. W-DOOR adds token￾1429 level weighting that upweights critical refusal to￾1430 kens. Both reuse our prompts, reached states,
+1431 harmful-branch pool, and benign anchors, with
+1432 loss-balancing weights selected on development
+1433 under the same constrained protocol as our anchor
+1434 weights. Learning rate, token and step budgets, ca￾1435 pacity, seeds, and the fixed final-checkpoint rule
+1436 are shared by every trainable row; defenses without
+1437 free loss-balancing weights run at the weights their
+1438 released implementations use.
+1439 J Diagnostic Separations, Regression, and
+1440 Matching
+1441 Table 12 evaluates LTRM and five alternatives un￾1442 der four separations of increasing strictness. The
+1443 unit of analysis is an attack instance rather than a
+1444 prompt: each of the 1,000 test prompts contributes
+1445 several instances, one per attack condition, which
+1446 is why the class counts exceed the prompt count.
+1447 Because instances are nested within prompts, the
+1448 bootstrap resamples prompts and carries all of a
+1449 prompt’s instances together, matching the prompt￾Method family US RK SS HM TW
+Root-level safety preference ✗ ✓ ✗ ✗ ✗
+Harmful-prefix recovery SFT ✓ ✗ – ✗ ✗
+Dual-objective refusal ✓ ∗ ✗ ✗ ✗
+Backtracking ✓ – – ✗ ✗
+Representation rerouting ✓ – – ✗ ✗
+Trajectory preference ✓ ✓ ✗ ✓ ✗
+CURE-DPO (ours) ✓ ✓ ✓ ✓ ✓
+Table 10: Design space of recovery-oriented defenses.
+US: conditions on the unsafe state. RK: ranks a chosen
+continuation against a rejected continuation. SS: both
+are conditioned on a byte-for-byte identical unsafe pre￾fix. HM: hard-state mining. TW: tail weighting. ∗ the
+harmful branch enters through an unlearning rather than
+a ranking term; – not applicable. Entries characterize
+each method as published, and a method may reach a re￾lated effect by other means. Rows are Dai et al. (2024),
+Qi et al. (2025), Zhao et al. (2025), Zhang et al. (2025b),
+Zou et al. (2024), and Park and Kim (2026).
+level clustering of the contrast intervals in Ap- 1450
+pendix L; an instance-level bootstrap would ignore 1451
+that dependence and report narrower intervals than 1452
+the design supports. 1453
+LTRM20 leads on both AUROC and PR-AUC in 1454
+every regime. Absolute AUROC falls from 0.861 1455
+to 0.779 as the separations tighten while the root- 1456
+response margin falls from 0.698 to 0.648; the fully 1457
+separated block is the primary comparison. 1458
+What the diagnostic is for. LTRM scores a 1459
+prompt by comparing a recovery branch against 1460
+a harmful branch at each of its states, so computing 1461
+it requires a constructed harmful continuation. It 1462
+is therefore an offline audit statistic—run before 1463
+deployment, on a prompt set an auditor controls, to 1464
+rank prompt families by how weakly a checkpoint 1465
+recovers—and not a runtime detector, which would 1466
+have to score a state without knowing the harmful 1467
+alternative. The AUROC values above predict at- 1468
+tack success on the same checkpoint the margins 1469
+were measured on; whether margins measured on 1470
+one checkpoint transfer to another is a separate 1471
+question we do not test. 1472
+Regression and matching. Table 13 regresses 1473
+attack success on the standardized recovery mar- 1474
+gin with state depth, the root margin, and source 1475
+indicators held fixed. The recovery margin keeps 1476
+an odds ratio of 0.34 per standard deviation, so 1477
+its contribution is not explained away by depth 1478
+or by root-level safety; deeper states are indepen- 1479
+dently riskier (1.32) and a stronger root margin 1480
+18

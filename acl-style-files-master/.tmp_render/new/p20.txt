@@ -1,0 +1,81 @@
+Predictor AUROC [95% CI] PR-AUC
+In-source (1,734 positive, 2,279 negative)
+LTRM20 0.861 [0.849, 0.873] 0.696
+Min state margin 0.837 [0.825, 0.850] 0.657
+Mean state margin 0.814 [0.801, 0.828] 0.647
+Root-response margin 0.698 [0.682, 0.716] 0.544
+First-token refusal 0.659 [0.643, 0.677] 0.522
+State depth 0.596 [0.579, 0.614] 0.491
+Cross-branch (1,688, 2,259)
+LTRM20 0.831 [0.818, 0.845] 0.660
+Min state margin 0.811 [0.797, 0.825] 0.627
+Mean state margin 0.783 [0.769, 0.798] 0.626
+Root-response margin 0.676 [0.659, 0.694] 0.537
+First-token refusal 0.642 [0.625, 0.659] 0.510
+State depth 0.602 [0.585, 0.620] 0.484
+Cross-attack (1,579, 2,283)
+LTRM20 0.804 [0.791, 0.819] 0.618
+Min state margin 0.782 [0.767, 0.799] 0.588
+Mean state margin 0.758 [0.743, 0.775] 0.580
+Root-response margin 0.654 [0.636, 0.672] 0.505
+First-token refusal 0.611 [0.594, 0.630] 0.477
+State depth 0.571 [0.554, 0.590] 0.442
+Fully separated (1,497, 2,249)—disjoint branch source, attack family, and judge
+LTRM20 0.779 [0.764, 0.795] 0.602
+Min state margin 0.752 [0.736, 0.768] 0.574
+Mean state margin 0.736 [0.721, 0.753] 0.558
+Root-response margin 0.648 [0.631, 0.667] 0.491
+First-token refusal 0.599 [0.581, 0.618] 0.462
+State depth 0.563 [0.544, 0.583] 0.432
+Table 12: Predicting held-out attack success from base-checkpoint diagnostics under four separations. Counts are
+positive and negative instances in that regime; intervals are 95% bootstrap, clustered on prompts. Figure 3a plots
+the AUROC column. The +0.131 fully separated gain of Section 6.1 is 0.779 against 0.648, of which +0.088 is
+already reached by the uniform mean state margin.
+Term Coef. Odds ratio
+Recovery margin −1.09 0.34
+State depth 0.28 1.32
+Root margin −0.22 0.80
+Cross-attack source 0.16 1.17
+Fully-sep. source 0.24 1.27
+Table 13: Descriptive logistic regression of attack suc￾cess. Continuous terms are standardized, so odds ratios
+are per standard deviation.
+1552 within one seed SD of the test-time values reported
+1553 in Table 1. Six of the 25 grid points are feasible
+1554 and the selected (λc, λb) = (0.25, 0.5) is the feasi￾1555 ble point with the lowest development middle ASR
+1556 (18.4%, at clean ASR 4.4%, ORR 7.8%, IFEval
+1557 88.4). The two anchor-removal endpoints show
+1558 what each term buys: dropping the clean-safety
+1559 anchor (λc=0) leaves development middle ASR at
+1560 18.6% but raises clean ASR to 6.3%, and dropping
+1561 the benign anchor (λb=0) reaches 17.3% at the
+1562 cost of ORR 11.3% and IFEval 87.2.
+L Statistical Reporting and Evaluator 1563
+Validity 1564
+L.1 Uncertainty 1565
+We keep two sources of variation separate. Every 1566
+cell of Table 1 carries a sample SD over the three 1567
+seeds, which is not a confidence interval. Infer- 1568
+ential contrasts use B = 10,000 prompt-clustered 1569
+paired bootstrap replicates: a replicate resamples 1570
+test prompts with replacement once, carries all of 1571
+a prompt’s trials together, and scores everything 1572
+being compared on that same resampled prompt 1573
+set. For a method contrast this covers both meth- 1574
+ods and all three seeds, so the prompt-level de- 1575
+pendence the seeds share is preserved. Let D(b)
+1576
+denote the replicate contrast. For a method compar- 1577
+ison, D(b) =
+1
+3
+P3
+s=1 ∆
+(b)
+s , and the point estimate 1578
+is the mean of the three seed-level estimates. H1 1579
+instead compares two predictors read from the sin- 1580
+gle frozen base checkpoint, where no training seed 1581
+enters, so D(b)
+is the paired difference of their AU- 1582
+ROCs on the resampled prompts. In both cases the 1583
+20

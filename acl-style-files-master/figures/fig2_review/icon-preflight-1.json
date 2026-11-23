@@ -1,0 +1,273 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 17,
+    "fail": 10,
+    "warn": 7,
+    "passed": false,
+    "clean": false
+  },
+  "fails": [
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p1",
+      "message": "Edge 'p1' passes through box 'hard_label' (325,211 66×50)",
+      "detail": {
+        "edge_id": "p1",
+        "box_id": "hard_label",
+        "box_type": "text",
+        "box_rect": "325,211 66×50",
+        "segment": "(382,430)→(382,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'flow12_target' (430,230 2×2)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "flow12_target",
+        "box_type": "text",
+        "box_rect": "430,230 2×2",
+        "segment": "(431,74)→(431,430)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'pair_recovery' (734,116 210×69)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "pair_recovery",
+        "box_type": "shape",
+        "box_rect": "734,116 210×69",
+        "segment": "(936,430)→(936,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'p2_title' (445,18 420×54)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "p2_title",
+        "box_type": "shape",
+        "box_rect": "445,18 420×54",
+        "segment": "(936,42)→(858,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'p2_title' (445,18 420×54)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "p2_title",
+        "box_type": "shape",
+        "box_rect": "445,18 420×54",
+        "segment": "(858,42)→(858,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p3",
+      "message": "Edge 'p3' passes through box 'flow23_target' (984,230 2×2)",
+      "detail": {
+        "edge_id": "p3",
+        "box_id": "flow23_target",
+        "box_type": "text",
+        "box_rect": "984,230 2×2",
+        "segment": "(985,74)→(985,430)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p4",
+      "message": "Edge 'p4' passes through box 'flow34_target' (1533,230 2×2)",
+      "detail": {
+        "edge_id": "p4",
+        "box_id": "flow34_target",
+        "box_type": "text",
+        "box_rect": "1533,230 2×2",
+        "segment": "(1534,74)→(1534,430)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p4",
+      "message": "Edge 'p4' passes through box 'p4_title' (1548,18 320×54)",
+      "detail": {
+        "edge_id": "p4",
+        "box_id": "p4_title",
+        "box_type": "shape",
+        "box_rect": "1548,18 320×54",
+        "segment": "(1965,42)→(1855,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p4",
+      "message": "Edge 'p4' passes through box 'p4_title' (1548,18 320×54)",
+      "detail": {
+        "edge_id": "p4",
+        "box_id": "p4_title",
+        "box_type": "shape",
+        "box_rect": "1548,18 320×54",
+        "segment": "(1855,42)→(1855,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "flow12",
+      "message": "Edge 'flow12' passes through box 'hard_label' (325,211 66×50)",
+      "detail": {
+        "edge_id": "flow12",
+        "box_id": "hard_label",
+        "box_type": "text",
+        "box_rect": "325,211 66×50",
+        "segment": "(384,231)→(431,231)"
+      }
+    }
+  ],
+  "warns": [
+    {
+      "rule": "text-overflow-vertical",
+      "element_id": "clean_anchor",
+      "message": "Text in 'clean_anchor' may overflow vertically (borderline): estimated 57px needed, container is 50px tall. Verify with screenshot — draw.io may fit the text.",
+      "detail": {
+        "estimated_height": 56.7,
+        "container_height": 50.0,
+        "font_size": 21.0,
+        "text_preview": "clean-safety"
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['406', '109', '14', '14', '14', '14', '14'], mean=84, cv=1.62). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          406.0,
+          109.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 83.6,
+        "cv": 1.62,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "sh_note",
+      "message": "Row at y≈272: horizontal gaps vary (gaps=['635', '16', '108', '4', '35'], mean=160, cv=1.51). Use uniform spacing.",
+      "detail": {
+        "row_y": 272,
+        "gaps": [
+          635.0,
+          16.0,
+          108.0,
+          4.0,
+          35.0
+        ],
+        "mean": 159.6,
+        "cv": 1.51,
+        "element_ids": [
+          "sh_note",
+          "icon_formula",
+          "loss_note",
+          "icon_safety",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "frozen_arm_tag",
+      "message": "Row at y≈350: horizontal gaps vary (gaps=['107', '743'], mean=425, cv=0.75). Use uniform spacing.",
+      "detail": {
+        "row_y": 350,
+        "gaps": [
+          107.0,
+          743.0
+        ],
+        "mean": 425.0,
+        "cv": 0.75,
+        "element_ids": [
+          "frozen_arm_tag",
+          "pair_sources",
+          "ref_tag"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "p1_title",
+      "message": "Column at x≈36: vertical gaps vary (gaps=['40', '116', '16'], mean=57, cv=0.74). Use uniform spacing.",
+      "detail": {
+        "col_x": 36,
+        "gaps": [
+          40.0,
+          116.0,
+          16.0
+        ],
+        "mean": 57.3,
+        "cv": 0.74,
+        "element_ids": [
+          "p1_title",
+          "icon_mining",
+          "sh_note",
+          "frozen_arm_tag"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "p4_title",
+      "message": "Column at x≈1548: vertical gaps vary (gaps=['22', '29', '67'], mean=39, cv=0.50). Use uniform spacing.",
+      "detail": {
+        "col_x": 1548,
+        "gaps": [
+          22.0,
+          29.0,
+          67.0
+        ],
+        "mean": 39.3,
+        "cv": 0.5,
+        "element_ids": [
+          "p4_title",
+          "icon_filter",
+          "loss_0",
+          "icon_safety"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 43,
+  "edge_count": 17,
+  "canvas": "1987x562"
+}

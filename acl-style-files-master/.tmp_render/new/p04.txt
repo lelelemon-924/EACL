@@ -1,0 +1,112 @@
+NEW: WHICH STATES, AND WHAT IS COMPARED STANDARD: HOW THE PAIRS ARE OPTIMIZED
+1 Reached states
+candidate depths (tokens)
+5 10 20 40 80 hard
+mined per prompt:
+lowest base margin
+2 Same-state pair
+st
+identical state
+recovery rt
+harmful ut
+matched on intent, safety, length,
+and non-degeneracy
+67.7% kept 32.3% cut
+3 Canonical DPO
+masked scored
+πθ − πref
+not a new loss
+4 Tail + anchors
+one loss per candidate state
+ℓ5
+ℓ10
+ℓ20
+ℓ40
+ℓ80
+ℓhard
+keep the top 2 by detached loss
+clean-safety + benign
+always added, never selected
+optimized frozen
+Figure 2: CURE-DPO changes which states are compared and what they are compared against; the objective applied
+to the resulting pairs is canonical DPO. Both branches decode from one byte-for-byte identical reached state st, and
+only the branch tokens are scored (Appendix A). Each update concentrates on a prompt’s two highest-loss states and
+carries clean-safety and benign anchors. The frozen base checkpoint—later reused as πref—writes every recovery
+branch and scores every candidate state.
+239 LTRM predicts held-out attack success better than
+240 the root-level margin, and fixed the tail fraction
+241 q = 0.2 (LTRM20; the subscript is a percentage) be￾242 fore outcome analysis. Larger LTRM means safer
+243 ordering, so safety-oriented scores are negated for
+244 attack-prediction AUROC. The diagnostic tail is
+245 distinct from training: LTRM ranks states by the
+246 reference-free margin at q = 0.2, whereas train￾247 ing selects two of six states by detached reference￾248 adjusted loss. Because the margin needs a harm￾249 ful branch to compare against, LTRM is an offline
+250 audit statistic rather than a runtime detector (Ap￾251 pendix J).
+252 4 CURE-DPO
+253 4.1 Same-State Pair Construction
+254 Figure 2 summarizes the four stages. Each training
+instance is a triple (st
+, rt 255 , ut) whose two branches
+256 share the complete reached state. We keep five
+257 fixed-depth states at Tfixed = {5, 10, 20, 40, 80} to￾258 kens and mine one additional hard state per prompt:
+259 the position at which the frozen base model most
+260 prefers the harmful branch. Treating the remaining
+261 positions as noisy arms scored by the base model’s
+262 same-state margin, we spend 66 valid paired
+263 evaluations per prompt using Successive Halving
+264 (Jamieson and Talwalkar, 2016) with confidence￾265 based best-arm identification (Kalyanakrishnan
+266 et al., 2012). Fresh confirmation pulls for the final￾267 ists reduce bias from reusing the adaptive screening
+268 samples (Appendix K). After selection we build a
+269 fresh pair at that state. The six states per prompt
+270 are shared by every internal baseline.
+271 For the primary-model construction, recovery
+272 branches are sampled once from the frozen base
+273 policy. Harmful branches use unsafe responses
+from PKU-SafeRLHF/BeaverTails and generations 274
+from a held-in harmful-response model, condi- 275
+tioned on the identical state and filtered for in- 276
+tent match, recovery-branch safety, length compat- 277
+ibility, and non-degeneracy. Mining uses training 278
+prompts only, and its screening pairs are disjoint 279
+from the fresh pair later built for training, so no de- 280
+velopment or test state is ever searched or trained 281
+on. 282
+4.2 Local Preference Objective 283
+Training uses the reference-adjusted branch score 284
+Aθ(s, y) = S
+sum
+θ
+(s, y) − S
+sum
+ref (s, y), (6) 285
+with S
+sum
+θ
+(s, y) = P
+j
+log πθ(yj | s, y<j ) the 286
+summed branch log-likelihood—matching canon- 287
+ical DPO—and πref the frozen instruction check- 288
+point. We use canonical DPO’s summed continu- 289
+ation score rather than a length-normalized score; 290
+the length-normalized average of Eq. (2) is used 291
+only for the reference-free diagnostic margins. We 292
+set β = 0.1 for both the diagnostic scale and the 293
+preference logit. The local loss is 294
+ℓstate(st
+, rt
+, ut)
+= − log σ(β [Aθ(st
+, rt) − Aθ(st
+, ut)]).
+(7) 295
+What is and is not new. Equation (7) is canoni- 296
+cal DPO on continuation pairs that share their con- 297
+ditioning state. Scoring the shared prefix explicitly 298
+instead of masking it leaves the preference differ- 299
+ence and its gradient unchanged (Appendix A). The 300
+contribution is the pair construction and state selec- 301
+tion, which Section 6.3 tests. 302
+4.3 Lower-Tail State Aggregation 303
+Let H(x) contain the K = 2 states with the largest 304
+current losses among a prompt’s six states. The tail 305
+4

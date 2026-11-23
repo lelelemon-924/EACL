@@ -1,0 +1,393 @@
+\begin{thebibliography}{45}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Arditi et~al.(2024)Arditi, Obeso, Syed, Paleka, Panickssery, Gurnee,
+  and Nanda}]{arditi2024refusal}
+Andy Arditi, Oscar Obeso, Aaquib Syed, Daniel Paleka, Nina Panickssery, Wes
+  Gurnee, and Neel Nanda. 2024.
+\newblock \href {https://doi.org/10.52202/079017-4322} {Refusal in language
+  models is mediated by a single direction}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Bai et~al.(2022)Bai, Kadavath, Kundu, Askell, Kernion, Jones, Chen,
+  Goldie, Mirhoseini, McKinnon et~al.}]{bai2022constitutional}
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion,
+  Andy Jones, Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon,
+  et~al. 2022.
+\newblock \href {https://arxiv.org/abs/2212.08073} {Constitutional {AI}:
+  Harmlessness from {AI} feedback}.
+\newblock \emph{arXiv preprint arXiv:2212.08073}.
+
+\bibitem[{Beetham et~al.(2026)Beetham, Chakraborty, Wang, Huang, Bedi, and
+  Shah}]{beetham2026liar}
+James Beetham, Souradip Chakraborty, Mengdi Wang, Furong Huang, Amrit~Singh
+  Bedi, and Mubarak Shah. 2026.
+\newblock \href {https://doi.org/10.18653/v1/2026.eacl-long.360} {Jailbreaks as
+  inference-time alignment: A framework for understanding safety failures in
+  {LLM}s}.
+\newblock In \emph{Proceedings of the 19th Conference of the {E}uropean Chapter
+  of the {A}ssociation for {C}omputational {L}inguistics (Volume 1: Long
+  Papers)}, pages 7689--7713, Rabat, Morocco. Association for Computational
+  Linguistics.
+
+\bibitem[{Chao et~al.(2024)Chao, Debenedetti, Robey, Andriushchenko, Croce,
+  Sehwag, Dobriban, Flammarion, Pappas, Tram{\`e}r, Hassani, and
+  Wong}]{chao2024jailbreakbench}
+Patrick Chao, Edoardo Debenedetti, Alexander Robey, Maksym Andriushchenko,
+  Francesco Croce, Vikash Sehwag, Edgar Dobriban, Nicolas Flammarion, George~J.
+  Pappas, Florian Tram{\`e}r, Hamed Hassani, and Eric Wong. 2024.
+\newblock \href {https://doi.org/10.52202/079017-1745} {{JailbreakBench}: An
+  open robustness benchmark for jailbreaking large language models}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Chao et~al.(2023)Chao, Robey, Dobriban, Hassani, Pappas, and
+  Wong}]{chao2023pair}
+Patrick Chao, Alexander Robey, Edgar Dobriban, Hamed Hassani, George~J. Pappas,
+  and Eric Wong. 2023.
+\newblock \href {https://arxiv.org/abs/2310.08419} {Jailbreaking black box
+  large language models in twenty queries}.
+\newblock \emph{arXiv preprint arXiv:2310.08419}.
+
+\bibitem[{Cui et~al.(2025)Cui, Chiang, Stoica, and Hsieh}]{cui2025orbench}
+Justin Cui, Wei-Lin Chiang, Ion Stoica, and Cho-Jui Hsieh. 2025.
+\newblock \href {https://proceedings.mlr.press/v267/cui25a.html} {{OR}-bench:
+  An over-refusal benchmark for large language models}.
+\newblock In \emph{Proceedings of the 42nd International Conference on Machine
+  Learning}, volume 267 of \emph{Proceedings of Machine Learning Research},
+  pages 11515--11542. PMLR.
+
+\bibitem[{Dai et~al.(2024)Dai, Pan, Sun, Ji, Xu, Liu, Wang, and
+  Yang}]{dai2023saferlhf}
+Josef Dai, Xuehai Pan, Ruiyang Sun, Jiaming Ji, Xinbo Xu, Mickel Liu, Yizhou
+  Wang, and Yaodong Yang. 2024.
+\newblock Safe {RLHF}: Safe reinforcement learning from human feedback.
+\newblock In \emph{The Twelfth International Conference on Learning
+  Representations (ICLR)}.
+
+\bibitem[{Ding et~al.(2023)Ding, Chen, Xu, Qin, Hu, Liu, Sun, and
+  Zhou}]{ding2023ultrachat}
+Ning Ding, Yulin Chen, Bokai Xu, Yujia Qin, Shengding Hu, Zhiyuan Liu, Maosong
+  Sun, and Bowen Zhou. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.183} {Enhancing
+  chat language models by scaling high-quality instructional conversations}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3029--3051. Association for Computational
+  Linguistics.
+
+\bibitem[{Dubey et~al.(2024)Dubey, Jauhri, Pandey, Kadian, Al-Dahle, Letman,
+  Mathur, Schelten, Yang, Fan et~al.}]{dubey2024llama3}
+Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad
+  Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan,
+  et~al. 2024.
+\newblock \href {https://arxiv.org/abs/2407.21783} {The {Llama} 3 herd of
+  models}.
+\newblock \emph{arXiv preprint arXiv:2407.21783}.
+
+\bibitem[{Han et~al.(2024)Han, Rao, Ettinger, Jiang, Lin, Lambert, Choi, and
+  Dziri}]{han2024wildguard}
+Seungju Han, Kavel Rao, Allyson Ettinger, Liwei Jiang, Bill~Yuchen Lin, Nathan
+  Lambert, Yejin Choi, and Nouha Dziri. 2024.
+\newblock \href {https://doi.org/10.52202/079017-0261} {{WildGuard}: Open
+  one-stop moderation tools for safety risks, jailbreaks, and refusals of
+  {LLM}s}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Jamieson and Talwalkar(2016)}]{jamieson-talwalkar-2016}
+Kevin Jamieson and Ameet Talwalkar. 2016.
+\newblock \href {https://proceedings.mlr.press/v51/jamieson16.html}
+  {Non-stochastic best arm identification and hyperparameter optimization}.
+\newblock In \emph{Proceedings of the 19th International Conference on
+  Artificial Intelligence and Statistics}, volume~51 of \emph{Proceedings of
+  Machine Learning Research}, pages 240--248. PMLR.
+
+\bibitem[{Ji et~al.(2023)Ji, Liu, Dai, Pan, Zhang, Bian, Chen, Sun, Wang, and
+  Yang}]{ji2023beavertails}
+Jiaming Ji, Mickel Liu, Josef Dai, Xuehai Pan, Chi Zhang, Ce~Bian, Boyuan Chen,
+  Ruiyang Sun, Yizhou Wang, and Yaodong Yang. 2023.
+\newblock \href
+  {https://proceedings.neurips.cc/paper_files/paper/2023/hash/4dbb61cb68671edc4ca3712d70083b9f-Abstract-Datasets_and_Benchmarks.html}
+  {{BeaverTails}: Towards improved safety alignment of {LLM} via a
+  human-preference dataset}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Jiang et~al.(2024)Jiang, Rao, Han, Ettinger, Brahman, Kumar,
+  Mireshghallah, Lu, Sap, Choi, and Dziri}]{jiang2024wildteaming}
+Liwei Jiang, Kavel Rao, Seungju Han, Allyson Ettinger, Faeze Brahman, Sachin
+  Kumar, Niloofar Mireshghallah, Ximing Lu, Maarten Sap, Yejin Choi, and Nouha
+  Dziri. 2024.
+\newblock \href
+  {https://proceedings.neurips.cc/paper_files/paper/2024/hash/54024fca0cef9911be36319e622cde38-Abstract-Conference.html}
+  {{WildTeaming} at scale: From in-the-wild jailbreaks to (adversarially) safer
+  language models}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Kalyanakrishnan et~al.(2012)Kalyanakrishnan, Tewari, Auer, and
+  Stone}]{kalyanakrishnan-etal-2012}
+Shivaram Kalyanakrishnan, Ambuj Tewari, Peter Auer, and Peter Stone. 2012.
+\newblock \href {https://icml.cc/Conferences/2012/papers/359.pdf} {{PAC} subset
+  selection in stochastic multi-armed bandits}.
+\newblock In \emph{Proceedings of the 29th International Conference on Machine
+  Learning}, pages 655--662.
+
+\bibitem[{Kao et~al.(2025)Kao, Yu, Lu, and Chen}]{kao2025safetydepth}
+Ching-Chia Kao, Chia-Mu Yu, Chun-Shien Lu, and Chu-Song Chen. 2025.
+\newblock Safety alignment depth in large language models: A {Markov} chain
+  perspective.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}.
+
+\bibitem[{Liu et~al.(2025)Liu, Bai, Lu, Sun, Kong, Wang, Shan, Jose, Liu, Wen,
+  Yu, and Cao}]{liu2025tisdpo}
+Aiwei Liu, Haoping Bai, Zhiyun Lu, Yanchao Sun, Xiang Kong, Simon Wang, Jiulong
+  Shan, Albin~Madappally Jose, Xiaojiang Liu, Lijie Wen, Philip~S. Yu, and Meng
+  Cao. 2025.
+\newblock {TIS-DPO}: Token-level importance sampling for direct preference
+  optimization with estimated weights.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations (ICLR)}.
+
+\bibitem[{Lyu et~al.(2026)Lyu, Jia, Cai, and Zhu}]{lyu2026consistency}
+Bochen Lyu, Yiyang Jia, Xiaohao Cai, and Zhanxing Zhu. 2026.
+\newblock \href {https://arxiv.org/abs/2606.04168} {When autoregressive
+  consistency hurts safety alignment}.
+\newblock \emph{arXiv preprint arXiv:2606.04168}.
+
+\bibitem[{Mazeika et~al.(2024)Mazeika, Phan, Yin, Zou, Wang, Mu, Sakhaee, Li,
+  Basart, Li, Forsyth, and Hendrycks}]{mazeika2024harmbench}
+Mantas Mazeika, Long Phan, Xuwang Yin, Andy Zou, Zifan Wang, Norman Mu, Elham
+  Sakhaee, Nathaniel Li, Steven Basart, Bo~Li, David Forsyth, and Dan
+  Hendrycks. 2024.
+\newblock \href {https://proceedings.mlr.press/v235/mazeika24a.html}
+  {{HarmBench}: A standardized evaluation framework for automated red teaming
+  and robust refusal}.
+\newblock In \emph{Proceedings of the 41st International Conference on Machine
+  Learning}, volume 235 of \emph{Proceedings of Machine Learning Research},
+  pages 35181--35224. PMLR.
+
+\bibitem[{Meng et~al.(2024)Meng, Xia, and Chen}]{meng2024simpo}
+Yu~Meng, Mengzhou Xia, and Danqi Chen. 2024.
+\newblock {SimPO}: Simple preference optimization with a reference-free reward.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}.
+
+\bibitem[{Najafi and Fyshe(2026)}]{najafi2026mmpo}
+Saeed Najafi and Alona Fyshe. 2026.
+\newblock \href {https://doi.org/10.18653/v1/2026.eacl-long.318} {Offline
+  preference optimization via maximum marginal likelihood estimation}.
+\newblock In \emph{Proceedings of the 19th Conference of the {E}uropean Chapter
+  of the {A}ssociation for {C}omputational {L}inguistics (Volume 1: Long
+  Papers)}, pages 6751--6764, Rabat, Morocco. Association for Computational
+  Linguistics.
+
+\bibitem[{{OpenAI}(2026)}]{openai2026gpt55}
+{OpenAI}. 2026.
+\newblock \href {https://openai.com/index/gpt-5-5-system-card/} {{GPT}-5.5
+  system card}.
+
+\bibitem[{Ouyang et~al.(2022)Ouyang, Wu, Jiang, Almeida, Wainwright, Mishkin,
+  Zhang, Agarwal, Slama, Ray, Schulman, Hilton, Kelton, Miller, Simens, Askell,
+  Welinder, Christiano, Leike, and Lowe}]{ouyang2022instructgpt}
+Long Ouyang, Jeffrey Wu, Xu~Jiang, Diogo Almeida, Carroll Wainwright, Pamela
+  Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John
+  Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, Maddie Simens, Amanda
+  Askell, Peter Welinder, Paul~F. Christiano, Jan Leike, and Ryan Lowe. 2022.
+\newblock \href
+  {https://proceedings.neurips.cc/paper_files/paper/2022/hash/b1efde53be364a73914f58805a001731-Abstract-Conference.html}
+  {Training language models to follow instructions with human feedback}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Park and Kim(2026)}]{park2026trajectory}
+Kyungmin Park and Taesup Kim. 2026.
+\newblock \href {https://arxiv.org/abs/2606.04778} {Inference-time
+  vulnerability beyond shallow safety: Alignment along generation
+  trajectories}.
+\newblock \emph{arXiv preprint arXiv:2606.04778}.
+
+\bibitem[{Qi et~al.(2025)Qi, Panda, Lyu, Ma, Roy, Beirami, Mittal, and
+  Henderson}]{qi2024safety}
+Xiangyu Qi, Ashwinee Panda, Kaifeng Lyu, Xiao Ma, Subhrajit Roy, Ahmad Beirami,
+  Prateek Mittal, and Peter Henderson. 2025.
+\newblock \href {https://arxiv.org/abs/2406.05946} {Safety alignment should be
+  made more than just a few tokens deep}.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations (ICLR)}.
+
+\bibitem[{{Qwen Team}(2026)}]{qwen2026qwen35}
+{Qwen Team}. 2026.
+\newblock \href {https://qwen.ai/blog?id=qwen3.5} {{Qwen3.5}: Towards native
+  multimodal agents}.
+
+\bibitem[{Rafailov et~al.(2023)Rafailov, Sharma, Mitchell, Manning, Ermon, and
+  Finn}]{rafailov2023dpo}
+Rafael Rafailov, Archit Sharma, Eric Mitchell, Christopher~D. Manning, Stefano
+  Ermon, and Chelsea Finn. 2023.
+\newblock Direct preference optimization: Your language model is secretly a
+  reward model.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}.
+
+\bibitem[{Rockafellar and Uryasev(2000)}]{rockafellar2000cvar}
+R.~Tyrrell Rockafellar and Stanislav Uryasev. 2000.
+\newblock Optimization of conditional value-at-risk.
+\newblock \emph{Journal of Risk}, 2:21--41.
+
+\bibitem[{R{\"o}ttger et~al.(2024)R{\"o}ttger, Kirk, Vidgen, Attanasio,
+  Bianchi, and Hovy}]{rottger2024xstest}
+Paul R{\"o}ttger, Hannah Kirk, Bertie Vidgen, Giuseppe Attanasio, Federico
+  Bianchi, and Dirk Hovy. 2024.
+\newblock \href {https://doi.org/10.18653/v1/2024.naacl-long.301} {{XST}est: A
+  test suite for identifying exaggerated safety behaviours in large language
+  models}.
+\newblock In \emph{Proceedings of the 2024 Conference of the North American
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies (Volume 1: Long Papers)}, pages 5377--5400. Association for
+  Computational Linguistics.
+
+\bibitem[{Souly et~al.(2024)Souly, Lu, Bowen, Trinh, Hsieh, Pandey, Abbeel,
+  Svegliato, Emmons, Watkins, and Toyer}]{souly2024strongreject}
+Alexandra Souly, Qingyuan Lu, Dillon Bowen, Tu~Trinh, Elvis Hsieh, Sana Pandey,
+  Pieter Abbeel, Justin Svegliato, Scott Emmons, Olivia Watkins, and Sam Toyer.
+  2024.
+\newblock \href {https://doi.org/10.52202/079017-3984} {A strong{REJECT} for
+  empty jailbreaks}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Taori et~al.(2023)Taori, Gulrajani, Zhang, Dubois, Li, Guestrin,
+  Liang, and Hashimoto}]{taori2023alpaca}
+Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann Dubois, Xuechen Li, Carlos
+  Guestrin, Percy Liang, and Tatsunori~B. Hashimoto. 2023.
+\newblock \href {https://github.com/tatsu-lab/stanford_alpaca} {Stanford
+  {Alpaca}: An instruction-following {LLaMA} model}.
+
+\bibitem[{Vega and Singh(2025)}]{vega2025presto}
+Jason Vega and Gagandeep Singh. 2025.
+\newblock \href {https://arxiv.org/abs/2512.05518} {Matching ranks over
+  probability yields truly deep safety alignment}.
+\newblock \emph{arXiv preprint arXiv:2512.05518}.
+
+\bibitem[{Wang et~al.(2024{\natexlab{a}})Wang, Ma, Zhang, Ni, Chandra, Guo,
+  Ren, Arulraj, He, Jiang, Li, Ku, Wang, Zhuang, Fan, Yue, and
+  Chen}]{wang2024mmlupro}
+Yubo Wang, Xueguang Ma, Ge~Zhang, Yuansheng Ni, Abhranil Chandra, Shiguang Guo,
+  Weiming Ren, Aaran Arulraj, Xuan He, Ziyan Jiang, Tianle Li, Max Ku, Kai
+  Wang, Alex Zhuang, Rongqi Fan, Xiang Yue, and Wenhu Chen. 2024{\natexlab{a}}.
+\newblock \href {https://doi.org/10.52202/079017-3018} {{MMLU-Pro}: A more
+  robust and challenging multi-task language understanding benchmark}.
+\newblock In \emph{Advances in Neural Information Processing Systems}.
+
+\bibitem[{Wang et~al.(2024{\natexlab{b}})Wang, Li, Han, Nakov, and
+  Baldwin}]{wang2024donotanswer}
+Yuxia Wang, Haonan Li, Xudong Han, Preslav Nakov, and Timothy Baldwin.
+  2024{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2024.findings-eacl.61}
+  {Do-not-answer: Evaluating safeguards in {LLM}s}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EACL 2024}, pages 896--911. Association for Computational Linguistics.
+
+\bibitem[{Wichers et~al.(2024)Wichers, Denison, and Beirami}]{wichers2024gbrt}
+Nevan Wichers, Carson Denison, and Ahmad Beirami. 2024.
+\newblock \href {https://doi.org/10.18653/v1/2024.eacl-long.175}
+  {Gradient-based language model red teaming}.
+\newblock In \emph{Proceedings of the 18th Conference of the European Chapter
+  of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages 2862--2881, St. Julian's, Malta. Association for Computational
+  Linguistics.
+
+\bibitem[{Xie et~al.(2025{\natexlab{a}})Xie, Qi, Zeng, Huang, Sehwag, Huang,
+  He, Wei, Li, Sheng, Jia, Li, Li, Chen, Henderson, and
+  Mittal}]{xie2025sorrybench}
+Tinghao Xie, Xiangyu Qi, Yi~Zeng, Yangsibo Huang, Udari~Madhushani Sehwag,
+  Kaixuan Huang, Luxi He, Boyi Wei, Dacheng Li, Ying Sheng, Ruoxi Jia, Bo~Li,
+  Kai Li, Danqi Chen, Peter Henderson, and Prateek Mittal. 2025{\natexlab{a}}.
+\newblock \href {https://openreview.net/forum?id=YfKNaRktan} {{SORRY}-bench:
+  Systematically evaluating large language model safety refusal}.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations (ICLR)}.
+
+\bibitem[{Xie et~al.(2025{\natexlab{b}})Xie, Zhang, Liu, Ma, and
+  Liu}]{xie2025deeprefusal}
+Yuanbo Xie, Yingjie Zhang, Tianyun Liu, Duohe Ma, and Tingwen Liu.
+  2025{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2025.findings-emnlp.956} {Beyond
+  surface alignment: Rebuilding {LLM}s safety mechanism via probabilistically
+  ablating refusal direction}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2025}, pages 17620--17632, Suzhou, China. Association for Computational
+  Linguistics.
+
+\bibitem[{Zeng et~al.(2024)Zeng, Liu, Ma, Yang, Zhang, and Wang}]{zeng2024tdpo}
+Yongcheng Zeng, Guoqing Liu, Weiyu Ma, Ning Yang, Haifeng Zhang, and Jun Wang.
+  2024.
+\newblock Token-level direct preference optimization.
+\newblock In \emph{Proceedings of the 41st International Conference on Machine
+  Learning (ICML)}.
+
+\bibitem[{Zhang et~al.(2026)Zhang, Zhang, Chen, Zhang, Wang, and
+  Lu}]{zhang2026selfreset}
+Dongcheng Zhang, Yi~Zhang, Yuxin Chen, An~Zhang, Xiang Wang, and Chaochao Lu.
+  2026.
+\newblock \href {https://arxiv.org/abs/2605.08936} {Self-{ReSET}: Learning to
+  self-recover from unsafe reasoning trajectories}.
+\newblock \emph{arXiv preprint arXiv:2605.08936}.
+
+\bibitem[{Zhang et~al.(2025{\natexlab{a}})Zhang, Estornell, Baek, Li, and
+  Xu}]{zhang2025anydepth}
+Jiawei Zhang, Andrew Estornell, David~D. Baek, Bo~Li, and Xiaojun Xu.
+  2025{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2510.18081} {Any-depth alignment:
+  Unlocking innate safety alignment of {LLMs} to any-depth}.
+\newblock \emph{arXiv preprint arXiv:2510.18081}.
+
+\bibitem[{Zhang et~al.(2025{\natexlab{b}})Zhang, Chi, Nguyen, Upasani, Bikel,
+  Weston, and Smith}]{zhang2024backtracking}
+Yiming Zhang, Jianfeng Chi, Hailey Nguyen, Kartikeya Upasani, Daniel~M. Bikel,
+  Jason Weston, and Eric~Michael Smith. 2025{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/2409.14586} {Backtracking improves
+  generation safety}.
+\newblock In \emph{The Thirteenth International Conference on Learning
+  Representations (ICLR)}.
+
+\bibitem[{Zhao et~al.(2026)Zhao, Ke, and Huang}]{zhao2026neurons}
+Chongwen Zhao, Yutong Ke, and Kaizhu Huang. 2026.
+\newblock \href {https://doi.org/10.18653/v1/2026.eacl-long.83} {Unraveling
+  {LLM} jailbreaks through safety knowledge neurons}.
+\newblock In \emph{Proceedings of the 19th Conference of the {E}uropean Chapter
+  of the {A}ssociation for {C}omputational {L}inguistics (Volume 1: Long
+  Papers)}, pages 1889--1906, Rabat, Morocco. Association for Computational
+  Linguistics.
+
+\bibitem[{Zhao et~al.(2025)Zhao, Cai, Shi, Huang, Lin, Mei, and
+  Song}]{zhao2025door}
+Xuandong Zhao, Will Cai, Tianneng Shi, David Huang, Licong Lin, Song Mei, and
+  Dawn Song. 2025.
+\newblock \href {https://arxiv.org/abs/2503.03710} {Improving {LLM} safety
+  alignment with dual-objective optimization}.
+\newblock In \emph{Proceedings of the 42nd International Conference on Machine
+  Learning (ICML)}.
+
+\bibitem[{Zhou et~al.(2023)Zhou, Lu, Mishra, Brahma, Basu, Luan, Zhou, and
+  Hou}]{zhou2023ifeval}
+Jeffrey Zhou, Tianjian Lu, Swaroop Mishra, Siddhartha Brahma, Sujoy Basu,
+  Yi~Luan, Denny Zhou, and Le~Hou. 2023.
+\newblock \href {https://arxiv.org/abs/2311.07911} {Instruction-following
+  evaluation for large language models}.
+\newblock \emph{arXiv preprint arXiv:2311.07911}.
+
+\bibitem[{Zou et~al.(2024)Zou, Phan, Wang, Duenas, Lin, Andriushchenko, Kolter,
+  Fredrikson, and Hendrycks}]{zou2024circuit}
+Andy Zou, Long Phan, Justin Wang, Derek Duenas, Maxwell Lin, Maksym
+  Andriushchenko, J.~Zico Kolter, Matt Fredrikson, and Dan Hendrycks. 2024.
+\newblock \href {https://arxiv.org/abs/2406.04313} {Improving alignment and
+  robustness with circuit breakers}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}.
+
+\bibitem[{Zou et~al.(2023)Zou, Wang, Carlini, Nasr, Kolter, and
+  Fredrikson}]{zou2023gcg}
+Andy Zou, Zifan Wang, Nicholas Carlini, Milad Nasr, J.~Zico Kolter, and Matt
+  Fredrikson. 2023.
+\newblock \href {https://arxiv.org/abs/2307.15043} {Universal and transferable
+  adversarial attacks on aligned language models}.
+\newblock \emph{arXiv preprint arXiv:2307.15043}.
+
+\end{thebibliography}

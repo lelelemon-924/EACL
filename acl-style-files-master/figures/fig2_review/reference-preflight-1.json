@@ -1,0 +1,221 @@
+{
+  "file": "/Users/zhaoyuesen/Desktop/EACL/acl-style-files-master/figures/fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 14,
+    "fail": 10,
+    "warn": 4,
+    "passed": false,
+    "clean": false
+  },
+  "fails": [
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p1",
+      "message": "Edge 'p1' passes through box 'p1_title' (36,18 300×54)",
+      "detail": {
+        "edge_id": "p1",
+        "box_id": "p1_title",
+        "box_type": "shape",
+        "box_rect": "36,18 300×54",
+        "segment": "(22,42)→(407,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p1",
+      "message": "Edge 'p1' passes through box 'flow12_source' (406,230 2×2)",
+      "detail": {
+        "edge_id": "p1",
+        "box_id": "flow12_source",
+        "box_type": "text",
+        "box_rect": "406,230 2×2",
+        "segment": "(407,42)→(407,430)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'p2_title' (452,18 430×54)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "p2_title",
+        "box_type": "shape",
+        "box_rect": "452,18 430×54",
+        "segment": "(438,42)→(998,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'flow23_source' (997,230 2×2)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "flow23_source",
+        "box_type": "text",
+        "box_rect": "997,230 2×2",
+        "segment": "(998,42)→(998,430)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p2",
+      "message": "Edge 'p2' passes through box 'flow12_target' (437,230 2×2)",
+      "detail": {
+        "edge_id": "p2",
+        "box_id": "flow12_target",
+        "box_type": "text",
+        "box_rect": "437,230 2×2",
+        "segment": "(438,430)→(438,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p3",
+      "message": "Edge 'p3' passes through box 'p3_title' (1043,18 330×54)",
+      "detail": {
+        "edge_id": "p3",
+        "box_id": "p3_title",
+        "box_type": "shape",
+        "box_rect": "1043,18 330×54",
+        "segment": "(1029,42)→(1429,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p3",
+      "message": "Edge 'p3' passes through box 'flow34_source' (1428,230 2×2)",
+      "detail": {
+        "edge_id": "p3",
+        "box_id": "flow34_source",
+        "box_type": "text",
+        "box_rect": "1428,230 2×2",
+        "segment": "(1429,42)→(1429,430)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p3",
+      "message": "Edge 'p3' passes through box 'flow23_target' (1028,230 2×2)",
+      "detail": {
+        "edge_id": "p3",
+        "box_id": "flow23_target",
+        "box_type": "text",
+        "box_rect": "1028,230 2×2",
+        "segment": "(1029,430)→(1029,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p4",
+      "message": "Edge 'p4' passes through box 'p4_title' (1474,18 330×54)",
+      "detail": {
+        "edge_id": "p4",
+        "box_id": "p4_title",
+        "box_type": "shape",
+        "box_rect": "1474,18 330×54",
+        "segment": "(1460,42)→(1965,42)"
+      }
+    },
+    {
+      "rule": "arrow-box-collision",
+      "element_id": "p4",
+      "message": "Edge 'p4' passes through box 'flow34_target' (1459,230 2×2)",
+      "detail": {
+        "edge_id": "p4",
+        "box_id": "flow34_target",
+        "box_type": "text",
+        "box_rect": "1459,230 2×2",
+        "segment": "(1460,430)→(1460,42)"
+      }
+    }
+  ],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "pair_state",
+      "message": "Row at y≈151: horizontal gaps vary (gaps=['438', '97', '14', '14', '14', '14', '14'], mean=86, cv=1.69). Use uniform spacing.",
+      "detail": {
+        "row_y": 151,
+        "gaps": [
+          438.0,
+          97.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 86.4,
+        "cv": 1.69,
+        "element_ids": [
+          "pair_state",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "sh_note",
+      "message": "Row at y≈272: horizontal gaps vary (gaps=['1135', '42'], mean=588, cv=0.93). Use uniform spacing.",
+      "detail": {
+        "row_y": 272,
+        "gaps": [
+          1135.0,
+          42.0
+        ],
+        "mean": 588.5,
+        "cv": 0.93,
+        "element_ids": [
+          "sh_note",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "frozen_arm_tag",
+      "message": "Row at y≈350: horizontal gaps vary (gaps=['109', '653'], mean=381, cv=0.71). Use uniform spacing.",
+      "detail": {
+        "row_y": 350,
+        "gaps": [
+          109.0,
+          653.0
+        ],
+        "mean": 381.0,
+        "cv": 0.71,
+        "element_ids": [
+          "frozen_arm_tag",
+          "pair_sources",
+          "ref_tag"
+        ]
+      }
+    },
+    {
+      "rule": "color-too-many-strokes",
+      "element_id": "*",
+      "message": "7 distinct stroke colors used. Use 2-3 consistent stroke colors. Colors: #111111, #1a1a1a, #1f6f54, #4a7db5, #6e7681, #98a2b3, #c0392b",
+      "detail": {
+        "stroke_count": 7,
+        "colors": [
+          "#111111",
+          "#1a1a1a",
+          "#1f6f54",
+          "#4a7db5",
+          "#6e7681",
+          "#98a2b3",
+          "#c0392b"
+        ]
+      }
+    }
+  ],
+  "vertex_count": 39,
+  "edge_count": 17,
+  "canvas": "1987x562"
+}

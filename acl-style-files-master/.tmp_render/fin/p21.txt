@@ -1,0 +1,63 @@
+Attack success ↓ Side effects
+Aggregation rule Middle Unseen depth Natural LTRM ↑ ORR ↓ IFEval ↑ Churn
+Mean of all six 26.1 32.1 24.5 0.30 7.7 88.5 0.00
+Top-1 20.6 27.0 20.1 0.43 8.0 87.9 0.46
+Top-2 20.2 26.0 19.6 0.46 7.6 88.3 0.33
+Top-3 20.7 26.5 20.0 0.44 7.5 88.6 0.26
+Top-4 21.6 27.5 20.8 0.40 7.4 88.7 0.19
+Softmax, τ = 0.10 20.5 26.4 19.9 0.45 7.9 88.0 0.42
+Softmax, τ = 0.25 20.3 26.2 19.8 0.45 7.7 88.2 0.36
+Softmax, τ = 0.50 20.8 26.8 20.3 0.43 7.5 88.5 0.29
+Softmax, τ = 1.00 22.0 28.1 21.2 0.38 7.4 88.6 0.20
+Fixed base-margin weights 22.4 28.6 21.6 0.37 7.6 88.4 0.00
+Table 14: State-aggregation rule at matched prompts, states, and budget. Middle, unseen-depth, and natural ASR
+are suites S1, S2, and S3. Churn is the per-step fraction of the selected state set that changes, so the mean and the
+fixed weighting are 0 by construction. Means over three seeds; the top-2 row is the CURE-DPO configuration of
+Table 1; K = 2 was fixed on development before test evaluation.
+Middle ASR Reselection Mining ∆ASR per Agreement with
+Configuration ↓ stability ↑ GPU-hours GPU-hour ↑ exhaustive ↑
+Selection strategy at B = 66 evaluations per prompt
+Random extra position 24.7 0.36 62.8 0.019 0.19
+Single-pair argmin over 11 23.5 0.43 68.9 0.035 0.31
+Uniform allocation 21.3 0.61 113.6 0.040 0.56
+Successive Halving (ours) 20.2 0.76 119.4 0.048 0.78
+Successive Halving budget B
+B = 5 24.8 0.34 9.6 0.115 0.23
+B = 10 23.6 0.45 18.9 0.122 0.37
+B = 20 21.8 0.59 37.4 0.110 0.56
+B = 40 20.7 0.70 73.1 0.071 0.70
+B = 66 (ours) 20.2 0.76 119.4 0.048 0.78
+Table 15: Hard-state mining strategies and budgets. Middle ASR is suite S1, on the same test pool as Table 1; the
+selection rule and budget were fixed on development before these numbers were read. ∆ASR per GPU-hour is the
+improvement over the 25.9% middle ASR of a checkpoint trained without hard-state mining, divided by mining
+GPU-hours. Reselection stability is the fraction of prompts whose selected state is unchanged when the branch
+draws are resampled. The two B=66 rows are the same configuration.
+1584 95% interval is the 2.5th and 97.5th percentiles of
+{D(b)}
+B
+b=1 1585 . Averaging replicates over three fixed
+1586 seeds is not a hierarchical bootstrap over a popula￾1587 tion of training seeds, and seed SDs are not folded
+1588 into these intervals.
+1589 For H1, the fully separated LTRM–root AU￾1590 ROC difference is +0.131 ([0.109, 0.154]). For
+1591 H2, CURE-DPO − Uniform on S1 is −5.9 pp
+1592 ([−7.9, −3.9]). The secondary Uniform Same￾1593 State DPO − Recovery SFT contrast is −11.3 pp
+1594 ([−13.9, −8.7]). S3 contrasts are descriptive be￾1595 cause checkpoint-specific state construction yields
+1596 different accepted state sets; Table 5 reports the
+1597 acceptance yields and the corresponding accepted￾1598 state-weighted prompt rate.
+L.2 Judge invariance 1599
+Every safety condition is scored by four judges: 1600
+the HarmBench binary classifier (Mazeika et al., 1601
+2024), StrongREJECT continuous harmfulness 1602
+(Souly et al., 2024), WildGuard (Han et al., 2024), 1603
+and gpt-5.5-2026-04-23 under the fixed decision 1604
+rule of Appendix E. Pairwise agreement between 1605
+judges is κ = 0.79 to 0.87, and CURE-DPO has 1606
+the lowest mean ASR under all four. Across the 1607
+evaluated safety columns, one adjacent baseline 1608
+swap occurs between Uniform Same-State DPO 1609
+and DOOR under the HarmBench classifier. 1610
+L.3 Human validation subset 1611
+Two of the authors independently label 150 out- 1612
+puts as harmful continuation, safe recovery, or ex- 1613
+cessive refusal: 100 stratified by method and at- 1614
+21

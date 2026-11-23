@@ -1,0 +1,90 @@
+1114 is selected on development from 3e−7 to 1e−6; the
+1115 selected 8e−7 uses 5% linear warmup followed by
+1116 cosine decay to 10% of the peak. Each device pro￾1117 cesses one loss unit per micro-batch, and 24 accu￾1118 mulation steps on 4 devices give an effective batch
+1119 of 96 loss units. An unsafe-state unit contains all
+1120 six same-state pairs, whose six losses are evaluated
+1121 together before the detached top-2 mask is applied;
+1122 an anchor unit contains one preference pair. Each
+1123 effective batch realizes the 60/20/20 unsafe-state,
+1124 clean-safety, and benign mixture of Section 4.4 to
+1125 the nearest integer, with losses normalized within
+1126 stratum before applying the anchor weights.
+1127 Every run uses seeds 13, 42, 73 on 4×A100
+1128 80GB and follows the same fixed optimizer-step
+1129 schedule. Development evaluation is performed
+1130 at four equally spaced points for diagnostics, but
+1131 there is no metric-triggered early stopping: the
+1132 reported checkpoint is always the final scheduled
+1133 checkpoint. Development data select only the learn￾1134 ing rate and anchor weights (Appendix K); no test
+1135 metric enters model or checkpoint selection. We
+1136 set β = 0.1 for both the diagnostic scale and the
+1137 preference logit.
+1138 Sequence truncation. Token limits are applied
+1139 after rendering the checkpoint-specific chat tem￾1140 plate; tokenizer, special tokens, and chat template
+1141 come from the same pinned revision as the corre￾1142 sponding weights. We remove the oldest complete
+1143 conversation turns, one turn pair at a time, while
+1144 preserving the final user request, the complete
+1145 reached assistant state, and both scored branches,
+1146 so chosen and rejected branches always share an
+1147 identical retained prefix and are never truncated in￾1148 dependently. A pair that still exceeds 2048 tokens
+1149 is discarded outright, so every retained example
+1150 contains the full reached state and full scored con￾1151 tinuation used by the loss; padding tokens do not
+1152 contribute to the loss.
+1153 All trainable baselines—internal and reproduced
+1154 external—share the prompt split, branch pool, total
+1155 scored-token and optimizer-step budgets, capacity,
+1156 effective batch, base checkpoint, seeds, and fixed
+1157 final-checkpoint rule. Same-state methods addi￾1158 tionally share all six states. Method-specific condi￾1159 tioning contexts, objectives, and anchors are stated
+1160 explicitly rather than assumed shared. CURE￾1161 DPO requires a custom trainer because its detached
+1162 per-prompt top-k mask is not implemented by
+1163 stock preference-optimization trainers; the canoni￾1164 cal DPO baselines are cross-checked numerically
+Configuration Training GPU-hours
+Base (no training) —
+Clean DPO 55.1 ±0.8
+Recovery SFT 50.4 ±1.1
+Worst-Insertion SFT 52.8 ±1.4
+Uniform Same-State DPO 63.3 ±1.6
+Deep safety align. 59.1 ±0.9
+Backtracking 72.8 ±2.1
+Circuit breakers 69.4 ±1.9
+DOOR 75.6 ±1.4
+W-DOOR 80.2 ±2.0
+PRESTO 70.8 ±1.2
+CURE-DPO 66.7 ±1.9
+Table 4: Per-run training cost on 4×A100 80GB, means
+over three seeds with seed SD. The one-time 119.4 GPU￾hour hard-state mining cost is shared by all same-state
+configurations and is not included here.
+against a standard implementation. 1165
+Table 4 gives per-run training GPU-hours. Per- 1166
+run training cost is comparable to the baselines: 1167
+66.7 GPU-hours against 80.2 for W-DOOR. Hard- 1168
+state mining adds a one-time 119.4 GPU-hours, 1169
+paid once on the frozen base model and amortized 1170
+over every same-state configuration. The factorial 1171
+of Section 6.3 holds prompts, branch texts, scored 1172
+tokens, and optimizer steps fixed across cells, so 1173
+its contrasts are not attributable to unequal training 1174
+budgets. The mining budget can be cut to B=20, 1175
+for 104.1 GPU-hours end to end, while reaching 1176
+21.8% middle ASR (Appendix K). 1177
+E Attack Construction and Evaluation 1178
+Protocols 1179
+Suites. S1 constructed insertions place a harmful 1180
+partial at a training-grid depth {5, 10, 20, 40, 80}. 1181
+S2 uses offsets disjoint from that grid and extends 1182
+to {128, 256, 512}. S3 contains three naturally 1183
+occurring families, each contributing at least 250 1184
+states: self-generated states, obtained by letting 1185
+each evaluated checkpoint generate freely on the 1186
+same jailbreak prompts and truncating at the first 1187
+unsafe span; tool/RAG-contaminated states, where 1188
+the user request is benign but a retrieved passage 1189
+or tool result carries the harmful procedure; and 1190
+multi-turn drift states accumulated over three to six 1191
+turns. S4 combines RAP (Vega and Singh, 2025) 1192
+with a prefill-position search run against the de- 1193
+fended checkpoint. For continuity with prior work, 1194
+the clean-root condition is the clean ASR column 1195
+of Table 1 and the classical single-prefix prefilling 1196
+condition is S1 at its two shallowest depths. 1197
+14

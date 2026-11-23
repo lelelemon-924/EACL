@@ -1,0 +1,95 @@
+0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90
+Attack-prediction AUROC
+LTRM20
+Min state margin
+Mean state margin
+Root-response margin
+First-token refusal
+State depth
+(a) Predictive AUROC under four separations
+in-source
+cross-branch
+cross-attack
+fully separated
+−1 0 1
+Same-state recovery margin
+0.0
+0.2
+0.4
+0.6
+0.8
+Attack success rate
+n=341
+n=547
+n=763
+n=861
+n=721
+n=513
+(b) Attack success by margin bin
+logistic fit
+observed bin
+Figure 3: (a) AUROC with 95% prompt-clustered intervals under four separation regimes; LTRM leads every
+predictor in every regime. (b) Attack success by recovery-margin bin under the fully separated regime, with bin
+counts, intervals, and the fitted logistic curve.
+502 +0.043 from their lower tail.
+503 6.2 Main Comparison
+504 Table 1 reports the primary model. Clean DPO
+505 lowers clean-prompt attack success to 2.2% yet
+506 leaves middle-insertion attack success at 52.4%:
+507 a stronger root refusal does not solve recovery.
+508 Ranking the recovery branch against its compet￾509 ing harmful future matters more than maximizing
+510 the recovery target alone (Uniform Same-State vs.
+511 Recovery SFT, −11.3 pp), and lower-tail aggre￾512 gation adds more (H2: CURE-DPO vs. Uniform,
+513 −5.9 pp, [−7.9, −3.9]).
+514 Every external row is retrained under one recipe;
+515 Appendix I documents method-specific adaptations.
+516 DOOR and W-DOOR (Zhao et al., 2025) reinforce
+517 a safe continuation and unlearn harmful knowledge
+518 but do not directly optimize a pairwise preference
+519 between continuations from the identical state. W￾520 DOOR is the strongest reproduced external com￾521 parator; the internal factorial more directly isolates
+522 pairwise ranking. PRESTO (Vega and Singh, 2025)
+523 trains against a rank-based rather than a probability￾524 based safety target and closes less of the gap.
+525 6.3 What Causes the Gain
+526 Table 2 crosses pair construction with objective.
+527 Two effects separate cleanly. Moving the condi￾528 tioning context from the root prompt to the reached
+529 state changes middle ASR by 26.5 pp under DPO,
+530 22.5 under SimPO, and 19.9 under SFT: root￾531 conditioned supervision, whatever objective car￾532 ries it, leaves most of the mid-generation failure
+533 untouched.
+534 The second contrast concerns pairwise ranking
+535 at a fixed conditioning context. Changing only the
+objective moves middle ASR by 4.7 pp at the root 536
+and 11.3 pp at the reached state. Recovery SFT 537
+raises the likelihood of a designated safe contin- 538
+uation without ranking it against the competing 539
+harmful future and has 11.3 pp higher ASR than 540
+same-state DPO. SimPO’s per-branch length nor- 541
+malization, which breaks the prefix cancellation 542
+of Appendix A, likewise costs 1.5 pp at the root 543
+but 5.5 pp at a reached state. In this factorial, ob- 544
+jective choice has a larger effect under reached- 545
+state conditioning; lower-tail state selection adds 546
+5.9 pp (Section 6.2). The prefix-unmasked control 547
+matches its masked twin to within 0.1 pp, consis- 548
+tent with masking being an implementation choice 549
+rather than the source of the gain. 550
+6.4 Robustness 551
+Depth extrapolation (S2) extends the maximum 552
+reached-state depth from 80 to 128–512 tokens. 553
+CURE-DPO achieves 26.0% against Base’s 63.1%, 554
+and 38.7% against 74.6% at the deepest 512- 555
+token states (Appendix G resolves both by depth). 556
+Naturally occurring states (S3) remove the grid 557
+entirely and are regenerated per checkpoint, so 558
+each defense is scored against its own failure 559
+modes: CURE-DPO reaches 19.6% against Base’s 560
+49.3%, and 24.6/14.8/19.2% on the self-generated, 561
+tool/RAG, and multi-turn families. The ordering is 562
+unchanged on the accepted-state-weighted prompt 563
+rate (17.1% against 45.8%; Appendix E). The adap- 564
+tive attack (S4) probes whether the observed ro- 565
+bustness persists against checkpoint-specific op- 566
+timization: CURE-DPO rises from 24.0% at 64 567
+queries to 33.1% at 256, against Base’s 59.5% and 568
+69.0%. The ordering also transfers to Llama-3.1- 569
+8B-Instruct with nothing re-tuned: 24.7% against 570
+7

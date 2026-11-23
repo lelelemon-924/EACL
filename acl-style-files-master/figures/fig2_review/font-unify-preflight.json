@@ -1,0 +1,128 @@
+{
+  "file": "fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 7,
+    "fail": 0,
+    "warn": 7,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "text-overflow-vertical",
+      "element_id": "loss_1",
+      "message": "Text in 'loss_1' may overflow vertically (borderline): estimated 57px needed, container is 50px tall. Verify with screenshot — draw.io may fit the text.",
+      "detail": {
+        "estimated_height": 56.7,
+        "container_height": 50.0,
+        "font_size": 21.0,
+        "text_preview": "ℓ10 ✓"
+      }
+    },
+    {
+      "rule": "text-overflow-vertical",
+      "element_id": "loss_3",
+      "message": "Text in 'loss_3' may overflow vertically (borderline): estimated 57px needed, container is 50px tall. Verify with screenshot — draw.io may fit the text.",
+      "detail": {
+        "estimated_height": 56.7,
+        "container_height": 50.0,
+        "font_size": 21.0,
+        "text_preview": "ℓ40 ✓"
+      }
+    },
+    {
+      "rule": "text-overflow-vertical",
+      "element_id": "loss_5",
+      "message": "Text in 'loss_5' may overflow vertically (borderline): estimated 57px needed, container is 50px tall. Verify with screenshot — draw.io may fit the text.",
+      "detail": {
+        "estimated_height": 56.7,
+        "container_height": 50.0,
+        "font_size": 21.0,
+        "text_preview": "ℓhard"
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "icon_mining",
+      "message": "Row at y≈120: horizontal gaps vary (gaps=['634', '98', '88', '12', '12', '12', '12', '12'], mean=110, cv=1.83). Use uniform spacing.",
+      "detail": {
+        "row_y": 120,
+        "gaps": [
+          634.0,
+          98.0,
+          88.0,
+          12.0,
+          12.0,
+          12.0,
+          12.0,
+          12.0
+        ],
+        "mean": 110.0,
+        "cv": 1.83,
+        "element_ids": [
+          "icon_mining",
+          "pair_recovery",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "loss_note",
+      "message": "Row at y≈300: horizontal gaps vary (gaps=['195', '30'], mean=112, cv=0.73). Use uniform spacing.",
+      "detail": {
+        "row_y": 300,
+        "gaps": [
+          195.0,
+          30.0
+        ],
+        "mean": 112.5,
+        "cv": 0.73,
+        "element_ids": [
+          "loss_note",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "loss_3",
+      "message": "Column at x≈1756: vertical gaps vary (gaps=['22', '100'], mean=61, cv=0.64). Use uniform spacing.",
+      "detail": {
+        "col_x": 1756,
+        "gaps": [
+          22.0,
+          100.0
+        ],
+        "mean": 61.0,
+        "cv": 0.64,
+        "element_ids": [
+          "loss_3",
+          "icon_filter",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 46,
+  "edge_count": 19,
+  "canvas": "1987x562"
+}

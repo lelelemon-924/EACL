@@ -1,0 +1,103 @@
+712 Patrick Chao, Alexander Robey, Edgar Dobriban,
+713 Hamed Hassani, George J. Pappas, and Eric Wong.
+714 2023. Jailbreaking black box large language models
+715 in twenty queries. arXiv preprint arXiv:2310.08419.
+716 Justin Cui, Wei-Lin Chiang, Ion Stoica, and Cho-Jui
+717 Hsieh. 2025. OR-bench: An over-refusal benchmark
+718 for large language models. In Proceedings of the
+719 42nd International Conference on Machine Learning,
+720 volume 267 of Proceedings of Machine Learning
+721 Research, pages 11515–11542. PMLR.
+722 Josef Dai, Xuehai Pan, Ruiyang Sun, Jiaming Ji, Xinbo
+723 Xu, Mickel Liu, Yizhou Wang, and Yaodong Yang.
+724 2024. Safe RLHF: Safe reinforcement learning from
+725 human feedback. In The Twelfth International Con￾726 ference on Learning Representations (ICLR).
+727 Ning Ding, Yulin Chen, Bokai Xu, Yujia Qin,
+728 Shengding Hu, Zhiyuan Liu, Maosong Sun, and
+729 Bowen Zhou. 2023. Enhancing chat language models
+730 by scaling high-quality instructional conversations.
+731 In Proceedings of the 2023 Conference on Empiri￾732 cal Methods in Natural Language Processing, pages
+733 3029–3051. Association for Computational Linguis￾734 tics.
+735 Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey,
+736 Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman,
+737 Akhil Mathur, Alan Schelten, Amy Yang, Angela
+738 Fan, et al. 2024. The Llama 3 herd of models. arXiv
+739 preprint arXiv:2407.21783.
+740 Seungju Han, Kavel Rao, Allyson Ettinger, Liwei Jiang,
+741 Bill Yuchen Lin, Nathan Lambert, Yejin Choi, and
+742 Nouha Dziri. 2024. WildGuard: Open one-stop mod￾743 eration tools for safety risks, jailbreaks, and refusals
+744 of LLMs. In Advances in Neural Information Pro￾745 cessing Systems.
+746 Kevin Jamieson and Ameet Talwalkar. 2016. Non￾747 stochastic best arm identification and hyperparameter
+748 optimization. In Proceedings of the 19th Interna￾749 tional Conference on Artificial Intelligence and Statis￾750 tics, volume 51 of Proceedings of Machine Learning
+751 Research, pages 240–248. PMLR.
+752 Jiaming Ji, Mickel Liu, Josef Dai, Xuehai Pan, Chi
+753 Zhang, Ce Bian, Boyuan Chen, Ruiyang Sun, Yizhou
+754 Wang, and Yaodong Yang. 2023. BeaverTails: To￾755 wards improved safety alignment of LLM via a
+756 human-preference dataset. In Advances in Neural
+757 Information Processing Systems.
+758 Liwei Jiang, Kavel Rao, Seungju Han, Allyson Ettinger,
+759 Faeze Brahman, Sachin Kumar, Niloofar Mireshghal￾760 lah, Ximing Lu, Maarten Sap, Yejin Choi, and Nouha
+761 Dziri. 2024. WildTeaming at scale: From in-the-wild
+762 jailbreaks to (adversarially) safer language models.
+763 In Advances in Neural Information Processing Sys￾764 tems.
+765 Shivaram Kalyanakrishnan, Ambuj Tewari, Peter Auer,
+766 and Peter Stone. 2012. PAC subset selection in
+767 stochastic multi-armed bandits. In Proceedings of the
+768 29th International Conference on Machine Learning,
+769 pages 655–662.
+Ching-Chia Kao, Chia-Mu Yu, Chun-Shien Lu, and 770
+Chu-Song Chen. 2025. Safety alignment depth in 771
+large language models: A Markov chain perspec- 772
+tive. In Advances in Neural Information Processing 773
+Systems (NeurIPS). 774
+Aiwei Liu, Haoping Bai, Zhiyun Lu, Yanchao Sun, Xi- 775
+ang Kong, Simon Wang, Jiulong Shan, Albin Madap- 776
+pally Jose, Xiaojiang Liu, Lijie Wen, Philip S. Yu, 777
+and Meng Cao. 2025. TIS-DPO: Token-level impor- 778
+tance sampling for direct preference optimization 779
+with estimated weights. In The Thirteenth Inter- 780
+national Conference on Learning Representations 781
+(ICLR). 782
+Bochen Lyu, Yiyang Jia, Xiaohao Cai, and Zhanxing 783
+Zhu. 2026. When autoregressive consistency hurts 784
+safety alignment. arXiv preprint arXiv:2606.04168. 785
+Mantas Mazeika, Long Phan, Xuwang Yin, Andy Zou, 786
+Zifan Wang, Norman Mu, Elham Sakhaee, Nathaniel 787
+Li, Steven Basart, Bo Li, David Forsyth, and Dan 788
+Hendrycks. 2024. HarmBench: A standardized eval- 789
+uation framework for automated red teaming and 790
+robust refusal. In Proceedings of the 41st Interna- 791
+tional Conference on Machine Learning, volume 235 792
+of Proceedings of Machine Learning Research, pages 793
+35181–35224. PMLR. 794
+Yu Meng, Mengzhou Xia, and Danqi Chen. 2024. 795
+SimPO: Simple preference optimization with a 796
+reference-free reward. In Advances in Neural In- 797
+formation Processing Systems (NeurIPS). 798
+Saeed Najafi and Alona Fyshe. 2026. Offline preference 799
+optimization via maximum marginal likelihood esti- 800
+mation. In Proceedings of the 19th Conference of the 801
+European Chapter of the Association for Computa- 802
+tional Linguistics (EACL). 803
+Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, 804
+Carroll Wainwright, Pamela Mishkin, Chong Zhang, 805
+Sandhini Agarwal, Katarina Slama, Alex Ray, John 806
+Schulman, Jacob Hilton, Fraser Kelton, Luke Miller, 807
+Maddie Simens, Amanda Askell, Peter Welinder, 808
+Paul F. Christiano, Jan Leike, and Ryan Lowe. 2022. 809
+Training language models to follow instructions with 810
+human feedback. In Advances in Neural Information 811
+Processing Systems. 812
+Kyungmin Park and Taesup Kim. 2026. Inference- 813
+time vulnerability beyond shallow safety: Align- 814
+ment along generation trajectories. arXiv preprint 815
+arXiv:2606.04778. 816
+Xiangyu Qi, Ashwinee Panda, Kaifeng Lyu, Xiao Ma, 817
+Subhrajit Roy, Ahmad Beirami, Prateek Mittal, and 818
+Peter Henderson. 2025. Safety alignment should be 819
+made more than just a few tokens deep. In The Thir- 820
+teenth International Conference on Learning Repre- 821
+sentations (ICLR). 822
+Qwen Team. 2026. Qwen3.5: Towards native multi- 823
+modal agents. 824
+10

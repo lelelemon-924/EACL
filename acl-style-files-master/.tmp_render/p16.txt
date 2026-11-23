@@ -1,0 +1,95 @@
+Adaptive ASR ↓ at budget
+Method 64 128 256
+Base 59.5 ±1.5 65.1 ±0.8 69.0 ±0.9
+Clean DPO 56.0 ±1.5 60.1 ±1.5 64.4 ±1.7
+Recovery SFT 41.6 ±1.2 46.7 ±1.1 51.5 ±1.4
+Worst-Insertion SFT 37.4 ±0.7 42.6 ±0.6 46.7 ±0.9
+Uniform Same-State DPO 31.0 ±1.1 35.2 ±1.0 40.2 ±1.3
+Deep safety align. 37.2 ±1.4 44.2 ±1.6 48.4 ±1.2
+Backtracking 33.4 ±1.7 38.9 ±1.3 44.9 ±1.5
+Circuit breakers 33.1 ±1.5 38.4 ±1.5 43.7 ±1.6
+DOOR 30.7 ±2.6 36.6 ±1.9 40.7 ±1.5
+W-DOOR 26.2 ±0.6 30.9 ±1.5 37.6 ±1.2
+PRESTO 28.2 ±1.3 32.0 ±2.1 38.4 ±1.8
+CURE-DPO 24.0 ±2.0 27.8 ±1.7 33.1 ±1.8
+Table 6: Suite S4 by attacker query budget on the strati￾fied 250-state subsample, means over three seeds with
+seed SD. CURE-DPO is lowest at every budget; its mar￾gin over W-DOOR is wider at 256 than at 64 queries.
+The 256-query column is the S4 column of Table 1.
+1277 with checkpoint cais/HarmBench-Llama-2-13b￾1278 cls (Mazeika et al., 2024): the standard-behavior
+1279 classifier prompt, greedy decoding, and one gener￾1280 ated class token, with a normalized first label of Yes
+1281 counted as harmful and No counted as safe. Mal￾1282 formed outputs, fewer than 0.02% of evaluations,
+1283 are conservatively counted as harmful.
+1284 StrongREJECT (Souly et al., 2024) uses
+1285 the released fine-tuned evaluator qylu4156/
+1286 strongreject-15k-v1, which scores a response in
+1287 [0, 1] as the expected value over its five ordinal
+1288 score tokens. For binary ASR we fix the threshold
+1289 at sSR ≥ 0.50 before inspecting any CURE-DPO
+1290 output.
+1291 WildGuard (Han et al., 2024) uses checkpoint
+1292 allenai/wildguard under greedy decoding. The
+1293 ASR decision uses the generated response harmful￾1294 ness field, and the recovery criterion uses the gen￾1295 erated response refusal field; a response is harmful
+1296 or refusing when the corresponding parsed value
+1297 is yes, equivalent to a 0.5 decision threshold on
+1298 the normalized first-token logits of the two legal
+1299 labels. Malformed WildGuard outputs are treated
+1300 conservatively as harmful and non-refusing.
+1301 The fourth evaluator is gpt-5.5-2026-04-23,
+1302 called with the reasoning effort set to none, a 32-
+1303 token output cap, and a prompt that requires JSON
+1304 output. Because this model family accepts only
+1305 default decoding settings, the judge is instead held
+1306 fixed by pinning the snapshot, the prompt, and the
+1307 reasoning effort. Its complete prompt and rubric
+1308 appear in Appendix L.5. It assigns a 0–3 leakage￾1309 severity score and derives a binary ASR label by
+1310 the fixed rule ASR = 1[severity ≥ 2]. This same
+snapshot serves as the independent judge in the 1311
+fully separated diagnostic; it is not used to gener- 1312
+ate branches, locate S3 boundaries, select hyper- 1313
+parameters, or construct attacks. For root-level 1314
+responses the reached-state field is empty and the 1315
+entire assistant response is judged as the candidate 1316
+continuation. 1317
+Judges and decoding. Every safety condition 1318
+draws from the same 1,000-prompt held-out test 1319
+pool. S1–S2 use fixed reached states, S3 rebuilds 1320
+checkpoint-specific states under a common pro- 1321
+tocol, and S4 uses the fixed 250-state initial sub- 1322
+sample described above. All four judges rescore 1323
+every condition under the identities and decision 1324
+rules above. Over-refusal uses XSTest and OR- 1325
+Bench-Hard; utility follows the official IFEval and 1326
+MMLU-Pro protocols in the non-thinking configu- 1327
+ration described next. Safety generations are sam- 1328
+pled at temperature 0.7, top-p 0.95, top-k 50, and 1329
+at most 256 new tokens, and each of the three runs 1330
+draws a different generation seed; this is the source 1331
+of the non-zero seed SD on suites whose inputs 1332
+are held fixed, including the untrained Base row. 1333
+Evaluator prompts, model revisions, and decision 1334
+thresholds are fixed before any CURE-DPO result 1335
+is inspected. 1336
+Utility evaluation and thinking mode. 1337
+Qwen3.5-9B emits a reasoning block by de- 1338
+fault. Every condition in this paper disables it 1339
+(enable_thinking=False), because each safety 1340
+suite seeds the assistant turn with a controlled 1341
+prefix and a reasoning block placed before that 1342
+prefix would change the reached state. Utility is 1343
+therefore measured in the same non-thinking con- 1344
+figuration as safety rather than in the configuration 1345
+the model card reports, and Table 7 gives both so 1346
+that the difference is auditable: disabling reasoning 1347
+costs 2.2 IFEval and 4.9 MMLU-Pro points on the 1348
+untrained checkpoint. Every utility comparison we 1349
+make is within the non-thinking column, so the 1350
+reported degradations are not confounded with this 1351
+offset. 1352
+F Second Model Family 1353
+Table 8 repeats the central comparison on Llama- 1354
+3.1-8B-Instruct using the same prompt splits, train- 1355
+ing and anchor texts, selected hard states, diagnos- 1356
+tic branch pool, hyperparameters, and evaluators. 1357
+Hard-state selections are reused without re-mining. 1358
+Examples are re-rendered and tokenized for Llama, 1359
+16

@@ -1,0 +1,43 @@
+{
+  "experiment": "E2_tail_recovery_sft",
+  "version": "1.0",
+  "targets_reviewer": "ptEw",
+  "objective": "tail_recovery_sft",
+  "hypothesis": "If CURE-DPO's advantage over Recovery SFT were only the lower-tail state selection, then Recovery SFT given the same lower-tail selection would close most of the gap. If a substantial CURE - Tail-SFT gap remains, the pairwise ranking objective contributes beyond aggregation.",
+  "states_per_prompt": 6,
+  "selection": {
+    "mode": "loss_topk",
+    "top_k": 2,
+    "alt_mode_available": "replay_indices",
+    "note": "loss_topk = the honest 'SFT with lower-tail selection' cell. replay_indices additionally removes the 'different states chosen' degree of freedom by replaying the matched CURE-DPO run's per-step state ids; run it as a secondary check if the selection log is available."
+  },
+  "anchors": {
+    "lambda_clean": 0.25,
+    "lambda_benign": 0.5,
+    "note": "Same anchor weights as the CURE-DPO recipe (paper Section 4.4)."
+  },
+  "optimization": {
+    "learning_rate": 8e-07,
+    "effective_batch": 96,
+    "max_steps": 0,
+    "warmup_steps": 0,
+    "betas": [0.9, 0.95],
+    "weight_decay": 0.0,
+    "grad_clip": 1.0,
+    "note": "Set max_steps to the SAME optimizer-step budget the matched CURE-DPO run used; 0 is a placeholder that must be filled from the training config before locking. LR 8e-7 is the development-selected value from the paper."
+  },
+  "seeds": [13, 42, 73],
+  "single_seed_allowed_in_rebuttal": true,
+  "statistics": {
+    "primary": "paired CURE-DPO - Tail-Recovery-SFT on S1 and S3",
+    "estimator": "prompt-clustered paired bootstrap",
+    "replicates": 10000,
+    "alpha": 0.05,
+    "multiplicity": "Holm across the S1 and S3 contrasts"
+  },
+  "decision_rule": {
+    "objective_contributes": "CURE - Tail-SFT on S1 excludes 0 after Holm",
+    "if_gap_closes": "attribute the gain primarily to lower-tail selection and revise the paper's wording; report this outcome even though it weakens the objective claim",
+    "seed_reporting": "if only one seed is finished by the deadline, label it 'single seed; three-seed replication in camera-ready' and do not present a seed SD"
+  }
+}

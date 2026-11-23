@@ -1,0 +1,114 @@
+{
+  "file": "fig2_pipeline.drawio",
+  "summary": {
+    "total_findings": 5,
+    "fail": 0,
+    "warn": 5,
+    "passed": true,
+    "clean": false
+  },
+  "fails": [],
+  "warns": [
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "icon_mining",
+      "message": "Row at y≈120: horizontal gaps vary (gaps=['634', '98', '95', '14', '14', '14', '14', '14'], mean=112, cv=1.79). Use uniform spacing.",
+      "detail": {
+        "row_y": 120,
+        "gaps": [
+          634.0,
+          98.0,
+          95.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0,
+          14.0
+        ],
+        "mean": 112.1,
+        "cv": 1.79,
+        "element_ids": [
+          "icon_mining",
+          "pair_recovery",
+          "loss_card",
+          "loss_0",
+          "loss_1",
+          "loss_2",
+          "loss_3",
+          "loss_4",
+          "loss_5"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-h",
+      "element_id": "loss_note",
+      "message": "Row at y≈300: horizontal gaps vary (gaps=['195', '30'], mean=112, cv=0.73). Use uniform spacing.",
+      "detail": {
+        "row_y": 300,
+        "gaps": [
+          195.0,
+          30.0
+        ],
+        "mean": 112.5,
+        "cv": 0.73,
+        "element_ids": [
+          "loss_note",
+          "clean_anchor",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "p3_title",
+      "message": "Column at x≈999: vertical gaps vary (gaps=['52', '192'], mean=122, cv=0.57). Use uniform spacing.",
+      "detail": {
+        "col_x": 999,
+        "gaps": [
+          52.0,
+          192.0
+        ],
+        "mean": 122.0,
+        "cv": 0.57,
+        "element_ids": [
+          "p3_title",
+          "loss_card",
+          "legend_dashed_sample"
+        ]
+      }
+    },
+    {
+      "rule": "spacing-inconsistent-v",
+      "element_id": "loss_3",
+      "message": "Column at x≈1757: vertical gaps vary (gaps=['22', '100'], mean=61, cv=0.64). Use uniform spacing.",
+      "detail": {
+        "col_x": 1757,
+        "gaps": [
+          22.0,
+          100.0
+        ],
+        "mean": 61.0,
+        "cv": 0.64,
+        "element_ids": [
+          "loss_3",
+          "icon_filter",
+          "benign_anchor"
+        ]
+      }
+    },
+    {
+      "rule": "edge-density-hotspot",
+      "element_id": "*",
+      "message": "Cell (200,0) has 6 edge segments — potential arrow spaghetti. Reroute connectors or add explicit waypoints.",
+      "detail": {
+        "cell_x": 200,
+        "cell_y": 0,
+        "edge_count": 6
+      }
+    }
+  ],
+  "vertex_count": 46,
+  "edge_count": 19,
+  "canvas": "1987x562"
+}
